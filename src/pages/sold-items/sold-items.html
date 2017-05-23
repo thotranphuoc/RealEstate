@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Sold Items</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item *ngFor="let item of items | async">
+      {{item | json}}
+    </ion-item>
+  </ion-list>
+  {{item | async | json}}
+</ion-content>

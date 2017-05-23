@@ -1,0 +1,106 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>DETAILED</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content id="content" >
+  <ion-card>
+
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{obj.AVATAR_URL}}">
+      </ion-avatar>
+      <h2>{{obj.NAME}}</h2>
+      <button ion-button clear (click)="makeCall()">{{obj.PHONE}}</button>
+      <!--<p>{{obj.PHONE}}</p>-->
+    </ion-item>
+    <hr>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="heart" color="danger"></ion-icon>
+            <div>{{NUM_OF_LOVE}}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>{{NUM_OF_COMMENTS}}</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+            <ion-note>
+              {{obj.POSTDATE}}
+            </ion-note>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item>
+      <h3>{{obj.new_KIND}}</h3>
+    </ion-item>
+    <ion-item>
+      <h4>GIÁ:</h4>
+      <ion-icon name="ios-cash-outline" item-left small></ion-icon>
+      <p>{{this.obj.new_PRICE}} VND</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="ios-resize-outline" item-left small></ion-icon>
+      <h4>DTSD:</h4>
+      <p>DT sàn: {{obj.GROUNDSQUARES}} m2</p>
+      <p>DT sử dụng: {{obj.USEDSQUARES}} m2</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-locate-outline" item-left small></ion-icon>
+      <h4>TIỆN ÍCH:</h4>
+
+      <p *ngIf="obj.hasSCHOOL">Trường học ......{{obj.hasSCHOOLFAR}} m</p>
+
+      <p *ngIf="obj.hasHOSPITAL">Bệnh viện .........{{obj.hasHOSPITALFAR}} m</p>
+
+      <p *ngIf="obj.hasMART">Siêu thị .............{{obj.hasMARTFAR}} m</p>
+
+      <p *ngIf="obj.hasCENTER">Trung tâm .........{{obj.hasCENTERFAR}} m</p>
+
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="ios-home-outline" item-left small></ion-icon>
+      <h4>Address: </h4>
+      <p>{{obj.ADDRESS}}</p>
+    </ion-item>
+  </ion-card>
+
+  <ion-card>
+    <ion-slides pager>
+      <ion-slide *ngFor="let photo of photos, let i=index">
+        <img style="width: 100%" src="{{photos[i]}}">
+      </ion-slide>
+    </ion-slides>
+  </ion-card>
+
+  <!--REPORT, SAVE and SHARE-->
+  <div>
+    <h4>Feedback:</h4>
+    <ion-item *ngFor="let feedback of feedbacks" (click)="viewFeedbackInDetail(feedback)">
+      <p>{{feedback.data.COMMENTS}}</p>
+      <p align='right'>on {{feedback.data.POSTTIME}} by {{feedback.data.NAME}}</p>
+    </ion-item>
+  </div>
+
+  <ion-fab top right edge>
+    <button ion-fab  mini><ion-icon name="md-share"></ion-icon></button>
+    <ion-fab-list>
+      <button ion-fab (click)="onAddFavorite()"><ion-icon name="md-heart" color="danger"></ion-icon></button>
+      <button ion-fab (click)="onFeedBack()"><ion-icon name="ios-alert" color="orange"></ion-icon></button>
+      <!--<button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
+      <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>-->
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

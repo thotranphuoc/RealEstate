@@ -1,0 +1,55 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>FEED BACK</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form #myForm="ngForm">
+      <ion-item>
+        <ion-toggle [(ngModel)]="feedback.SOLDOUT" name="SOLDOUT" checked="false" color="danger"></ion-toggle>
+        <ion-label>
+          Sold out
+        </ion-label>
+        <ion-icon name='ios-cart-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-toggle [(ngModel)]="feedback.WRONGPIC" name="WRONGPIC" checked="false" color="danger"></ion-toggle>
+        <ion-label>
+          Wrong pictures
+        </ion-label>
+        <ion-icon name='ios-camera-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-toggle [(ngModel)]="feedback.WRONGPHONE" name="WRONGPHONE" checked="false" color="danger"></ion-toggle>
+        <ion-label>
+          Wrong phone number
+        </ion-label>
+        <ion-icon name='ios-call-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-toggle [(ngModel)]="feedback.WRONGLOCATION" name="WRONGLOCATION" checked="false" color="danger"></ion-toggle>
+        <ion-label>
+          Wrong location
+        </ion-label>
+        <ion-icon name='ios-compass-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-toggle [(ngModel)]="feedback.WRONGPRICE" name="WRONGPRICE" checked="false" color="danger"></ion-toggle>
+        <ion-label>
+          Wrong price
+        </ion-label>
+        <ion-icon name='logo-usd' item-left></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-textarea [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments"></ion-textarea>
+        <!--<input [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments">-->
+      </ion-item>
+    </form>
+
+    <button ion-button block (click)="sendFeedback(myForm)">Send feedback</button>
+
+</ion-content>

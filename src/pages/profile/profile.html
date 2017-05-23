@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>PROFILE</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #myForm="ngForm">
+    <div>
+      <div>
+        <ion-item *ngIf="!hasNewAvatar">
+          <ion-avatar (click)="takeAvatarPic()">
+            <img src="{{profile.AVATAR_URL}}" alt="" class="img">
+          </ion-avatar>
+        </ion-item>
+      </div>
+      <div>
+        <ion-item *ngIf="hasNewAvatar">
+          <ion-avatar (click)="takeAvatarPic()">
+            <img src="{{base64Image}}" alt="" class="img">
+          </ion-avatar>
+        </ion-item>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label fixed>Name</ion-label>
+      <ion-input type="text" [(ngModel)]="profile.NAME" name="NAME"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Email</ion-label>
+      <ion-input type="email" [(ngModel)]="profile.EMAIL" name="EMAIL"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Birthday</ion-label>
+      <ion-input type="date" [(ngModel)]="profile.BIRTHDAY" name="BIRTHDAY"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Telephone</ion-label>
+      <ion-input type="text" [(ngModel)]="profile.TEL" name="TEL"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Address</ion-label>
+      <ion-input type="text" [(ngModel)]="profile.ADDRESS" name="ADDRESS"></ion-input>
+    </ion-item>
+
+  </form>
+  <button ion-button block (click)="onUpdateProfile(myForm)" [disabled]="!btnEnable">Update</button>
+</ion-content>

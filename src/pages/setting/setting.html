@@ -1,0 +1,133 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>SETTING</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding id="content">
+
+  <ion-list>
+    <ion-item>
+      <ion-icon name='logo-angular' item-left></ion-icon>
+      <ion-label>Language</ion-label>
+      <ion-select [(ngModel)]="mySettings.language">
+        <ion-option value="English">English</ion-option>
+        <ion-option value="Vietnamese">Tiếng Việt</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-list no-border>
+
+    <ion-list-header>
+      QUAN TÂM
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name='ios-home-outline' item-left></ion-icon>
+      <ion-label>
+        Biệt thự, nhà riêng lẻ
+      </ion-label>
+      <ion-toggle checked="false" [(ngModel)]="mySettings.setHouse"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name='ios-cloud-outline' item-left></ion-icon>
+      <ion-label>
+        Đất vườn, ruộng
+      </ion-label>
+      <ion-toggle checked="true" [(ngModel)]="mySettings.setLand"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name='ios-car-outline' item-left></ion-icon>
+      <ion-label>
+        Chung cư, CHCC
+      </ion-label>
+      <ion-toggle checked="true" [(ngModel)]="mySettings.setApartment"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-toggle checked="true" [(ngModel)]="mySettings.setOther"></ion-toggle>
+      <ion-label>
+        Khác
+      </ion-label>
+      <ion-icon name='body' item-left></ion-icon>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-list>
+
+    <ion-list-header>
+      ACCOUNT
+    </ion-list-header>
+    <div *ngIf="!isSigned">
+      <ion-item (click)="go2AccountPage('sign-in')">
+        <ion-label>
+          Sign In
+        </ion-label>
+        <ion-icon name='ios-log-in-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item (click)="go2AccountPage('sign-up')">
+        <ion-label>
+          Sign Up
+        </ion-label>
+        <ion-icon name='ios-checkbox-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item (click)="go2AccountPage('reset-account')">
+        <ion-label>
+          Reset Account
+        </ion-label>
+        <ion-icon name='ios-checkbox-outline' item-left></ion-icon>
+      </ion-item>
+    </div>
+    <div *ngIf="isSigned">
+      <ion-item (click)="onSignOut()">
+        <ion-label>
+          Sign Out
+        </ion-label>
+        <ion-icon name='ios-log-out-outline' item-left></ion-icon>
+      </ion-item>
+    </div>
+    <div *ngIf="isSigned">
+      <ion-item (click)="go2ProfilePage()">
+        <ion-label>
+          Update Profile
+        </ion-label>
+        <ion-icon name='ios-create-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item (click)="go2YourSellItemPage()">
+        <ion-label>
+          Your Sold Items
+        </ion-label>
+        <ion-icon name='ios-cart-outline' item-left></ion-icon>
+      </ion-item>
+      <ion-item (click)="go2FavoriteViewPage()">
+        <ion-label>
+          Your favorites
+        </ion-label>
+        <ion-icon name='ios-heart-outline' item-left></ion-icon>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <ion-list>
+
+    <ion-list-header>
+      HELP & FEEDBACK
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name='flash' item-left></ion-icon>
+      <ion-label>Contact support</ion-label>
+      <!--<ion-note item-right>Click for help</ion-note>-->
+    </ion-item>
+    <ion-item>
+      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+      <ion-label>Suggest feature</ion-label>
+      <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
+    </ion-item>
+  </ion-list>
+
+</ion-content>
