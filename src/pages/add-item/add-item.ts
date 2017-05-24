@@ -46,6 +46,7 @@ export class AddItemPage {
   images: iImage[] = [];
   showedImage: iImage = null;
   selectedIndex: number = 0;
+  reviewImages: iImage[] = [];
   // @ViewChild('mapNewItem') mapElement1: ElementRef;
   constructor(
     public navCtrl: NavController,
@@ -134,9 +135,13 @@ export class AddItemPage {
   }
 
   onSelectImage(i: number) {
-    console.log(this.images[i].isNewCapturedImage, this.images[i].imageURL)
-    this.showedImage = this.images[i];
-    this.selectedIndex = i;
+    if (this.images[i]) {
+      if (this.images[i].isVisible) {
+        console.log(this.images[i].isNewCapturedImage, this.images[i].imageURL)
+        this.showedImage = this.images[i];
+        this.selectedIndex = i;
+      }
+    }
   }
 
   // onSelectImage(image: iImage) {
@@ -158,10 +163,10 @@ export class AddItemPage {
             this.images[this.selectedIndex].isVisible = false;
 
             // sort array images, so that only the visible image canbe shown properly
-            this.images.sort((a,b)=>{
-              let ax = a.isVisible? 1: 0;
-              let bx = b.isVisible? 1: 0;
-              return bx-ax;
+            this.images.sort((a, b) => {
+              let ax = a.isVisible ? 1 : 0;
+              let bx = b.isVisible ? 1 : 0;
+              return bx - ax;
             })
             this.showedImage = this.images[0];
             console.log(this.images);
@@ -179,7 +184,7 @@ export class AddItemPage {
     console.log(image);
     this.appService.deleteItemImageFromStorage(image.imageURL)
     this.images.splice(this.selectedIndex, 1);
-    
+
     // this.dbService.deleteFileFromFireStorageWithHttpsURL(images[this.index2Remove].)
     // this.appService.deleteItem(this.afService.getAuth().auth.currentUser.uid, this.itemID);
   }
@@ -322,11 +327,18 @@ export class AddItemPage {
 
   //==== REVIEW and POST ========
   selectReview() {
+    this.reviewImages =[];
     // this.tabChoice = 'review';
     console.log('selectReview');
+
     if (this.soldItem.PRICE) {
       this.convertedPrice = this.appService.convertToCurrency(this.soldItem.PRICE.toString(), ',');
     }
+    this.images.forEach(image=>{
+      if(image.isVisible){
+        this.reviewImages.push(image)
+      }
+    })
     setTimeout(() => {
       this.mapElement = document.getElementById('mapreview');
       this.initMap(this.mapElement);
@@ -354,16 +366,16 @@ export class AddItemPage {
               this.images.forEach(image => {
                 if (image.isNewCapturedImage && image.isVisible) {
                   newImages.push(image.imageURL);
-                } else if(!image.isNewCapturedImage && !image.isVisible) {
+                } else if (!image.isNewCapturedImage && !image.isVisible) {
                   deleteOldImages.push(image);
-                } else if(!image.isNewCapturedImage && image.isVisible) {
+                } else if (!image.isNewCapturedImage && image.isVisible) {
                   oldImages.push(image.imageURL);
                 } else {
                   // new but not invisible : capture but cancel afterward
                   // do nothing
                 }
 
-                deleteOldImages.forEach(image=>{
+                deleteOldImages.forEach(image => {
                   this.deleteImage(image);
                 })
               })
@@ -383,11 +395,11 @@ export class AddItemPage {
                       this.resetSoldItem();
                       this.navCtrl.push('MapPage');
                     })
-                    .catch((err)=>{ console.log(err); })
+                    .catch((err) => { console.log(err); })
                 })
-                .catch((err)=>{ console.log(err); })
+                .catch((err) => { console.log(err); })
             })
-            .catch((err)=>{ console.log(err); })
+            .catch((err) => { console.log(err); })
         } else {
           // create new
           this.appService.postSoldItemReturnPromiseWithKey(this.soldItem, 'soldItems')
@@ -405,9 +417,9 @@ export class AddItemPage {
               this.images.forEach(image => {
                 if (image.isNewCapturedImage && image.isVisible) {
                   newImages.push(image.imageURL);
-                } else if(!image.isNewCapturedImage && !image.isVisible) {
-                  deleteOldImages.push(image.imageURL);
-                } else if(!image.isNewCapturedImage && image.isVisible) {
+                } else if (!image.isNewCapturedImage && !image.isVisible) {
+                  deleteOldImages.push(image);
+                } else if (!image.isNewCapturedImage && image.isVisible) {
                   oldImages.push(image.imageURL);
                 } else {
                   // new but not invisible : capture but cancel afterward
@@ -418,21 +430,21 @@ export class AddItemPage {
               this.uploadImagesReturnArrayOfURL(newImages, soldItem_Key)
                 .then((url) => {
                   console.log(url);
-                  this.afService.updateObjectData('soldItems/' + this.itemID, { PHOTOS: url })
+                  this.afService.updateObjectData('soldItems/' + soldItem_Key, { PHOTOS: url })
                     .then(() => {
                       this.resetSoldItem();
                       this.navCtrl.push('MapPage');
                     })
-                    .catch((err)=>{ console.log(err); })
+                    .catch((err) => { console.log(err); })
                 })
-                .catch((err)=>{ console.log(err); })
+                .catch((err) => { console.log(err); })
 
-                deleteOldImages.forEach(image=>{
-                  this.deleteImage(image);
-                })
+              deleteOldImages.forEach(image => {
+                this.deleteImage(image);
+              })
             })
-            .catch((err)=>{ console.log(err); })
-            
+            .catch((err) => { console.log(err); })
+
         }
 
       } else {
@@ -492,12 +504,12 @@ export class AddItemPage {
                 console.log(this.soldItem);
                 this.navCtrl.push('MapPage');
               })
-              .catch((err)=>{ console.log(err); })
+              .catch((err) => { console.log(err); })
           })
           .unsubscribe()
 
       })
-      .catch((err)=>{ console.log(err); })
+      .catch((err) => { console.log(err); })
   }
 
   uploadImages2FbStorage1(images: any[], itemID) {
@@ -528,9 +540,9 @@ export class AddItemPage {
             this.afService.updateObjectData('soldItems/' + itemID + '/PHOTOS', downloadURLs)
             console.log('photos update succeed')
           })
-          .catch((err)=>{ console.log(err); })
+          .catch((err) => { console.log(err); })
       })
-      .catch((err)=>{ console.log(err); })
+      .catch((err) => { console.log(err); })
 
   }
 
@@ -566,9 +578,9 @@ export class AddItemPage {
             this.afService.updateObjectData('soldItems/' + itemID + '/PHOTOS', downloadURLs)
             console.log('photos update succeed')
           })
-          .catch((err)=>{ console.log(err); })
+          .catch((err) => { console.log(err); })
       })
-      .catch((err)=>{ console.log(err); })
+      .catch((err) => { console.log(err); })
 
   }
 

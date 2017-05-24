@@ -6,7 +6,7 @@ import { GmapService } from '../../services/gmap.service';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { iSoldItem } from '../../interfaces/sold-item.interface';
-
+import { iPosition } from '../../interfaces/position.interface';
 declare var google;
 
 @IonicPage()
@@ -15,8 +15,9 @@ declare var google;
   templateUrl: 'map.html',
 })
 export class MapPage {
-  @ViewChild('map') mapElement: ElementRef;
+  // @ViewChild('map') mapElement: ElementRef;
   map: any;
+  mapEl: any;
   locations = [
     { lat: 11.563910, lng: 106.154312 },
     { lat: 13.718234, lng: 106.363181 },
@@ -63,11 +64,17 @@ export class MapPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MapPage');
-    this.initMap();
     this.startLoading();
+    setTimeout(()=>{
+      this.mapEl = document.getElementById('map');
+      this.initMap(this.mapEl)
+    },1000)
+   
+    
   }
 
   ionViewWillEnter() {
+    this.soldItemsKey =[];
     console.log('ionViewWillEnter');
     this.items = this.afDB.list('/soldItems');
     this.items.subscribe((items) => {
@@ -83,70 +90,96 @@ export class MapPage {
     })
   }
 
-  initMap() {
+  initMap(mapElement) {
     this.geolocation.getCurrentPosition()
       .then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        this.loadMap(latLng);
+        let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude}
+        // this.loadMap(latLng);
+        this.showMap(pos, mapElement)
       })
       .catch((err) => {
         console.log(err);
         alert('No gps signal');
-        let latLng = new google.maps.LatLng(10.802703148181791,106.63943767547607);
-        this.loadMap(latLng)
+        let latLng = new google.maps.LatLng(10.802703148181791, 106.63943767547607);
+        let pos: iPosition = { lat: 10.802703148181791, lng: 106.63943767547607}
+        // this.loadMap(latLng)
+        this.showMap(pos, mapElement)
       })
 
   }
 
-  loadMap(latLng){
-    let mapOptions = {
-          center: latLng,
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
+  // loadMap(latLng) {
+  //   let mapOptions = {
+  //     center: latLng,
+  //     zoom: 15,
+  //     mapTypeId: google.maps.MapTypeId.ROADMAP
+  //   }
 
-        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-        // this.gmapService.loadLocationIntoMapAddListener(this.map, this.locations);
+  //   this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+  //   // this.gmapService.loadLocationIntoMapAddListener(this.map, this.locations);
+  //   google.maps.event.addListener(this.map, 'idle', () => {
+  //     console.log('map was loaded fully');
+  //     this.hideLoading();
+  //     this.loadSoldItemsKey();
+  //   })
+  // }
+
+  showMap(position: iPosition, mapElement) {
+    let latLng = new google.maps.LatLng(position.lat, position.lng);
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    console.log(mapElement, mapOptions);
+    this.gmapService.initMap(mapElement, mapOptions)
+      .then((map) => {
+        console.log(map);
+        this.map = map;
         google.maps.event.addListener(this.map, 'idle', () => {
           console.log('map was loaded fully');
           this.hideLoading();
           this.loadSoldItemsKey();
         })
+      })
   }
 
-  loadSoldItemsKey(){
+  loadSoldItemsKey() {
     this.soldItemsKey.forEach(soldItemKey => {
-          // let soldItemKey = {
-          //   key: 'soldItem',
-          //   data: soldItem
-          // }
-          this.gmapService.addMarkerToMapWithID(this.map, soldItemKey);
-        })
+      // let soldItemKey = {
+      //   key: 'soldItem',
+      //   data: soldItem
+      // }
+      this.gmapService.addMarkerToMapWithID(this.map, soldItemKey);
+    })
   }
 
   addNew() {
-    this.navCtrl.push('AddItemPage', {action: 'add-new'});
+    this.navCtrl.push('AddItemPage', { action: 'add-new' });
   }
 
-  addInfoWindow(marker, content) {
+  // addInfoWindow(marker, content) {
 
-    let infoWindow = new google.maps.InfoWindow({
-      content: content
-    });
+  //   let infoWindow = new google.maps.InfoWindow({
+  //     content: content
+  //   });
 
-    google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
-    });
+  //   google.maps.event.addListener(marker, 'click', () => {
+  //     infoWindow.open(this.map, marker);
+  //   });
 
-  }
+  // }
 
-  private startLoading(){
+  private startLoading() {
     this.loading.present();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.hideLoading();
       // alert('Please turn on internet and location permission. Then open app again')
-    },15000)
+    }, 15000)
   }
+  
   private hideLoading() {
     this.loading.dismiss();
   }

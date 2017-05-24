@@ -317,16 +317,8 @@ export class GmapService {
             marker.addListener('click', () => {
                 let imgUrl = '';
                 console.log('marker clicked')
-                let infoObject = {
-                    position: position,
-                    imgUrl: imgUrl,
-                    price: soldItemKey.data.PRICE,
-                    dtSan: soldItemKey.data.GROUNDSQUARES,
-                    dtSd: soldItemKey.data.USEDSQUARES
-                }
-
                 let infoObjects = soldItemKey;
-                let popover = this.popoverCtrl.create('PopoverInfoPage', infoObjects);
+                let popover = this.popoverCtrl.create('PopoverInfoPage', soldItemKey);
                 popover.present();
             })
             resolve();

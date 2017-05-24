@@ -34,7 +34,7 @@ export class PopoverInfoPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PopoverInfoPage');
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   closePopover() {
@@ -44,5 +44,11 @@ export class PopoverInfoPage {
   goToDetail() {
     console.log('go to detailed page');
     this.navCtrl.push('ShowItemDetailPage', this.objKey)
+    // this.navCtrl.push('AddItemPage');
   }
 }
+
+
+/*
+input: { key: KEY, data: iSoldItem}
+*/

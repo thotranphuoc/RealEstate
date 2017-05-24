@@ -91,57 +91,6 @@
 
     <!--CAMERA PHOTOS-->
     <div *ngSwitchCase="'photo'">
-      <!--<div *ngIf="base64Image">
-        <img [src]="base64Image" alt="">
-      </div>
-      <div *ngIf="!isUpdated">
-        <ion-grid>
-          <ion-row>
-            <ion-col (click)="onSelectImage(0, false)"><img *ngIf="base64Images[0]" [src]="base64Images[0]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(1, false)"><img *ngIf="base64Images[1]" [src]="base64Images[1]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(2, false)"><img *ngIf="base64Images[2]" [src]="base64Images[2]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(3, false)"><img *ngIf="base64Images[3]" [src]="base64Images[3]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(4, false)"><img *ngIf="base64Images[4]" [src]="base64Images[4]" alt=""></ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col>
-              <ion-thumbnail (click)="presentActionSheet()">
-                <img src="https://cdn2.iconfinder.com/data/icons/transparent-round-icons/512/add.png" alt="">
-              </ion-thumbnail>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
-      <div *ngIf="isUpdated">
-        <div *ngIf="soldItem.PHOTOS[0]">
-          <img [src]="soldItem.PHOTOS[0]" alt="">
-        </div>
-        <ion-grid>
-          <ion-row>
-            <ion-col (click)="onSelectImage(0, true)"><img *ngIf="soldItem.PHOTOS[0]" [src]="soldItem.PHOTOS[0]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(1, true)"><img *ngIf="soldItem.PHOTOS[1]" [src]="soldItem.PHOTOS[1]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(2, true)"><img *ngIf="soldItem.PHOTOS[2]" [src]="soldItem.PHOTOS[2]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(3, true)"><img *ngIf="soldItem.PHOTOS[3]" [src]="soldItem.PHOTOS[3]" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(4, true)"><img *ngIf="soldItem.PHOTOS[4]" [src]="soldItem.PHOTOS[4]" alt=""></ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
-            <ion-col>
-              <ion-thumbnail (click)="presentActionSheet()">
-                <img src="https://cdn2.iconfinder.com/data/icons/transparent-round-icons/512/add.png" alt="">
-              </ion-thumbnail>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>-->
-
       <!--NEW IMAGE SHOW-->
       <div>
         <div *ngIf="showedImage?.isVisible">
@@ -154,13 +103,7 @@
             <ion-col (click)="onSelectImage(2)"><img *ngIf="images[2]?.isVisible" [src]="images[2].imageURL" alt=""></ion-col>
             <ion-col (click)="onSelectImage(3)"><img *ngIf="images[3]?.isVisible" [src]="images[3].imageURL" alt=""></ion-col>
             <ion-col (click)="onSelectImage(4)"><img *ngIf="images[4]?.isVisible" [src]="images[4].imageURL" alt=""></ion-col>
-
-            <!--<ion-col (click)="onSelectImage(images[0])"><img *ngIf="images[0]" [src]="images[0].imageURL" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(images[1])"><img *ngIf="images[1]" [src]="images[1].imageURL" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(images[2])"><img *ngIf="images[2]" [src]="images[2].imageURL" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(images[3])"><img *ngIf="images[3]" [src]="images[3].imageURL" alt=""></ion-col>
-            <ion-col (click)="onSelectImage(images[4])"><img *ngIf="images[4]" [src]="images[4].imageURL" alt=""></ion-col>-->
-          </ion-row>
+         </ion-row>
           <ion-row>
             <ion-col></ion-col>
             <ion-col></ion-col>
@@ -228,8 +171,8 @@
       <ion-card>
         <div>
           <ion-slides pager>
-            <ion-slide *ngFor="let image of images">
-              <img *ngIf="image.isVisible"style="width: 100%" src="{{image.imageURL}}">
+            <ion-slide *ngFor="let image of reviewImages">
+              <img style="width: 100%" src="{{image.imageURL}}">
             </ion-slide>
           </ion-slides>
         </div>

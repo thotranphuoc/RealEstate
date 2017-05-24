@@ -162,12 +162,12 @@ export class AppService {
         // add to FavoriteOfUserForItems
         this.afService.setObjectData('FavoriteOfUserForItems/' + uid + '/' + itemId, data)
             .then(() => {
-                console.log(uid, itemId, data);
+                console.log(uid, itemId, data, 'just added successfully');
             });
         // add to FavoriteOfItemFromUsers
         this.afService.setObjectData('FavoriteOfItemFromUsers/' + itemId + '/' + uid, data)
             .then(() => {
-                console.log(uid, itemId, data);
+                console.log(uid, itemId, data, 'just added successfully');
             });
     }
 

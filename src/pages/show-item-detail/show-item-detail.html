@@ -16,19 +16,19 @@
       </ion-avatar>
       <h2>{{obj.NAME}}</h2>
       <button ion-button clear (click)="makeCall()">{{obj.PHONE}}</button>
-      <!--<p>{{obj.PHONE}}</p>-->
+    
     </ion-item>
     <hr>
     <ion-grid>
       <ion-row>
         <ion-col>
-          <button ion-button icon-left clear small>
+          <button ion-button icon-left clear small (click)="onAddFavorite()">
             <ion-icon name="heart" color="danger"></ion-icon>
             <div>{{NUM_OF_LOVE}}</div>
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button icon-left clear small>
+          <button ion-button icon-left clear small (click)="onFeedBack()">
             <ion-icon name="text"></ion-icon>
             <div>{{NUM_OF_COMMENTS}}</div>
           </button>
@@ -98,8 +98,7 @@
     <ion-fab-list>
       <button ion-fab (click)="onAddFavorite()"><ion-icon name="md-heart" color="danger"></ion-icon></button>
       <button ion-fab (click)="onFeedBack()"><ion-icon name="ios-alert" color="orange"></ion-icon></button>
-      <!--<button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
-      <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>-->
+      
     </ion-fab-list>
   </ion-fab>
 
