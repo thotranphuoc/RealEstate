@@ -1,9 +1,4 @@
-<!--
-  Generated template for the FavoriteViewPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -13,6 +8,93 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+ <div *ngFor="let item of favoriteItems; let i = index">
+    <div *ngIf="!IS_REMOVED[i]">
+      <ion-card>
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{item.AVATAR_URL}}">
+          </ion-avatar>
+          <h2>{{item.NAME}}</h2>
+          <p>{{item.PHONE}}</p>
+        </ion-item>
+        <ion-slides pager>
+          <ion-slide *ngFor="let photo of item.PHOTOS, let i=index">
+            <img style="width: 100%" src="{{item.PHOTOS[i]}}">
+          </ion-slide>
+        </ion-slides>
 
+        <ion-card-content>
+          <p>{{item.new_KIND}}</p>
+          <div *ngIf="!IS_DETAILED[i]">
+            <ion-item>
+              <h3>$ {{item.new_PRICE}}</h3>
+              <button ion-button outline item-right icon-left (click)="go2Detail(item, item.$key)">
+                <ion-icon name="ios-more" padding></ion-icon>
+              </button>
+            </ion-item>
+          </div>
+          <!--<div *ngIf="IS_DETAILED[i]">
+            <ion-item>
+              <button ion-button color="danger" outline item-right icon-left (click)="showLess(i)">
+                <ion-icon name="ios-arrow-up" padding></ion-icon>
+              </button>
+            </ion-item>
+            <ion-item>
+              <h4>GIÁ:</h4>
+              <ion-icon name="ios-cash-outline" item-left small></ion-icon>
+              <p>{{item.new_PRICE}} VND</p>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="ios-resize-outline" item-left small></ion-icon>
+              <h4>DTSD:</h4>
+              <p>DT sàn: {{item.GROUNDSQUARES}} m2</p>
+              <p>DT sử dụng: {{item.USEDSQUARES}} m2</p>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="ios-locate-outline" item-left small></ion-icon>
+              <h4>TIỆN ÍCH:</h4>
+
+              <p *ngIf="item.hasSCHOOL">Trường học ......{{item.hasSCHOOLFAR}} m</p>
+
+              <p *ngIf="item.hasHOSPITAL">Bệnh viện .........{{item.hasHOSPITALFAR}} m</p>
+
+              <p *ngIf="item.hasMART">Siêu thị .............{{item.hasMARTFAR}} m</p>
+
+              <p *ngIf="item.hasCENTER">Trung tâm .........{{item.hasCENTERFAR}} m</p>
+
+            </ion-item>
+
+            <ion-item>
+              <ion-icon name="ios-home-outline" item-left small></ion-icon>
+              <h4>Address: </h4>
+              <p>{{item.ADDRESS}}</p>
+            </ion-item>
+          </div>-->
+        </ion-card-content>
+
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small>
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>{{loveNComments[i]?.loveNo}}</div>
+          </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>{{loveNComments[i]?.commentsNo}}</div>
+          </button>
+          </ion-col>
+          <ion-col center text-center>
+            <ion-note>
+              {{item.POSTDATE}}
+            </ion-note>
+          </ion-col>
+        </ion-row>
+        <button ion-button block color="danger" (click)="onDeleteFromFavorite(item.$key,i)">Delete</button>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

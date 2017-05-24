@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 
 import { iSoldItem } from '../../interfaces/sold-item.interface';
 import { iFeedback } from '../../interfaces/feedback.interface';
+import { iFavorite } from '../../interfaces/favorite.interface';
 
 @IonicPage()
 @Component({
@@ -134,9 +135,9 @@ export class ShowItemDetailPage {
     console.log('onAddFavorite')
 
     if (this.afAuth.auth.currentUser) {
-      let fav = {
-        user: this.afAuth.auth.currentUser.uid,
-        item: this.key,
+      let fav: iFavorite = {
+        userID: this.afAuth.auth.currentUser.uid,
+        itemID: this.key,
         date: this.appService.getCurrentDataAndTime()
       }
       this.appService.addFavorite(this.afAuth.auth.currentUser.uid, this.key, fav)
@@ -159,3 +160,7 @@ export class ShowItemDetailPage {
 
 
 }
+
+/*
+input: { key: string, data: iSoldItem }
+*/ 

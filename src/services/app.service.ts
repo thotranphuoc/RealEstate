@@ -171,6 +171,20 @@ export class AppService {
             });
     }
 
+    removeFavorite(uid: string, itemId: string){
+        let data = null
+        // remove from FavoriteOfUserForItems
+        this.afService.setObjectData('FavoriteOfUserForItems/' + uid + '/' + itemId, data)
+            .then(() => {
+                console.log(uid, itemId, data, 'just removed successfully');
+            });
+        // remove FavoriteOfItemFromUsers
+        this.afService.setObjectData('FavoriteOfItemFromUsers/' + itemId + '/' + uid, data)
+            .then(() => {
+                console.log(uid, itemId, data, 'just removed successfully');
+            });
+    }
+
     addFeedback(uid: string, itemId: string, data: any) {
         // add to FeedbackOfUserForItems
         this.afService.setObjectData('FeedbackOfUserForItems/' + uid + '/' + itemId, data)
@@ -195,7 +209,7 @@ export class AppService {
         })
     }
 
-    // Delete item from firebase db and image from storage
+    // Delete item from firebase db
     deleteItemWithURL(userId, itemId){
         // delete from soldItems/itemId
         this.afService.deleteItemFromList('soldItems', itemId);
@@ -206,9 +220,28 @@ export class AppService {
         // delete from FeedbackOfItemFromUsers
         this.afService.deleteItemFromList('FeedbackOfItemFromUsers', itemId);
     }
-    
+    // Delete item from firebase storage
     deleteItemImageFromStorage(httpURL: string){
         this.dbService.deleteFileFromFireStorageWithHttpsURL(httpURL);
+    }
+
+    getNumberOfLoveAndFeedback(itemID: string) {
+        return new Promise((resolve, reject) => {
+            let NUM_OF_LOVES = 0;
+            let NUM_OF_COMMENTS = 0;
+            this.dbService.getLengthOfDB('FavoriteOfItemFromUsers/' + itemID)
+                .then((res: number) => {
+                    NUM_OF_LOVES = res
+                })
+                .then(() => {
+                    this.dbService.getLengthOfDB('FeedbackOfItemFromUsers/' + itemID)
+                        .then((res: number) => {
+                            NUM_OF_COMMENTS = res;
+                            resolve({loveNo: NUM_OF_LOVES, commentsNo: NUM_OF_COMMENTS })
+                        })
+                        .catch((err)=> resolve(err))
+                }).catch((err)=> resolve(err))
+        })
     }
 
     
