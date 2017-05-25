@@ -2,7 +2,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Map</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title icon-left (click)="go2List()"><ion-icon name="swap"></ion-icon>Map</ion-title>
     <ion-buttons end>
       <button ion-button (click)="addNew()"><ion-icon name="add"></ion-icon>Add</button>
     </ion-buttons> 

@@ -17,7 +17,7 @@ export class HomePage {
     private afService: AngularFireService,
     ) {
       this.user = this.afService.user;
-      this.navCtrl.push('MapPage');
+      this.navCtrl.setRoot('MapPage');
   }
 
 }

@@ -184,6 +184,11 @@ export class MapPage {
   private hideLoading() {
     this.loading.dismiss();
   }
+
+  go2List(){
+    console.log('go2List');
+    this.navCtrl.push('ItemsPage');
+  }
 }
 
 

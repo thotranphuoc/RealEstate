@@ -1,0 +1,25 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title icon-left (click)="go2Map()">
+      <ion-icon name="swap"></ion-icon>List</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content id="content">
+  <ion-card *ngFor="let item of soldItems">
+    <div *ngIf="item.PHOTOS !=null">
+      <img src="{{item.PHOTOS[0]}}" />
+    </div>
+    <div *ngIf="item.PHOTOS ==null">
+      <img src="{{imgNotAvailable}}" />
+    </div>
+    <div class="info">
+
+    </div>
+    <div class="card-title">{{item.new_PRICE}} VND</div>
+    <div class="card-subtitle">{{item.new_KIND}}</div>
+  </ion-card>
+</ion-content>
