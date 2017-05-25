@@ -25,7 +25,6 @@ export class ItemsPage {
     this.afService.getList('soldItems').subscribe((items) => {
       this.soldItems = items;
       this.soldItems.map(item => {
-        item['hi'] = 'HELLO';
         if (typeof (item.PRICE) != 'undefined') {
           item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
         }
@@ -40,6 +39,14 @@ export class ItemsPage {
 
   go2Map() {
     this.navCtrl.pop();
+  }
+
+  go2ItemDetail(item, key){
+    console.log(item);
+    delete item.new_KIND;
+    delete item.new_PRICE;
+    console.log(item);
+    this.navCtrl.push('ShowItemDetailPage', {key: key, data: item});
   }
 
 }

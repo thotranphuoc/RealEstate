@@ -393,7 +393,7 @@ export class AddItemPage {
                   this.afService.updateObjectData('soldItems/' + this.itemID, { PHOTOS: finalImageURLs })
                     .then(() => {
                       this.resetSoldItem();
-                      this.navCtrl.push('MapPage');
+                      this.navCtrl.pop();
                     })
                     .catch((err) => { console.log(err); })
                 })
