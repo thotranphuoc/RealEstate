@@ -14,36 +14,49 @@ export class FavoriteViewPage {
   favorites: iFavorite[] = [];
   favoriteItems: iSoldItem[] = [];
   // favoriteItemsDetail: any[] =[];
-  IS_DETAILED: boolean[] = [];
-  IS_REMOVED: boolean[] = [];
+  // IS_DETAILED: boolean[] = [];
+  // IS_REMOVED: boolean[] = [];
   loveNComments: any[] = [];
+  notAvailable;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private actionSheetCtrl: ActionSheetController,
     private afService: AngularFireService,
     private appService: AppService) {
-
+    
     this.afService.getList('FavoriteOfUserForItems/' + this.afService.getAuth().auth.currentUser.uid)
       .subscribe((list) => {
+        this.notAvailable = '../../assets/img/not_available.png';
         this.favorites = list;
         console.log(this.favorites);
         this.favoriteItems = [];
-        this.IS_DETAILED = [];
-        this.IS_REMOVED = [];
+        // this.IS_DETAILED = [];
+        // this.IS_REMOVED = [];
         this.loveNComments = [];
         // this.favoriteItemsDetail = [];
         this.favorites.forEach(favorite => {
           this.afService.getObject('soldItems/' + favorite.itemID)
             .subscribe((item) => {
               console.log(item);
-              item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
-              item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
+              if (typeof (item.PRICE) != 'undefined') {
+                item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
+              }
+              if (typeof (item.PRICE) != 'undefined') {
+                item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
+              } 
+
+              console.log(item, item.key, item.$key, item.value, item.$value, item.val);
+              if(typeof(item.UID) != 'undefined'){
+                item['isValid']=true;
+              }else{
+                item['isValid'] = false;
+              }
               this.favoriteItems.push(item);
               // this.favoriteItemsDetail.push(item);
 
-              this.IS_DETAILED.push(false);
-              this.IS_REMOVED.push(false);
+              // this.IS_DETAILED.push(false);
+              // this.IS_REMOVED.push(false);
               this.appService.getNumberOfLoveAndFeedback(item.$key).then((res) => {
                 console.log(res);
                 this.loveNComments.push(res);
@@ -54,19 +67,19 @@ export class FavoriteViewPage {
             })
         })
       })
-      // .unsubscribe();
+    // .unsubscribe();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FavoriteViewPage');
   }
 
-  onDeleteFromFavorite(key: string,index: number){
+  onDeleteFromFavorite(key: string, index: number) {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
           text: 'Delete',
-          handler: ()=>{
+          handler: () => {
             this.deleteFromFavorite(key, index);
           }
         },
@@ -80,16 +93,16 @@ export class FavoriteViewPage {
     actionSheet.present();
   }
 
-  deleteFromFavorite(itemID, index){
+  deleteFromFavorite(itemID, index) {
     console.log(index, itemID);
-    this.appService.removeFavorite(this.afService.getAuth().auth.currentUser.uid, itemID );
+    this.appService.removeFavorite(this.afService.getAuth().auth.currentUser.uid, itemID);
     // this.favoriteItems.splice(index,1);
   }
 
-  go2Detail(item, key){
+  go2Detail(item, key) {
     console.log(item, key);
 
-    this.navCtrl.push('ShowItemDetailPage', {key: key, data: item});
+    this.navCtrl.push('ShowItemDetailPage', { key: key, data: item });
 
   }
 

@@ -15,7 +15,7 @@ import { DbService } from '../../services/db.service';
 })
 export class YourSellItemPage {
   items: any[] = [];
-  soldItems = [];
+  soldItems: iSoldItem[] = [];
   IS_DETAILED: boolean[] = [];
   IS_REMOVED: boolean[] = [];
 
@@ -32,30 +32,35 @@ export class YourSellItemPage {
     private dbService: DbService) {
 
     this.afService.getList('UserSoldItems/' + this.afService.getAuth().auth.currentUser.uid)
-        .subscribe((data) => {
-          console.log(data);
-          this.items = data;
-          this.items.forEach(item => {
-            this.afService.getObject('soldItems/' + item.key)
-              .subscribe(soldItem => {
-                console.log(soldItem);
+      .subscribe((data) => {
+        console.log(data);
+        this.items = data;
+        this.soldItems = [];
+        this.items.forEach(item => {
+          this.afService.getObject('soldItems/' + item.key)
+            .subscribe((soldItem) => {
+              console.log(soldItem);
+              if (typeof (soldItem.PRICE) != 'undefined') {
                 soldItem['new_PRICE'] = this.appService.convertToCurrency(soldItem.PRICE.toString(), ','); // convert PRICE
+              }
+              if (typeof (soldItem.PRICE) != 'undefined') {
                 soldItem['new_KIND'] = this.appService.convertCodeToDetail(soldItem.KIND); // convert KIND
-                this.soldItems.push(soldItem);
+              }
+              this.soldItems.push(soldItem);
 
-                this.IS_DETAILED.push(false);
-                this.IS_REMOVED.push(false);
+              // this.IS_DETAILED.push(false);
+              // this.IS_REMOVED.push(false);
 
-              })
-              // .unsubscribe();
-          })
-
-          this.items.forEach(item => {
-            this.getNumberFeedbackOfItemFromUsers(item.key);
-            this.getNumberLoveOfItemFromUsers(item.key);
-          })
+            })
+          // .unsubscribe();
         })
-        // .unsubscribe()
+
+        this.items.forEach(item => {
+          this.getNumberFeedbackOfItemFromUsers(item.key);
+          this.getNumberLoveOfItemFromUsers(item.key);
+        })
+      })
+    // .unsubscribe()
 
 
   }
@@ -64,15 +69,15 @@ export class YourSellItemPage {
     console.log('ionViewDidLoad YourSellItemPage');
   }
 
-  showLess(index: number) {
-    this.IS_DETAILED[index] = false;
-    console.log('Show Less...', index);
-  }
+  // showLess(index: number) {
+  //   this.IS_DETAILED[index] = false;
+  //   console.log('Show Less...', index);
+  // }
 
-  showMore(index: number) {
-    this.IS_DETAILED[index] = true;
-    console.log('Show More...', index);
-  }
+  // showMore(index: number) {
+  //   this.IS_DETAILED[index] = true;
+  //   console.log('Show More...', index);
+  // }
 
   getNumberLoveOfItemFromUsers(key) {
     this.dbService.getLengthOfDB('FavoriteOfItemFromUsers/' + key)
@@ -90,23 +95,27 @@ export class YourSellItemPage {
 
   deleteSellingItem(item: iSoldItem, itemId: string, index) {
     console.log(item, itemId, index);
-    if(item.PHOTOS !=null){
-      item.PHOTOS.forEach(photo=>{
+    if (item.PHOTOS != null) {
+      item.PHOTOS.forEach(photo => {
         console.log(photo)
-        this.dbService.deleteFileFromFireStorageWithHttpsURL(photo);
+        this.dbService.deleteFileFromFireStorageWithHttpsURL(photo)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => console.log(err))
       })
     }
-    this.appService.deleteItemWithURL(item.UID, itemId );
+    this.appService.deleteItemWithURL(item.UID, itemId);
     // this.appService.deleteItem(this.afService.getAuth().auth.currentUser.uid, key);
   }
 
-  onDeleteSellingItem(item: iSoldItem, itemId: string,  index: number) {
+  onDeleteSellingItem(item: iSoldItem, itemId: string, index: number) {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
           text: 'Delete',
           handler: () => {
-            this.deleteSellingItem(item,itemId,index);
+            this.deleteSellingItem(item, itemId, index);
           }
         },
         {
@@ -123,6 +132,20 @@ export class YourSellItemPage {
     console.log('update: ', key);
 
     this.navCtrl.push('AddItemPage', { action: 'update-item', soldItem_ID: key });
+  }
+
+  showDetail(item, key) {
+    this.navCtrl.push('ShowItemDetailPage', { key: key, data: item })
+  }
+
+  toggleEye(item: iSoldItem, key){
+    console.log(item, item.VISIBLE);
+    item.VISIBLE = !item.VISIBLE;
+    this.afService.updateObjectData('soldItems/'+key, { VISIBLE: item.VISIBLE })
+    .then((res)=>{
+      console.log('update successfully', res);
+    })
+    // this.appService.updateObject('soldItems/'+ key, {VISIBLE: item.VISIBLE})
   }
 
 }

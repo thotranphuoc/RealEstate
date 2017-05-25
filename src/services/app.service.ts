@@ -244,6 +244,10 @@ export class AppService {
         })
     }
 
+    updateObject(ObjURL: string, data){
+        return this.afService.updateObjectData(ObjURL, data);
+    }
+
     
 
     

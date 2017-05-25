@@ -74,11 +74,12 @@ export class MapPage {
   }
 
   ionViewWillEnter() {
-    this.soldItemsKey =[];
+    
     console.log('ionViewWillEnter');
     this.items = this.afDB.list('/soldItems');
     this.items.subscribe((items) => {
       console.log(items);
+      this.soldItemsKey =[];
       items.forEach(item => {
         let itemKey = {
           key: item.$key,

@@ -9,7 +9,7 @@
 
 
 <ion-content id="content">
-  <div *ngFor="let item of soldItems; let i = index" id="divItem">
+  <div *ngFor="let item of soldItems; let i = index;" id="divItem">
     <div>
       <ion-card>
         <ion-item>
@@ -18,6 +18,8 @@
           </ion-avatar>
           <h2>{{item.NAME}}</h2>
           <p>{{item.PHONE}}</p>
+          <button *ngIf="item.VISIBLE" ion-button outline item-right (click)="toggleEye(item, item.$key)"><ion-icon name="eye" large></ion-icon></button>
+          <button *ngIf="!item.VISIBLE" ion-button outline item-right color="danger" (click)="toggleEye(item, item.$key)"><ion-icon name="eye-off" large></ion-icon></button>
         </ion-item>
         <ion-slides pager>
           <ion-slide *ngFor="let photo of item.PHOTOS, let i=index">
@@ -26,15 +28,15 @@
         </ion-slides>
         <ion-card-content>
           <p>{{item.new_KIND}}</p>
-          <div *ngIf="!IS_DETAILED[i]">
+          <div>
             <ion-item>
               <h3>$ {{item.new_PRICE}}</h3>
-              <button ion-button outline item-right icon-left (click)="showMore(i)">
-                <ion-icon name="ios-arrow-down" padding></ion-icon>
+              <button ion-button outline item-right icon-left (click)="showDetail(item, item.$key)">
+                <ion-icon name="ios-more" padding></ion-icon>
               </button>
             </ion-item>
           </div>
-          <div *ngIf="IS_DETAILED[i]">
+          <!--<div *ngIf="IS_DETAILED[i]">
             <ion-item>
               <button ion-button color="danger" outline item-right icon-left (click)="showLess(i)">
                 <ion-icon name="ios-arrow-up" padding></ion-icon>
@@ -70,7 +72,7 @@
               <h4>Address: </h4>
               <p>{{item.ADDRESS}}</p>
             </ion-item>
-          </div>
+          </div>-->
         </ion-card-content>
         <ion-row>
           <ion-col>

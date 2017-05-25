@@ -433,7 +433,7 @@ export class AddItemPage {
                   this.afService.updateObjectData('soldItems/' + soldItem_Key, { PHOTOS: url })
                     .then(() => {
                       this.resetSoldItem();
-                      this.navCtrl.push('MapPage');
+                      this.navCtrl.pop();
                     })
                     .catch((err) => { console.log(err); })
                 })

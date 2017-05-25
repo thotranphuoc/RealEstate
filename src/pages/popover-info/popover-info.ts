@@ -13,6 +13,7 @@ export class PopoverInfoPage {
   objKey: { key: string, data: iSoldItem } = null;
   obj: iSoldItem = null;
   data: any;
+  imgURL;
 
   constructor(
     public navCtrl: NavController,
@@ -24,8 +25,13 @@ export class PopoverInfoPage {
     this.objKey = this.navParams.data;
     this.obj = this.objKey.data;
     console.log(this.obj);
+    if(this.obj.PHOTOS){
+      this.imgURL = this.obj.PHOTOS[0];
+    }else{
+      this.imgURL = 'http://clipartall.com/subimg/house-clipart-black-and-white-image-galleries-imagekb-house-clipart-black-and-white-1024_768.jpg'
+    }
     this.data = {
-      imgUrl: this.obj.PHOTOS[0],
+      imgUrl: this.imgURL,
       price: this.appService.convertToCurrency(this.obj.PRICE.toString(),','),
       dtSan: this.obj.GROUNDSQUARES,
       dtSd: this.obj.USEDSQUARES

@@ -537,7 +537,7 @@ export class DbService {
     // such as: storage.refFromURL('https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
     deleteFileFromFireStorageWithHttpsURL(httpsURL: string){
         let storage = firebase.storage().refFromURL(httpsURL);
-        storage.delete();
+        return storage.delete();
     }
 
     // getAllItemsOnce(dbName: string): iItem[] {
