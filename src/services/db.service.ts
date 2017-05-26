@@ -241,6 +241,8 @@ export class DbService {
         return this.soldItems;
     }
 
+    
+
     setFeedback(feedback: iFeedback) {
         this.feedback = feedback;
     }

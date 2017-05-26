@@ -14,7 +14,6 @@ import { iSoldItem } from '../../interfaces/sold-item.interface';
 export class ItemsPage {
   imgNotAvailable;
   soldItems = [];
-  soldItemsInDetail =[];
   maxNum:number;
   constructor(
     public navCtrl: NavController,
@@ -29,58 +28,46 @@ export class ItemsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ItemsPage');
-    // this.afService.getList('soldItems')
-    this.afService.getListWithCondition('soldItems/', 'VISIBLE',true, this.maxNum)
-    .subscribe((items) => {
-      this.soldItems = items;
-
-      this.soldItems.map(item => {
-        if (typeof (item.PRICE) != 'undefined') {
-          item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
+    this.soldItems = this.dbService.getSoldItems();
+    this.soldItems.map(item => {
+        if (typeof (item.data.PRICE) != 'undefined') {
+          item['new_PRICE'] = this.appService.convertToCurrency(item.data.PRICE.toString(), ','); // convert PRICE
         }
-        if (typeof (item.PRICE) != 'undefined') {
-          item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
+        if (typeof (item.data.PRICE) != 'undefined') {
+          item['new_KIND'] = this.appService.convertCodeToDetail(item.data.KIND); // convert KIND
         }
-        if(typeof(item.POSITION) != 'undefined') {
-          item['distances'] = this.gmapService.getDistanceFromCurrent(item.POSITION.lat, item.POSITION.lng);
+        if(typeof(item.data.POSITION) != 'undefined') {
+          item['distances'] = this.gmapService.getDistanceFromCurrent(item.data.POSITION.lat, item.data.POSITION.lng);
         }
       })
-      this.soldItems.sort((a,b)=>{
-        let ax = a.distances.distance;
-        let bx = a.distances.distance;
-        return bx - ax;
-        // console.log(ax,bx);
-        // if(bx > ax ){ return 1;}
-        // if(bx < ax ){ return -1;}
-        // return 0;
-      })
-      // this.soldItemsInDetail = [];
-      // this.soldItems.forEach(soldItem =>{
-      //   let item = soldItem;
-      //   if (typeof (item.PRICE) != 'undefined') {
-      //     item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
-      //   }
-      //   if (typeof (item.PRICE) != 'undefined') {
-      //     item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
-      //   }
-      //   if(typeof(item.POSITION) != 'undefined') {
-      //     item['distances'] = this.gmapService.getDistanceFromCurrent(item.POSITION.lat, item.POSITION.lng);
-      //   }
-      //   this.soldItemsInDetail.push(item);
+      console.log(this.soldItems);
+      // this.soldItems.sort((a,b)=>{
+      //   let ax = a.distances.distance;
+      //   let bx = a.distances.distance;
+      //   return bx - ax;
       // })
-      // console.log(this.soldItemsInDetail);
-      this.soldItemsInDetail.sort((a,b)=>{
-        let ax = a.distances.distance;
-        let bx = a.distances.distance;
-        console.log(ax,bx);
-        if(bx > ax ){ return 1;}
-        if(bx < ax ){ return -1;}
-        return 0;
-      })
-      
-      
-      // console.log(this.soldItems);
-    })
+
+    // this.afService.getListWithCondition('soldItems/', 'VISIBLE',true, this.maxNum)
+    // .subscribe((items) => {
+    //   this.soldItems = items;
+
+    //   this.soldItems.map(item => {
+    //     if (typeof (item.PRICE) != 'undefined') {
+    //       item['new_PRICE'] = this.appService.convertToCurrency(item.PRICE.toString(), ','); // convert PRICE
+    //     }
+    //     if (typeof (item.PRICE) != 'undefined') {
+    //       item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
+    //     }
+    //     if(typeof(item.POSITION) != 'undefined') {
+    //       item['distances'] = this.gmapService.getDistanceFromCurrent(item.POSITION.lat, item.POSITION.lng);
+    //     }
+    //   })
+    //   this.soldItems.sort((a,b)=>{
+    //     let ax = a.distances.distance;
+    //     let bx = a.distances.distance;
+    //     return bx - ax;
+    //   })
+    // })
   }
 
   go2Map() {

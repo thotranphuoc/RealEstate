@@ -9,11 +9,11 @@
 
 
 <ion-content id="content">
-  <ion-card *ngFor="let item of soldItems" (click)="go2ItemDetail(item, item.$key)">
-    <div *ngIf="item.PHOTOS !=null">
-      <img src="{{item.PHOTOS[0]}}" />
+  <ion-card *ngFor="let item of soldItems" (click)="go2ItemDetail(item.data, item.key)">
+    <div *ngIf="item.data.PHOTOS !=null">
+      <img src="{{item.data.PHOTOS[0]}}" />
     </div>
-    <div *ngIf="item.PHOTOS ==null">
+    <div *ngIf="item.data.PHOTOS ==null">
       <img src="{{imgNotAvailable}}" />
     </div>
     <div class="info">
