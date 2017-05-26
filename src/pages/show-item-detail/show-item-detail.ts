@@ -157,6 +157,10 @@ export class ShowItemDetailPage {
     this.navCtrl.push('FeedbackDetailPage', feedback);
   }
 
+  showInMap(soldItem){
+    this.navCtrl.push('ShowItemInMapPage', {key: this.key, data: this.obj})
+  }
+
 
 
 }

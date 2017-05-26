@@ -75,7 +75,7 @@
       <p>{{obj.ADDRESS}}</p>
     </ion-item>
   </ion-card>
-
+  <button ion-button block (click)="showInMap()">SHOW MAP</button>
   <ion-card>
     <ion-slides pager>
       <ion-slide *ngFor="let photo of photos, let i=index">
