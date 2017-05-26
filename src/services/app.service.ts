@@ -14,7 +14,8 @@ export class AppService {
         setApartment: true,
         setLand: true,
         setOther: true,
-        language: 'English'
+        language: 'English',
+        numOfItems: 50
     }
     loadCtrl: any;
 

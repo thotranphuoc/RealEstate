@@ -3,5 +3,6 @@ export interface iSetting {
     setApartment: boolean,
     setLand: boolean,
     setOther: boolean
-    language: string
+    language: string,
+    numOfItems: number
 }

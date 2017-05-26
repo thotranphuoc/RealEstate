@@ -48,7 +48,13 @@
       </ion-label>
       <ion-toggle checked="true" [(ngModel)]="mySettings.setApartment"></ion-toggle>
     </ion-item>
-
+    <ion-item>
+      <ion-icon name='ios-car-outline' item-left></ion-icon>
+      <ion-label>
+        Max
+      </ion-label>
+      <ion-toggle checked="true" [(ngModel)]="mySettings.setApartment"></ion-toggle>
+    </ion-item>
     <ion-item>
       <ion-toggle checked="true" [(ngModel)]="mySettings.setOther"></ion-toggle>
       <ion-label>
@@ -56,6 +62,18 @@
       </ion-label>
       <ion-icon name='body' item-left></ion-icon>
     </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>RANGE 
+      <button ion-button color="secondary" item-right>{{mySettings.numOfItems}}</button>
+    </ion-list-header>
+    <ion-item>
+    <ion-range min="10" max="200" [(ngModel)]="mySettings.numOfItems" color="secondary">
+      <ion-label range-left>10</ion-label>
+      <ion-label range-right>200</ion-label>
+    </ion-range>
+  </ion-item>
   </ion-list>
 
 

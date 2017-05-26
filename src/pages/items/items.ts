@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireService } from '../../services/af.service';
 import { AppService } from '../../services/app.service';
+import { DbService } from '../../services/db.service';
 import { iSoldItem } from '../../interfaces/sold-item.interface';
 @IonicPage()
 @Component({
@@ -12,17 +13,22 @@ import { iSoldItem } from '../../interfaces/sold-item.interface';
 export class ItemsPage {
   imgNotAvailable;
   soldItems: iSoldItem[] = [];
+  maxNum:number;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private afService: AngularFireService,
-    private appService: AppService) {
+    private appService: AppService,
+    private dbService: DbService) {
     this.imgNotAvailable = '../../assets/img/house.jpg';
+    this.maxNum = this.dbService.getSetting().numOfItems;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ItemsPage');
-    this.afService.getList('soldItems').subscribe((items) => {
+    // this.afService.getList('soldItems')
+    this.afService.getListWithCondition('soldItems/', 'VISIBLE',true, this.maxNum)
+    .subscribe((items) => {
       this.soldItems = items;
       this.soldItems.map(item => {
         if (typeof (item.PRICE) != 'undefined') {

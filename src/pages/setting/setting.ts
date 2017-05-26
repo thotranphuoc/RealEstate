@@ -14,7 +14,7 @@ import { AngularFireService } from '../../services/af.service';
 })
 export class SettingPage {
 
-  mySettings;
+  mySettings: iSetting;
   isSigned;
   constructor(
     public navCtrl: NavController,

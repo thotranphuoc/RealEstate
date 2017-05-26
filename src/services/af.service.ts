@@ -15,7 +15,8 @@ export class AngularFireService {
         setApartment: true,
         setLand: true,
         setOther: true,
-        language: 'English'
+        language: 'English',
+        numOfItems: 50
     }
     loadCtrl: any;
     items: FirebaseListObservable<any[]>;
@@ -111,11 +112,13 @@ export class AngularFireService {
 
     }
 
-    getListWithCondition(URL: string, orderByChild: string, equalTo: string) {
-        this.db.list(URL, {
+    //this.afService.getListWithCondition('soldItems/', 'VISIBLE', true)
+    getListWithCondition(URL: string, filterBy: string, filterValue: any, topNum: number) {
+        return this.db.list(URL, {
             query: {
-                orderByChild: orderByChild,
-                equalTo: equalTo
+                orderByChild: filterBy,
+                equalTo: filterValue,
+                limitToFirst: topNum
             }
 
         })

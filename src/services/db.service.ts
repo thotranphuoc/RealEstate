@@ -69,7 +69,8 @@ export class DbService {
         setApartment: true,
         setLand: true,
         setOther: true,
-        language: 'English'
+        language: 'English',
+        numOfItems: 3
     };
 
 
