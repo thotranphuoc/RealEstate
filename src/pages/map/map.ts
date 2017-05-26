@@ -18,31 +18,31 @@ export class MapPage {
   // @ViewChild('map') mapElement: ElementRef;
   map: any;
   mapEl: any;
-  locations = [
-    { lat: 11.563910, lng: 106.154312 },
-    { lat: 13.718234, lng: 106.363181 },
-    { lat: 13.727111, lng: 106.371124 },
-    { lat: 13.848588, lng: 106.209834 },
-    { lat: 13.851002, lng: 106.216968 },
-    { lat: 10.671264, lng: 106.863657 },
-    { lat: 15.304724, lng: 108.662905 },
-    { lat: 16.810685, lng: 106.699196 },
-    { lat: 16.828611, lng: 106.790222 },
-    { lat: 10.750000, lng: 106.116667 },
-    { lat: 10.759859, lng: 106.128708 },
-    { lat: 10.765015, lng: 106.133858 },
-    { lat: 10.770104, lng: 106.103299 },
-    { lat: 10.773700, lng: 106.106187 },
-    { lat: 10.774785, lng: 106.137978 },
-    { lat: 10.819616, lng: 106.968119 },
-    { lat: 18.330766, lng: 106.695692 },
-    { lat: 19.927193, lng: 106.053218 },
-    { lat: 11.330162, lng: 104.865694 },
-    { lat: 12.734358, lng: 106.439506 },
-    { lat: 12.734358, lng: 106.501315 },
-    { lat: 12.735258, lng: 106.438000 },
-    { lat: 13.999792, lng: 100.463352 }
-  ];
+  // locations = [
+  //   { lat: 11.563910, lng: 106.154312 },
+  //   { lat: 13.718234, lng: 106.363181 },
+  //   { lat: 13.727111, lng: 106.371124 },
+  //   { lat: 13.848588, lng: 106.209834 },
+  //   { lat: 13.851002, lng: 106.216968 },
+  //   { lat: 10.671264, lng: 106.863657 },
+  //   { lat: 15.304724, lng: 108.662905 },
+  //   { lat: 16.810685, lng: 106.699196 },
+  //   { lat: 16.828611, lng: 106.790222 },
+  //   { lat: 10.750000, lng: 106.116667 },
+  //   { lat: 10.759859, lng: 106.128708 },
+  //   { lat: 10.765015, lng: 106.133858 },
+  //   { lat: 10.770104, lng: 106.103299 },
+  //   { lat: 10.773700, lng: 106.106187 },
+  //   { lat: 10.774785, lng: 106.137978 },
+  //   { lat: 10.819616, lng: 106.968119 },
+  //   { lat: 18.330766, lng: 106.695692 },
+  //   { lat: 19.927193, lng: 106.053218 },
+  //   { lat: 11.330162, lng: 104.865694 },
+  //   { lat: 12.734358, lng: 106.439506 },
+  //   { lat: 12.734358, lng: 106.501315 },
+  //   { lat: 12.735258, lng: 106.438000 },
+  //   { lat: 13.999792, lng: 100.463352 }
+  // ];
 
   items: FirebaseListObservable<any[]>;
   soldItems: iSoldItem[];
@@ -92,10 +92,11 @@ export class MapPage {
   }
 
   initMap(mapElement) {
-    this.geolocation.getCurrentPosition()
+    this.gmapService.getCurrentPosition()
       .then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude}
+        this.gmapService.setUserCurrentPosition(pos);
         // this.loadMap(latLng);
         this.showMap(pos, mapElement)
       })

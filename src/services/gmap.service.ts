@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { DbService } from './db.service';
 import { AppService } from './app.service';
 
 import { PopoverInfoPage } from '../pages/popover-info/popover-info';
 import { iSoldItem } from '../interfaces/sold-item.interface';
+import { iPosition } from '../interfaces/position.interface';
 
 declare var google: any;
 
@@ -13,24 +15,46 @@ declare var google: any;
 
 export class GmapService {
     //   userLatLng: any;
+    currentUserPosition: iPosition = { lat: 0, lng: 0 };
     constructor(
         private dbService: DbService,
         private appService: AppService,
-        private popoverCtrl: PopoverController) { }
+        private popoverCtrl: PopoverController,
+        private geolocation: Geolocation) { }
 
-    //   getDistanceFrom2PointInKm(lat1, lng1, lat2, lng2) {
-    //     let R = 6371; // Raidus of the earth in km ;
-    //     let dLat = this.degree2radius(lat2 - lat1);
-    //     let dLng = this.degree2radius(lng2 - lng1);
-    //     let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(this.degree2radius(lat1)) * Math.cos(this.degree2radius(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    //     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    //     let d = R * c; // distance in km
-    //     return d;
-    //   }
+    getUserCurrentPosition() {
+        return this.currentUserPosition;
+    }
 
-    //   degree2radius(deg: number) {
-    //     return deg * (Math.PI / 180);
-    //   }
+    setUserCurrentPosition(position: iPosition) {
+        this.currentUserPosition = position;
+    }
+
+    getCurrentPosition(){
+        return this.geolocation.getCurrentPosition();
+    }
+
+    getDistanceFromCurrent(lat1, lng1){
+        return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
+    }
+
+    getDistanceFrom2Point(lat1, lng1, lat2, lng2) {
+        let R = 6371; // Raidus of the earth in km ;
+        let dLat = this.degree2radius(lat2 - lat1);
+        let dLng = this.degree2radius(lng2 - lng1);
+        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(this.degree2radius(lat1)) * Math.cos(this.degree2radius(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let d = R * c; // distance in km
+        if(d>1){
+            return {distance: d, disStr: Math.round(d) + ' km'};
+        }else{
+            return {distance: d, disStr: Math.round(d*1000) + ' m'};
+        }
+    }
+
+    degree2radius(deg: number) {
+        return deg * (Math.PI / 180);
+    }
 
     //   getCurrentLocation() {
     //     var position = { lat: 0, lng: 0 };
@@ -282,7 +306,7 @@ export class GmapService {
             var marker = new google.maps.Marker({
                 position: position,
                 map: map
-            }); 
+            });
 
             resolve(marker);
 

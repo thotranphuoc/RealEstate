@@ -109,6 +109,8 @@ export class AppService {
     //     this.loadCtrl.dismiss();
     // }
 
+    
+
     convertCodeToDetail(code: string): string {
         switch (code) {
             case 'setHouse':

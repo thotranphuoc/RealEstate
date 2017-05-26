@@ -70,7 +70,7 @@ export class DbService {
         setLand: true,
         setOther: true,
         language: 'English',
-        numOfItems: 3
+        numOfItems: 50
     };
 
 
