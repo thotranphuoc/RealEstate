@@ -43,27 +43,29 @@ export class MapPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad MapPage');
     this.startLoading();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.mapEl = document.getElementById('map');
       this.initMap(this.mapEl)
-    },1000)
-   
-    
+    }, 1000)
+
+
   }
 
   ionViewWillEnter() {
-    
+
     console.log('ionViewWillEnter');
     this.items = this.afDB.list('/soldItems');
     this.items.subscribe((items) => {
       console.log(items);
-      this.soldItemsKey =[];
+      this.soldItemsKey = [];
       items.forEach(item => {
-        let itemKey = {
-          key: item.$key,
-          data: item
+        if (item.VISIBLE) {
+          let itemKey = {
+            key: item.$key,
+            data: item
+          }
+          this.soldItemsKey.push(itemKey);
         }
-        this.soldItemsKey.push(itemKey);
       })
       console.log(this.soldItemsKey);
     })
@@ -73,7 +75,7 @@ export class MapPage {
     this.gmapService.getCurrentPosition()
       .then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude}
+        let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude }
         this.gmapService.setUserCurrentPosition(pos);
         // this.loadMap(latLng);
         this.showMap(pos, mapElement)
@@ -82,7 +84,7 @@ export class MapPage {
         console.log(err);
         alert('No gps signal');
         let latLng = new google.maps.LatLng(10.802703148181791, 106.63943767547607);
-        let pos: iPosition = { lat: 10.802703148181791, lng: 106.63943767547607}
+        let pos: iPosition = { lat: 10.802703148181791, lng: 106.63943767547607 }
         // this.loadMap(latLng)
         this.showMap(pos, mapElement)
       })
@@ -124,33 +126,43 @@ export class MapPage {
           this.loadSoldItemsKey();
           let bound = this.map.getBounds();
           console.log(bound);
-          
+
         })
       })
   }
 
   loadSoldItemsKey() {
+    // remove existing marker first. then load new markers later to sure that new INVISIBLE markers will be removed
+    this.gmapService.removeMarkersFromMap(this.dbService.getMarkers());
+    
+    let markers = [];
     let sortItems = [];
     this.soldItemsKey.forEach(soldItemKey => {
       // console.log(this.isPositionInsideMap(soldItemKey.data.POSITION, this.map));
-      if(this.isPositionInsideMap(soldItemKey.data.POSITION, this.map)){
-        this.gmapService.addMarkerToMapWithID(this.map, soldItemKey);
+      if (this.isPositionInsideMap(soldItemKey.data.POSITION, this.map)) {
+        this.gmapService.addMarkerToMapWithID(this.map, soldItemKey).then((marker)=>{
+          markers.push(marker)
+        })
         sortItems.push(soldItemKey);
       }
     });
     this.dbService.setSoldItems(sortItems);
+
     console.log(this.dbService.getSoldItems());
+    console.log(markers);
+    this.dbService.setMarkers(markers);
+
   }
 
   // 
-  sortListSoldItemsList(items: iPosition[]){
-    items.forEach(item =>{
+  sortListSoldItemsList(items: iPosition[]) {
+    items.forEach(item => {
       // let latLng = { lat: item.lat, lng: item.lng};
       console.log(this.map.getBounds().contains(item)); // return true if latLng inside this.map
     })
   }
 
-  isPositionInsideMap(pos: iPosition, map){
+  isPositionInsideMap(pos: iPosition, map) {
     return map.getBounds().contains(pos);
   }
 
@@ -177,12 +189,12 @@ export class MapPage {
       // alert('Please turn on internet and location permission. Then open app again')
     }, 15000)
   }
-  
+
   private hideLoading() {
     this.loading.dismiss();
   }
 
-  go2List(){
+  go2List() {
     console.log('go2List');
     this.navCtrl.push('ItemsPage');
   }

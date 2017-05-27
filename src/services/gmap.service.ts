@@ -345,7 +345,13 @@ export class GmapService {
                 let popover = this.popoverCtrl.create('PopoverInfoPage', soldItemKey);
                 popover.present();
             })
-            resolve();
+            resolve(marker);
+        })
+    }
+
+    removeMarkersFromMap(markers: any[]){
+        markers.forEach(marker=>{
+            marker.setMap(null);
         })
     }
 

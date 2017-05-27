@@ -13,6 +13,7 @@ declare var google: any;
 export class DbService {
     // SoldItemList: {key: string, data: iSoldItem}[] = [];  // load from DB
     soldItems: { key: string, data: iSoldItem }[] = []; // items got from firebase 
+    markers: any[] =[];
     // soldItem: iSoldItem = null; // item to upload to firebase
     detectedUserPosition: iPosition = { lat: 0, lng: 0 };
     userCurrentPosition: iPosition = { lat: 0, lng: 0 }; // user's detected position
@@ -241,7 +242,13 @@ export class DbService {
         return this.soldItems;
     }
 
+    setMarkers(markers){
+        this.markers = markers;
+    }
     
+    getMarkers(){
+        return this.markers;
+    }
 
     setFeedback(feedback: iFeedback) {
         this.feedback = feedback;
