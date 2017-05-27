@@ -45,6 +45,7 @@ export class FeedbackPage {
       this.appService.addFeedback(this.afAuth.auth.currentUser.uid, this.ITEM_KEY, this.feedback);
       this.appService.toastMsg('Thanks for your feedback', 3000);
       this.resetForm();
+      this.navCtrl.pop();
     } else {
       this.alertMsgWithConfirmation();
     }

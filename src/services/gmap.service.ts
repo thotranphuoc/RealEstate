@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import { DbService } from './db.service';
 import { AppService } from './app.service';
-
+import { AngularFireService } from "./af.service";
 import { PopoverInfoPage } from '../pages/popover-info/popover-info';
 import { iSoldItem } from '../interfaces/sold-item.interface';
 import { iPosition } from '../interfaces/position.interface';
@@ -15,26 +15,46 @@ declare var google: any;
 
 export class GmapService {
     //   userLatLng: any;
-    currentUserPosition: iPosition = { lat: 0, lng: 0 };
+    currentUserPosition: iPosition = null;
     constructor(
         private dbService: DbService,
         private appService: AppService,
+        private afService: AngularFireService,
         private popoverCtrl: PopoverController,
         private geolocation: Geolocation) { }
 
     getUserCurrentPosition() {
-        return this.currentUserPosition;
+        let position: any;
+        return new Promise((resolve, reject) => {
+            if (this.currentUserPosition) {
+                position = this.currentUserPosition;
+                resolve(position);
+            } else {
+                this.afService.getObject('UserPosition/' + this.afService.getAuth().auth.currentUser.uid + '/LAST_POSITION')
+                    .subscribe((res) => {
+                        let pos = {
+                            lat: res.lat,
+                            lng: res.lng
+                        }
+                        console.log(pos);
+                        position = pos;
+                        resolve(position);
+                    })
+            }
+            
+        })
     }
 
     setUserCurrentPosition(position: iPosition) {
         this.currentUserPosition = position;
+        this.afService.updateObjectData('UserPosition/' + this.afService.getAuth().auth.currentUser.uid, { LAST_POSITION: position });
     }
 
-    getCurrentPosition(){
+    getCurrentPosition() {
         return this.geolocation.getCurrentPosition();
     }
 
-    getDistanceFromCurrent(lat1, lng1){
+    getDistanceFromCurrent(lat1, lng1) {
         return this.getDistanceFrom2Point(this.currentUserPosition.lat, this.currentUserPosition.lng, lat1, lng1);
     }
 
@@ -45,10 +65,10 @@ export class GmapService {
         let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(this.degree2radius(lat1)) * Math.cos(this.degree2radius(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         let d = R * c; // distance in km
-        if(d>1){
-            return {distance: d, disStr: Math.round(d) + ' km'};
-        }else{
-            return {distance: d, disStr: Math.round(d*1000) + ' m'};
+        if (d > 1) {
+            return { distance: d, disStr: Math.round(d) + ' km' };
+        } else {
+            return { distance: d, disStr: Math.round(d * 1000) + ' m' };
         }
     }
 
@@ -349,8 +369,8 @@ export class GmapService {
         })
     }
 
-    removeMarkersFromMap(markers: any[]){
-        markers.forEach(marker=>{
+    removeMarkersFromMap(markers: any[]) {
+        markers.forEach(marker => {
             marker.setMap(null);
         })
     }

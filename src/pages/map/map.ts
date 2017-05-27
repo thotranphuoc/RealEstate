@@ -77,35 +77,19 @@ export class MapPage {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude }
         this.gmapService.setUserCurrentPosition(pos);
-        // this.loadMap(latLng);
         this.showMap(pos, mapElement)
       })
       .catch((err) => {
         console.log(err);
         alert('No gps signal');
-        let latLng = new google.maps.LatLng(10.802703148181791, 106.63943767547607);
-        let pos: iPosition = { lat: 10.802703148181791, lng: 106.63943767547607 }
-        // this.loadMap(latLng)
-        this.showMap(pos, mapElement)
+        this.gmapService.getUserCurrentPosition().then((position:iPosition) => {
+          console.log(position);
+          this.showMap(position, mapElement)
+        })
+
       })
 
   }
-
-  // loadMap(latLng) {
-  //   let mapOptions = {
-  //     center: latLng,
-  //     zoom: 15,
-  //     mapTypeId: google.maps.MapTypeId.ROADMAP
-  //   }
-
-  //   this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-  //   // this.gmapService.loadLocationIntoMapAddListener(this.map, this.locations);
-  //   google.maps.event.addListener(this.map, 'idle', () => {
-  //     console.log('map was loaded fully');
-  //     this.hideLoading();
-  //     this.loadSoldItemsKey();
-  //   })
-  // }
 
   showMap(position: iPosition, mapElement) {
     let latLng = new google.maps.LatLng(position.lat, position.lng);
@@ -134,13 +118,13 @@ export class MapPage {
   loadSoldItemsKey() {
     // remove existing marker first. then load new markers later to sure that new INVISIBLE markers will be removed
     this.gmapService.removeMarkersFromMap(this.dbService.getMarkers());
-    
+
     let markers = [];
     let sortItems = [];
     this.soldItemsKey.forEach(soldItemKey => {
       // console.log(this.isPositionInsideMap(soldItemKey.data.POSITION, this.map));
       if (this.isPositionInsideMap(soldItemKey.data.POSITION, this.map)) {
-        this.gmapService.addMarkerToMapWithID(this.map, soldItemKey).then((marker)=>{
+        this.gmapService.addMarkerToMapWithID(this.map, soldItemKey).then((marker) => {
           markers.push(marker)
         })
         sortItems.push(soldItemKey);
