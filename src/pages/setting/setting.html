@@ -150,4 +150,23 @@
     </ion-item>
   </ion-list>
 
+  <div *ngIf="isAdmin">
+    <ion-list>
+    <ion-list-header>
+      ADMIN
+    </ion-list-header>
+
+    <ion-item (click)="go2UserManagement()">
+      <ion-icon name='flash' item-left></ion-icon>
+      <ion-label>Users Management</ion-label>
+      <!--<ion-note item-right>Click for help</ion-note>-->
+    </ion-item>
+    <ion-item>
+      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+      <ion-label>Items Management</ion-label>
+      <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
+    </ion-item>
+  </ion-list>
+  </div>
+
 </ion-content>

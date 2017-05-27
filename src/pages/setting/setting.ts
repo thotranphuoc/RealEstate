@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { iSetting } from '../../interfaces/setting.interface';
 import { DbService } from '../../services/db.service';
+import { AuthService } from '../../services/auth.service';
 import { AngularFireService } from '../../services/af.service';
 
 @IonicPage()
@@ -16,15 +17,21 @@ export class SettingPage {
 
   mySettings: iSetting;
   isSigned;
+  isAdmin: boolean = false;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private dbService: DbService,
+    private authService: AuthService,
     private afAuth: AngularFireAuth
   ) {
       this.mySettings = this.dbService.getSetting();
       console.log('constructor inside')
       this.isSigned = this.afAuth.auth.currentUser;
+      this.authService.isAdmin(this.afAuth.auth.currentUser.email).then((res: boolean)=>{
+        console.log(res);
+        this.isAdmin = res;
+      })
       console.log(this.isSigned);
   }
 
@@ -62,5 +69,10 @@ export class SettingPage {
   //   this.mySettings = this.dbService.getSetting();
   //   // console.log('ionViewWillEnter', this.mySettings);
   // }
+
+  go2UserManagement(){
+    this.navCtrl.push('UserManagementPage');
+  }
+
 
 }

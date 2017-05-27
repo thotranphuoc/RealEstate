@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import * as firebase from 'firebase';
+import { AngularFireService } from './af.service';
 
 @Injectable()
 
@@ -9,22 +10,44 @@ export class AuthService {
     isSigned: boolean = false;
     uid: string;
     email: string;
-    signIn(email: string, pass: string): firebase.Promise<any>{
+    constructor(private afService: AngularFireService) { }
+    signIn(email: string, pass: string): firebase.Promise<any> {
         return firebase.auth().signInWithEmailAndPassword(email, pass)
     }
 
-    signUp(email: string, pass: string): firebase.Promise<any>{
+    signUp(email: string, pass: string): firebase.Promise<any> {
         return firebase.auth().createUserWithEmailAndPassword(email, pass)
     }
 
-    signOut(): firebase.Promise<any>{
+    signOut(): firebase.Promise<any> {
         return firebase.auth().signOut();
     }
 
-    resetAccount(email: string): firebase.Promise<any>{
+    resetAccount(email: string): firebase.Promise<any> {
         return firebase.auth().sendPasswordResetEmail(email);
     }
 
-    
+    isAdmin(userEmail: string) {
+        return new Promise((resolve, reject) => {
+            var isAdmin = false;
+            this.afService.getList('Admin/')
+                .subscribe((listUsers: any[]) => {
+                    console.log(listUsers);
+                    listUsers.forEach(user => {
+                        console.log(user, userEmail);
+                        if (user.email === userEmail) {
+                            isAdmin = true;
+                        }
+                    });
+                    if(isAdmin){
+                        resolve(true)
+                    }else{
+                        resolve(false);
+                    }
+                })
+        })
+    }
+
+
 
 }
