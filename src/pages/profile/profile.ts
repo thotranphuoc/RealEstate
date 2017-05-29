@@ -25,6 +25,8 @@ export class ProfilePage {
   base64Image: string = null;
   hasNewAvatar: boolean = false;
   btnEnable: boolean = true;
+  action :string =  'profile-owner';
+  UID_toUpdated: string;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,44 +34,61 @@ export class ProfilePage {
     private dbService: DbService,
     private cameraService: CameraService,
     private afService: AngularFireService) {
-    this.getProfile();
+      let Act = this.navParams.get('action');
+      if(typeof(Act) !='undefined'){
+        this.action = Act ;
+        
+      }
+      
+      if(this.action==='profile-owner'){
+        this.getProfile();
+        this.UID_toUpdated = this.afService.getAuth().auth.currentUser.uid;
+        console.log(this.action, this.UID_toUpdated);
+      }else{
+        this.profile = this.navParams.get('data');
+        this.UID_toUpdated = this.navParams.get('uid');
+        console.log(this.action, this.UID_toUpdated);
+      }
+
+      
+    
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }
 
-  onUpdateProfile1(form) {
-    console.log('update start');
-    this.btnEnable = false;
-    // 1. upload image to storage, return url. setTo profile.AVATAR_URL
-    this.dbService.uploadBase64Image2FirebaseReturnPromise('Avatar/' + this.afService.getAuth().auth.currentUser.uid, this.base64Image)
-      .then((res) => {
-        this.profile.AVATAR_URL = res.downloadURL;
-        console.log(this.profile);
-        // 2. insert or update profile database;
-        this.dbService.insertOneNewItemWithSetReturnPromise(this.profile, 'UsersProfile/' + this.afService.getAuth().auth.currentUser.uid).then((res) => {
-          console.log(res);
-          console.log('insert successfully...');
-          this.btnEnable = true;
-        }).catch(err => {
-          console.log(err);
-          this.btnEnable = true;
-        })
-      })
-      .catch(err => {
-        console.log(err);
-        this.btnEnable = true;
-      })
-    // // console.log(form.value);
-    // console.log(this.profile);
-  }
+  // onUpdateProfile1(form) {
+  //   console.log('update start');
+  //   this.btnEnable = false;
+  //   // 1. upload image to storage, return url. setTo profile.AVATAR_URL
+  //   this.dbService.uploadBase64Image2FirebaseReturnPromise('Avatar/' + this.afService.getAuth().auth.currentUser.uid, this.base64Image)
+  //     .then((res) => {
+  //       this.profile.AVATAR_URL = res.downloadURL;
+  //       console.log(this.profile);
+  //       // 2. insert or update profile database;
+  //       this.dbService.insertOneNewItemWithSetReturnPromise(this.profile, 'UsersProfile/' + this.afService.getAuth().auth.currentUser.uid).then((res) => {
+  //         console.log(res);
+  //         console.log('insert successfully...');
+  //         this.btnEnable = true;
+  //       }).catch(err => {
+  //         console.log(err);
+  //         this.btnEnable = true;
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       this.btnEnable = true;
+  //     })
+  //   // // console.log(form.value);
+  //   // console.log(this.profile);
+  // }
 
   onUpdateProfile() {
     this.btnEnable = false;
     console.log('update start');
     // update current edited profile without avarta
-    this.dbService.insertOneNewItemWithSetReturnPromise(this.profile, 'UsersProfile/' + this.afService.getAuth().auth.currentUser.uid)
+    this.dbService.insertOneNewItemWithSetReturnPromise(this.profile, 'UsersProfile/' + this.UID_toUpdated)
       .then((res) => {
         console.log(res);
         console.log('insert successfully...');
@@ -78,13 +97,16 @@ export class ProfilePage {
       .catch((err)=>{
         console.log(err);
       })
+      .then(()=>{
+        this.navCtrl.pop();
+      })
     
     // update avatar if changed
     if(this.hasNewAvatar){
-      this.dbService.uploadBase64Image2FirebaseReturnPromise('Avatar/'+this.afService.getAuth().auth.currentUser.uid, this.base64Image)
+      this.dbService.uploadBase64Image2FirebaseReturnPromise('Avatar/'+this.UID_toUpdated, this.base64Image)
       .then((res)=>{
         console.log(res, res.downloadURL);
-        this.afService.updateObjectData('UsersProfile/' + this.afService.getAuth().auth.currentUser.uid,{AVATAR_URL: res.downloadURL})
+        this.afService.updateObjectData('UsersProfile/' + this.UID_toUpdated,{AVATAR_URL: res.downloadURL})
         .then((res)=>{
           console.log('update avatar succeeded');
         })

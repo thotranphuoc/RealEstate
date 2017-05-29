@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { iSetting } from '../../interfaces/setting.interface';
 import { DbService } from '../../services/db.service';
 import { AuthService } from '../../services/auth.service';
-import { AngularFireService } from '../../services/af.service';
+// import { AngularFireService } from '../../services/af.service';
 
 @IonicPage()
 @Component({

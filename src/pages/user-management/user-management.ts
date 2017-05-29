@@ -1,24 +1,36 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the UserManagementPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { AngularFireService } from '../../services/af.service';
+
+import { iProfile } from '../../interfaces/profile.interface';
+
 @IonicPage()
 @Component({
   selector: 'page-user-management',
   templateUrl: 'user-management.html',
 })
 export class UserManagementPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  users: any;
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    private afService: AngularFireService) {
+      this.afService.getList('UsersProfile').subscribe((users)=>{
+        console.log(users);
+        this.users = users;
+      })
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserManagementPage');
+
   }
+
+  go2UserProfileEdit(user){
+    console.log(user, user.$key);
+    this.navCtrl.push('ProfilePage',{data: user, action: 'edit-profile', uid: user.$key})
+  }
+
 
 }
