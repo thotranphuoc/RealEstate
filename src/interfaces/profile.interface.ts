@@ -5,5 +5,6 @@ export interface iProfile {
   BIRTHDAY: string,
   TEL: string,
   ADDRESS: string,
+  STATE: string
   // FAVORITES: any[]
 }

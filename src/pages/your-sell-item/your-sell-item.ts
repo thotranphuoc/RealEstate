@@ -93,20 +93,9 @@ export class YourSellItemPage {
       })
   }
 
-  deleteSellingItem(item: iSoldItem, itemId: string, index) {
-    console.log(item, itemId, index);
-    if (item.PHOTOS != null) {
-      item.PHOTOS.forEach(photo => {
-        console.log(photo)
-        this.dbService.deleteFileFromFireStorageWithHttpsURL(photo)
-          .then((res) => {
-            console.log(res)
-          })
-          .catch((err) => console.log(err))
-      })
-    }
-    this.appService.deleteItemWithURL(item.UID, itemId);
-    // this.appService.deleteItem(this.afService.getAuth().auth.currentUser.uid, key);
+  deleteSellingItem(item: iSoldItem, itemID: string, index) {
+    let userID = this.afService.getAuth().auth.currentUser.uid;
+    this.appService.deleteSellingItem(userID, itemID);
   }
 
   onDeleteSellingItem(item: iSoldItem, itemId: string, index: number) {

@@ -34,7 +34,7 @@ export class AccountPage {
     this.authService.signIn(this.signIn.email, this.signIn.password)
     .then(()=>{
       console.log('Login success');
-      this.navCtrl.push('MapPage');
+      this.navCtrl.setRoot('MapPage');
     })
     .catch((err)=>{
       console.log('Error when loggin');
@@ -47,7 +47,7 @@ export class AccountPage {
     .then(()=>{
       console.log('account registered successfully');
       this.appService.alertMsg('Success', 'account created successfully');
-      this.navCtrl.push('MapPage');
+      this.navCtrl.setRoot('MapPage');
     })
     .catch((err)=>{
       console.log('account registered failed');

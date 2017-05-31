@@ -19,7 +19,8 @@ export class ProfilePage {
     EMAIL: '',
     BIRTHDAY: '',
     TEL: '',
-    ADDRESS: ''
+    ADDRESS: '',
+    STATE: 'ACTIVE'
     // FAVORITES: ['']
   }
   base64Image: string = null;
@@ -127,6 +128,7 @@ export class ProfilePage {
           BIRTHDAY: item.BIRTHDAY,
           TEL: item.TEL,
           ADDRESS: item.ADDRESS,
+          STATE: item.STATE
           // FAVORITES: item.FAVORITES
         };
 

@@ -25,14 +25,16 @@ export class SettingPage {
     private authService: AuthService,
     private afAuth: AngularFireAuth
   ) {
-      this.mySettings = this.dbService.getSetting();
-      console.log('constructor inside')
-      this.isSigned = this.afAuth.auth.currentUser;
-      this.authService.isAdmin(this.afAuth.auth.currentUser.email).then((res: boolean)=>{
+    this.mySettings = this.dbService.getSetting();
+    console.log('constructor inside')
+    this.isSigned = this.afAuth.auth.currentUser;
+    if (this.isSigned) {
+      this.authService.isAdmin(this.afAuth.auth.currentUser.email).then((res: boolean) => {
         console.log(res);
         this.isAdmin = res;
       })
-      console.log(this.isSigned);
+    }
+    console.log(this.isSigned);
   }
 
   ionViewDidLoad() {
@@ -40,28 +42,28 @@ export class SettingPage {
 
   }
 
-  go2AccountPage(action: string){
+  go2AccountPage(action: string) {
     this.navCtrl.push('AccountPage', { action: action })
   }
 
-  onSignOut(){
+  onSignOut() {
     this.afAuth.auth.signOut()
-    .then(()=>{
-      console.log('user logged out!')
-    })
-    this.navCtrl.push('MapPage');
+      .then(() => {
+        console.log('user logged out!')
+      })
+    this.navCtrl.setRoot('MapPage');
   }
 
-  go2ProfilePage(){
+  go2ProfilePage() {
     console.log('edit profile page');
     this.navCtrl.push('ProfilePage');
   }
 
-  go2YourSellItemPage(){
+  go2YourSellItemPage() {
     this.navCtrl.push('YourSellItemPage', this.afAuth.auth.currentUser.uid);
   }
 
-  go2FavoriteViewPage(){
+  go2FavoriteViewPage() {
     this.navCtrl.push('FavoriteViewPage', this.afAuth.auth.currentUser.uid);
   }
 
@@ -70,7 +72,7 @@ export class SettingPage {
   //   // console.log('ionViewWillEnter', this.mySettings);
   // }
 
-  go2UserManagement(){
+  go2UserManagement() {
     this.navCtrl.push('UserManagementPage');
   }
 

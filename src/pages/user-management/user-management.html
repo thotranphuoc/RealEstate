@@ -7,16 +7,40 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>user-management</ion-title>
+    <ion-title>User Management</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-<ion-list>
-  <ion-item *ngFor="let user of users" (click)="go2UserProfileEdit(user)">
-    {{user.NAME}} - {{user.EMAIL}}
-  </ion-item>
-</ion-list>
+  <ion-list>
+    <ion-item-sliding *ngFor="let user of users">
+      <ion-item (click)="go2UserProfileEdit(user)">
+        <ion-avatar item-start>
+          <img src="{{user.AVATAR_URL}}">
+        </ion-avatar>
+        <h2>{{user.NAME}}</h2>
+        <p>{{user.EMAIL}}</p>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="light" icon-left (click)="showMore(user.$key)">
+          <ion-icon name="ios-more"></ion-icon>
+          More
+        </button>
+        <button  *ngIf="user.STATE=='DEACTIVE'" ion-button color="secondary" icon-left (click)="activate(user.$key)">
+          <ion-icon name="ios-unlock-outline"></ion-icon>
+          Activate
+        </button>
+        <button *ngIf="user.STATE=='ACTIVE'" ion-button color="primary" icon-left (click)="deactivate(user.$key)">
+          <ion-icon name="ios-lock-outline"></ion-icon>
+          Deact
+        </button>
+        <button ion-button color="danger" icon-left (click)="deleteItems(user.$key)">
+          <ion-icon name="close"></ion-icon>
+          Del Items
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

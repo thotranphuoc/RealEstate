@@ -212,17 +212,7 @@ export class AppService {
         })
     }
 
-    // Delete item from firebase db
-    deleteItemWithURL(userId, itemId){
-        // delete from soldItems/itemId
-        this.afService.deleteItemFromList('soldItems', itemId);
-        // delete from UserSoldItems/UserID/itemId
-        this.afService.deleteItemFromList('UserSoldItems/'+userId, itemId);
-        // delete from FavoriteOfItemFromUsers/itemID
-        this.afService.deleteItemFromList('FavoriteOfItemFromUsers', itemId);
-        // delete from FeedbackOfItemFromUsers
-        this.afService.deleteItemFromList('FeedbackOfItemFromUsers', itemId);
-    }
+   
     // Delete item from firebase storage
     deleteItemImageFromStorage(httpURL: string){
         this.dbService.deleteFileFromFireStorageWithHttpsURL(httpURL);
@@ -249,6 +239,74 @@ export class AppService {
 
     updateObject(ObjURL: string, data){
         return this.afService.updateObjectData(ObjURL, data);
+    }
+
+    deleteAllSoldItemsOfUser(userID: string){
+        let items = [];
+        // get all soldItems of userID
+        this.afService.getList('UserSoldItems/'+userID).subscribe((solditems)=>{
+            console.log(solditems);
+            items = solditems;
+            items.forEach(item => {
+                console.log(item.$key, userID);
+                this.deleteSellingItem(userID, item.$key);
+            });
+        })
+
+        // delete userProfile. NOTE: no need to delete userProfile
+        // this.afService.deleteItemFromList('UserProfiles', userID)
+    }
+
+    deleteUser(userID: string){
+        // delete avatar of user
+        this.afService.getObject('UsersProfile/'+ userID)
+        .subscribe((user)=>{
+            console.log(user.AVATAR_URL);
+            if(user.AVATAR_URL !=='' && user.AVATAR_URL !=null){
+                this.deletePhoto(user.AVATAR_URL);
+            }
+            
+        })
+
+        // delete user from usersProfile
+        this.afService.deleteItemFromList('UsersProfile', userID).then(()=>{console.log(userID, 'delete successfull')}).catch((err)=>{console.log(err)})
+    }
+
+    deleteSellingItem(userID: string, soldItemID: string){
+        // get item's photos info from soldItem then delete if photos existing
+        this.deleteSellingItemPhotos(soldItemID);
+
+        // delete item from soldItems
+        this.deleteItemWithURL(userID, soldItemID);
+    }
+
+    deleteSellingItemPhotos(soldItemID: string){
+        this.afService.getList('soldItems/'+soldItemID+'/PHOTOS').subscribe((photos)=>{
+            console.log(photos)
+            if(photos.length>0){
+                photos.forEach(photo=>{
+                    console.log(photo.$value);
+                    let photoURL = photo.$value;
+                    this.deletePhoto(photoURL);
+                })
+            }
+        })
+    }
+
+    deletePhoto(photoURL: string){
+        this.dbService.deleteFileFromFireStorageWithHttpsURL(photoURL).then(()=>{console.log(photoURL, 'delete successfull')}).catch((err)=>{console.log(err)})
+    }
+
+    // Delete soldItem from firebase db
+    deleteItemWithURL(userId, itemId){
+        // delete from soldItems/itemId
+        this.afService.deleteItemFromList('soldItems', itemId);
+        // delete from UserSoldItems/UserID/itemId
+        this.afService.deleteItemFromList('UserSoldItems/'+userId, itemId);
+        // delete from FavoriteOfItemFromUsers/itemID
+        this.afService.deleteItemFromList('FavoriteOfItemFromUsers', itemId);
+        // delete from FeedbackOfItemFromUsers
+        this.afService.deleteItemFromList('FeedbackOfItemFromUsers', itemId);
     }
 
     
