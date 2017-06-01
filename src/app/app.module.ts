@@ -13,6 +13,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
+import { CallNumber } from '@ionic-native/call-number';
 
 // self services
 import { AngularFireService } from '../services/af.service';
@@ -72,6 +73,7 @@ firebase.initializeApp(firebaseConfig);
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Geolocation,
     Camera,
+    CallNumber,
     AngularFireService,
     GmapService,
     DbService,
@@ -90,5 +92,10 @@ $ npm install firebase angularfire2 --save
 $ npm install firebase firebase --save
 
 3. install to fix Error: ./~/firebase/app/shared_promise.js
-npm install promise-polyfill --save-exact
+$ npm install promise-polyfill --save-exact
+
+4. install callNumber
+$ ionic cordova plugin add call-number
+$ npm install --save @ionic-native/call-number
+
  */

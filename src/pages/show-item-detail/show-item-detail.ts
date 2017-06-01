@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { CallNumber } from '@ionic-native/call-number';
+
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AppService } from '../../services/app.service';
@@ -35,7 +37,8 @@ export class ShowItemDetailPage {
     private dbService: DbService,
     private afService: AngularFireService,
     private authService: AuthService,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private callNumber: CallNumber
   ) {
     this.objKey = this.navParams.data;
     this.key = this.objKey.key
@@ -157,8 +160,15 @@ export class ShowItemDetailPage {
     this.navCtrl.push('FeedbackDetailPage', feedback);
   }
 
-  showInMap(soldItem){
-    this.navCtrl.push('ShowItemInMapPage', {key: this.key, data: this.obj})
+  showInMap(soldItem) {
+    this.navCtrl.push('ShowItemInMapPage', { key: this.key, data: this.obj })
+  }
+
+  makeCall(number) {
+    console.log(number);
+    this.callNumber.callNumber(number, true)
+      .then(() => console.log('Launched dialer!'))
+      .catch(() => console.log('Error launching dialer'));
   }
 
 
@@ -167,4 +177,7 @@ export class ShowItemDetailPage {
 
 /*
 input: { key: string, data: iSoldItem }
-*/ 
+Call Number:
+$ ionic cordova plugin add call-number
+$ npm install --save @ionic-native/call-number
+*/
