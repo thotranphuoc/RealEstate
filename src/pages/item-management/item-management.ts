@@ -15,6 +15,9 @@ import { iSoldItem } from '../../interfaces/sold-item.interface';
 export class ItemManagementPage {
   items: any;
   imgNotAvailable: any;
+  isMultiSelect: boolean = false;
+  numberOfSelected: number = 0;
+  selectedItems: any = [];
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,6 +35,7 @@ export class ItemManagementPage {
         if (typeof (item.KIND) != 'undefined') {
           item['new_KIND'] = this.appService.convertCodeToDetail(item.KIND); // convert KIND
         }
+        item['isSelected'] = false;
       });
       console.log(this.items);
     })
@@ -73,6 +77,49 @@ export class ItemManagementPage {
       ]
     });
     actionSheet.present();
+  }
+
+  doMulti(){
+    this.isMultiSelect = !this.isMultiSelect;
+    console.log(this.isMultiSelect);
+    if(!this.isMultiSelect){
+      // clear all selected items
+      this.items.forEach(item => {
+        item.isSelected = false;
+      });
+
+      // hide ion-footer
+      this.numberOfSelected = 0;
+    }
+  }
+
+  doSelect(item, i){
+    this.items[i].isSelected = !this.items[i].isSelected;
+    console.log(item, i);
+    if(this.items[i].isSelected){
+      this.numberOfSelected ++;
+    }else{
+      this.numberOfSelected --;
+    }
+
+    console.log(this.numberOfSelected);
+  }
+
+  deleteItems(){
+    this.selectedItems = [];
+    console.log('delete selected items');
+    this.items.forEach(item => {
+      if(item.isSelected){
+        this.selectedItems.push({userID: item.UID, key: item.$key})
+      }
+    });
+    console.log(this.selectedItems);
+    this.selectedItems.forEach(item => {
+      this.deleteSellingItem(item.userID, item.key);
+    });
+    this.numberOfSelected = 0;
+    this.doMulti();
+   
   }
 
 }

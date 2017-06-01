@@ -1,16 +1,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>item-management</ion-title>
+    <ion-title>Items</ion-title>
+    <ion-buttons end>
+      <button *ngIf="!isMultiSelect" ion-button (click)="doMulti()"><ion-icon name="ios-create-outline" large></ion-icon></button>
+      <button *ngIf="isMultiSelect" ion-button color="danger" (click)="doMulti()"><ion-icon name="ios-close-circle-outline" large></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
-
+  
 </ion-header>
 
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items">
+    <ion-item-sliding *ngFor="let item of items; let i = index">
       <ion-item>
+        <button *ngIf="isMultiSelect && !item.isSelected" ion-button outline item-left (click)="doSelect(item, i)"></button>
+        <button *ngIf="isMultiSelect && item.isSelected" ion-button color=danger item-left (click)="doSelect(item, i)"></button>
         <ion-avatar item-left>
           <div *ngIf="item.PHOTOS !=null">
             <img src="{{item.PHOTOS[0]}}" />
@@ -32,3 +38,13 @@
   </ion-list>
 
 </ion-content>
+<ion-footer *ngIf="numberOfSelected>0">
+  <ion-toolbar>
+    <!--<ion-title>Footer</ion-title>-->
+    <ion-buttons end>
+      <button ion-button clear color=danger (click)="deleteItems()">Delete</button>
+    </ion-buttons>
+    <!--<button ion-button clear end>Delete</button>-->
+  </ion-toolbar>
+  
+</ion-footer>
