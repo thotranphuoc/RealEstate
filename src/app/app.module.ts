@@ -14,6 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
 import { CallNumber } from '@ionic-native/call-number';
+import { Network } from '@ionic-native/network';
 
 // self services
 import { AngularFireService } from '../services/af.service';
@@ -73,6 +74,7 @@ firebase.initializeApp(firebaseConfig);
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Geolocation,
     Camera,
+    Network,
     CallNumber,
     AngularFireService,
     GmapService,
@@ -97,5 +99,9 @@ $ npm install promise-polyfill --save-exact
 4. install callNumber
 $ ionic cordova plugin add call-number
 $ npm install --save @ionic-native/call-number
+
+5. Install Networking:
+$ ionic cordova plugin add cordova-plugin-network-information
+$ npm install --save @ionic-native/network
 
  */

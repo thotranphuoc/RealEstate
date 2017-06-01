@@ -2,12 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Network } from '@ionic-native/network';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SoldItemsPage } from '../pages/sold-items/sold-items';
 import { MapPage } from '../pages/map/map';
 import { SettingPage } from '../pages/setting/setting';
+
+import { AppService } from '../services/app.service';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,8 +22,20 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform, 
+    public statusBar: StatusBar, 
+    public splashScreen: SplashScreen,
+    private network: Network,
+    private appService: AppService ) {
     this.initializeApp();
+    let disconnected = this.network.onDisconnect().subscribe(()=>{
+      this.appService.toastMsg('Network disconnected', 5000);
+    })
+
+    let connected = this.network.onConnect().subscribe(()=>{
+      this.appService.toastMsg('Network connected', 5000);
+    })
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -48,3 +63,9 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 }
+
+/*
+Install Networking:
+$ ionic cordova plugin add cordova-plugin-network-information
+$ npm install --save @ionic-native/network
+*/
