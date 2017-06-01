@@ -76,5 +76,9 @@ export class SettingPage {
     this.navCtrl.push('UserManagementPage');
   }
 
+  go2ItemManagement() {
+    this.navCtrl.push('ItemManagementPage');
+  }
+
 
 }

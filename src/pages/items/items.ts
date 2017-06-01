@@ -33,7 +33,7 @@ export class ItemsPage {
         if (typeof (item.data.PRICE) != 'undefined') {
           item['new_PRICE'] = this.appService.convertToCurrency(item.data.PRICE.toString(), ','); // convert PRICE
         }
-        if (typeof (item.data.PRICE) != 'undefined') {
+        if (typeof (item.data.KIND) != 'undefined') {
           item['new_KIND'] = this.appService.convertCodeToDetail(item.data.KIND); // convert KIND
         }
         if(typeof(item.data.POSITION) != 'undefined') {

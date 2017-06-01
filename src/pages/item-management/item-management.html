@@ -1,0 +1,34 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>item-management</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items">
+      <ion-item>
+        <ion-avatar item-left>
+          <div *ngIf="item.PHOTOS !=null">
+            <img src="{{item.PHOTOS[0]}}" />
+          </div>
+          <div *ngIf="item.PHOTOS ==null">
+            <img src="{{imgNotAvailable}}" />
+          </div>
+        </ion-avatar>
+        <h3>{{item.NAME | uppercase}}</h3>
+        <h4>{{item.new_PRICE}} VND</h4>
+        <p>{{item.new_KIND}}</p>
+        <p>{{item.GROUNDSQUARES}} m2 - {{item.USEDSQUARES}} m2</p>
+        <button color="danger" ion-button outline item-right (click)="onDeleteSellingItem(item.UID, item.$key)"><ion-icon name="trash" large></ion-icon></button>
+        <button *ngIf="item.VISIBLE" color="secondary" ion-button outline item-right (click)="toggleEye(item, item.$key)"><ion-icon name="eye" large></ion-icon></button>
+        <button *ngIf="!item.VISIBLE" color="primary" ion-button outline item-right (click)="toggleEye(item, item.$key)"><ion-icon name="eye-off" large></ion-icon></button>
+      </ion-item>
+
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>
