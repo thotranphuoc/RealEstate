@@ -22,7 +22,7 @@ export class ItemsPage {
     private appService: AppService,
     private dbService: DbService,
     private gmapService: GmapService ) {
-    this.imgNotAvailable = '../../assets/img/house.jpg';
+    this.imgNotAvailable = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Fhouse.jpg?alt=media&token=7d55aa45-66b0-497b-aaa5-466a5a28057b';
     this.maxNum = this.dbService.getSetting().numOfItems;
   }
 
@@ -41,11 +41,11 @@ export class ItemsPage {
         }
       })
       console.log(this.soldItems);
-      // this.soldItems.sort((a,b)=>{
-      //   let ax = a.distances.distance;
-      //   let bx = a.distances.distance;
-      //   return bx - ax;
-      // })
+      this.soldItems.sort((a,b)=>{
+        let ax = a.distances.distance;
+        let bx = b.distances.distance;
+        return ax - bx;
+      })
 
     // this.afService.getListWithCondition('soldItems/', 'VISIBLE',true, this.maxNum)
     // .subscribe((items) => {

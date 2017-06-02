@@ -27,7 +27,7 @@ export class FavoriteViewPage {
     
     this.afService.getList('FavoriteOfUserForItems/' + this.afService.getAuth().auth.currentUser.uid)
       .subscribe((list) => {
-        this.notAvailable = '../../assets/img/not_available.png';
+        this.notAvailable = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Fnot_available.png?alt=media&token=52f140b3-a93e-42a3-a774-153f15611310';
         this.favorites = list;
         console.log(this.favorites);
         this.favoriteItems = [];

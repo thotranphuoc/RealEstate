@@ -25,7 +25,7 @@ export class ItemManagementPage {
     private afService: AngularFireService,
     private appService: AppService) {
     this.afService.getList('soldItems').subscribe((items) => {
-      this.imgNotAvailable = '../../assets/img/house.jpg';
+      this.imgNotAvailable = 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Fhouse.jpg?alt=media&token=7d55aa45-66b0-497b-aaa5-466a5a28057b';
       console.log(items);
       this.items = items;
       this.items.map(item => {
