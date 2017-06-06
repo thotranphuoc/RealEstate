@@ -80,5 +80,9 @@ export class SettingPage {
     this.navCtrl.push('ItemManagementPage');
   }
 
+  go2FeedbackManagement(){
+    this.navCtrl.push('FeedbackManagementPage');
+  }
+
 
 }

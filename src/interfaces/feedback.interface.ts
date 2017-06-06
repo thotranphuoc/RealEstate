@@ -6,5 +6,6 @@ export interface iFeedback {
   WRONGPRICE: boolean,
   POSTTIME: string,
   COMMNENTS: string,
-  NAME: string
+  NAME: string,
+  STARS: number
 }

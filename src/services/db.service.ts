@@ -34,7 +34,8 @@ export class DbService {
         WRONGPRICE: false,
         POSTTIME: '',
         COMMNENTS: null,
-        NAME: null
+        NAME: null,
+        STARS: null
     };
 
     soldItem: iSoldItem = {

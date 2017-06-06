@@ -92,13 +92,20 @@ export class AppService {
     // return format: '2017/04/09'
     getCurrentDate(): string {
         let today = new Date();
-        return today.getUTCFullYear().toString() + '/' + (today.getMonth() + 1).toString() + '/' + today.getDate().toString();
+        let realMonth = today.getMonth() + 1;
+        let month = realMonth <10 ? '0'+ realMonth : realMonth;
+        let date = today.getDate() < 10 ? '0'+today.getDate() : today.getDate()
+        return today.getUTCFullYear().toString() + '/' + month.toString() + '/' + date.toString();
     }
 
     // return format: '12:30:15'
     getCurrentTime(): string {
         let today = new Date();
-        return today.getHours().toString() + ':' + today.getMinutes().toString() + ':' + today.getSeconds().toString();
+        let hour = today.getHours() <10 ? '0'+today.getHours() : today.getHours();
+        let minute = today.getMinutes() <10 ? '0'+today.getMinutes() : today.getMinutes();
+        let second = today.getSeconds() <10 ? '0'+today.getSeconds() : today.getSeconds();
+        
+        return hour.toString() + ':' + minute.toString() + ':' + second.toString();
     }
 
     getCurrentDataAndTime(): string {
@@ -199,6 +206,8 @@ export class AppService {
             .then(() => {
                 console.log(uid, itemId, data);
             });
+        
+        // update table Feedback/itemID/ Array
     }
 
     postSoldItemReturnPromiseWithKey(soldItem: iSoldItem, URL: string) {

@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SoldItemsPage } from '../pages/sold-items/sold-items';
 import { MapPage } from '../pages/map/map';
+import { MapNativePage } from '../pages/map-native/map-native';
 import { SettingPage } from '../pages/setting/setting';
 
 import { AppService } from '../services/app.service';
@@ -43,6 +44,7 @@ export class MyApp {
       { title: 'List', component: ListPage },
       { title: 'Sold Items', component: SoldItemsPage },
       { title: 'Maps', component: MapPage },
+      { title: 'Native Maps', component: MapNativePage },
       { title: 'Setting', component: SettingPage }
     ];
 

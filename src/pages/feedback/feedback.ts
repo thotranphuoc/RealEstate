@@ -19,6 +19,8 @@ import { iFeedback } from '../../interfaces/feedback.interface';
 export class FeedbackPage {
   feedback: iFeedback;
   ITEM_KEY: string;
+  stars: any = [];
+  action: string = 'new-feedback';
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -27,7 +29,31 @@ export class FeedbackPage {
     private authService: AuthService,
     private appService: AppService,
     private afAuth: AngularFireAuth) {
-    this.feedback = this.dbService.getFeedback();
+    let Act = this.navParams.get('action');
+    if (typeof (Act) != 'undefined') {
+      this.action = Act;
+    }
+    console.log(this.action);
+
+    if (this.action == 'view-feedback') {
+      this.feedback = this.navParams.get('feedback');
+      console.log(this.feedback);
+      if(this.feedback.STARS != null){
+        // if(this.feedback.STARS.toString() != 'undefined'){
+        let starNum = this.feedback.STARS;
+        console.log(starNum);
+        // this.starValidate(starNum)
+      }
+    }
+
+    if (this.action == 'new-feedback') {
+      this.feedback = this.dbService.getFeedback();
+      for (var i = 0; i < 5; i++) {
+        this.stars[i] = { isSet: false, name: 'ios-star-outline' };
+      }
+      console.log(this.stars);
+    }
+
   }
 
   ionViewDidLoad() {
@@ -36,7 +62,7 @@ export class FeedbackPage {
   }
 
   sendFeedback(form) {
-    
+
     this.ITEM_KEY = this.navParams.data;
     this.feedback.NAME = this.afAuth.auth.currentUser.email;
     this.feedback.POSTTIME = this.appService.getCurrentDataAndTime();
@@ -84,10 +110,25 @@ export class FeedbackPage {
       WRONGPRICE: false,
       POSTTIME: null,
       COMMNENTS: null,
-      NAME: null
+      NAME: null,
+      STARS: null
     }
 
     this.dbService.setFeedback(this.feedback);
+  }
+
+  starValidate(index: number) {
+    this.feedback.STARS = index + 1;
+    console.log(index);
+    for (let i = 0; i < index + 1; i++) {
+      document.getElementById('star-' + i).style.color = 'orange';
+    }
+    for (let i = index + 1; i < 5; i++) {
+      document.getElementById('star-' + i).style.color = 'gray';
+
+    }
+    console.log(this.stars);
+
   }
 
 }

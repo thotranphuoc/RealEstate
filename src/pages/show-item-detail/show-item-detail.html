@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content id="content" >
+<ion-content id="content">
   <ion-card>
 
     <ion-item>
@@ -16,7 +16,7 @@
       </ion-avatar>
       <h2>{{obj.NAME}}</h2>
       <button ion-button clear (click)="makeCall(obj.PHONE)">{{obj.PHONE}}</button>
-    
+
     </ion-item>
     <hr>
     <ion-grid>
@@ -34,10 +34,10 @@
           </button>
         </ion-col>
         <ion-col center text-center>
-            <ion-note>
-              {{obj.POSTDATE}}
-            </ion-note>
-          </ion-col>
+          <ion-note>
+            {{obj.POSTDATE}}
+          </ion-note>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-item>
@@ -75,7 +75,9 @@
       <p>{{obj.ADDRESS}}</p>
     </ion-item>
   </ion-card>
-  <button ion-button block (click)="showInMap()">SHOW MAP</button>
+  <ion-item>
+    <button ion-button block (click)="showInMap()">SHOW MAP</button>
+  </ion-item>
   <ion-card>
     <ion-slides pager>
       <ion-slide *ngFor="let photo of photos, let i=index">
@@ -86,19 +88,38 @@
 
   <!--REPORT, SAVE and SHARE-->
   <div>
-    <h4>Feedback:</h4>
+    <ion-item>
+      <h3>FEEDBACKS: </h3>
+    </ion-item>
     <ion-item *ngFor="let feedback of feedbacks" (click)="viewFeedbackInDetail(feedback)">
-      <p>{{feedback.data.COMMENTS}}</p>
-      <p align='right'>on {{feedback.data.POSTTIME}} by {{feedback.data.NAME}}</p>
+      <div>
+        <button *ngIf="!feedback.SOLDOUT" color="primary" ion-button clear item-right><ion-icon name="ios-cart-outline"></ion-icon></button>
+        <button *ngIf="feedback.SOLDOUT" color="danger" ion-button clear item-right><ion-icon name="ios-cart-outline"></ion-icon></button>
+        <button *ngIf="!feedback.WRONGPIC" color="primary" ion-button clear item-right><ion-icon name="ios-camera-outline"></ion-icon></button>
+        <button *ngIf="feedback.WRONGPIC" color="danger" ion-button clear item-right><ion-icon name="ios-camera-outline"></ion-icon></button>
+        <button *ngIf="!feedback.WRONGPHONE" color="primary" ion-button clear item-right><ion-icon name="ios-call-outline"></ion-icon></button>
+        <button *ngIf="feedback.WRONGPHONE" color="danger" ion-button clear item-right><ion-icon name="ios-call-outline"></ion-icon></button>
+        <button *ngIf="!feedback.WRONGLOCATION" color="primary" ion-button clear item-right><ion-icon name="ios-compass-outline"></ion-icon></button>
+        <button *ngIf="feedback.WRONGLOCATION" color="danger" ion-button clear item-right><ion-icon name="ios-compass-outline"></ion-icon></button>
+        <button *ngIf="!feedback.WRONGPRICE" color="primary" ion-button clear item-right><ion-icon name="logo-usd"></ion-icon></button>
+        <button *ngIf="feedback.WRONGPRICE" color="danger" ion-button clear item-right><ion-icon name="logo-usd"></ion-icon></button>
+      </div>
+      <div>
+        <p class="comment">{{feedback.COMMENTS}}</p>
+      </div>
+      <div>
+        <p align='right' class="time">on {{feedback.POSTTIME}} by {{feedback.NAME}}</p>
+      </div>
+
     </ion-item>
   </div>
 
   <ion-fab top right edge>
-    <button ion-fab  mini><ion-icon name="md-share"></ion-icon></button>
+    <button ion-fab mini><ion-icon name="md-share"></ion-icon></button>
     <ion-fab-list>
       <button ion-fab (click)="onAddFavorite()"><ion-icon name="md-heart" color="danger"></ion-icon></button>
       <button ion-fab (click)="onFeedBack()"><ion-icon name="ios-alert" color="orange"></ion-icon></button>
-      
+
     </ion-fab-list>
   </ion-fab>
 

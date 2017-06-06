@@ -45,11 +45,21 @@
         <ion-icon name='logo-usd' item-left></ion-icon>
       </ion-item>
       <ion-item>
-        <ion-textarea [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments"></ion-textarea>
-        <!--<input [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments">-->
+        <ion-textarea style="background-color: gray; font-style: italic" [(ngModel)]="feedback.COMMENTS" name="COMMENTS" type="textarea" placeholder="Your comments"></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="action!='view-feedback'">
+        <div *ngFor="let star of stars; let i = index" item-left  (click)="starValidate(i)">
+          <button color="grey" ion-button clear item-right><ion-icon id="star-{{i}}" name="ios-star"></ion-icon></button>
+        </div>     
+      </ion-item>
+      <ion-item *ngIf="action=='view-feedback'">
+        <!--<div *ngFor="let star of stars; let i = index" item-left  (click)="starValidate(i)">
+          <button color="grey" ion-button clear item-right><ion-icon id="star-{{i}}" name="ios-star"></ion-icon></button>
+        </div>     -->
+        {{feedback.STARS}} stars
       </ion-item>
     </form>
 
-    <button ion-button block (click)="sendFeedback(myForm)">Send feedback</button>
+    <button *ngIf="action=='new-feedback'" ion-button block (click)="sendFeedback(myForm)">Send feedback</button>
 
 </ion-content>

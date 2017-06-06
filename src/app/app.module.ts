@@ -8,6 +8,7 @@ import { ListPage } from '../pages/list/list';
 import { SoldItemsPage } from '../pages/sold-items/sold-items';
 // import { MapPage } from '../pages/map/map';
 import { SettingPage } from '../pages/setting/setting';
+import { MapNativePage } from '../pages/map-native/map-native';
  
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,7 +16,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
 import { CallNumber } from '@ionic-native/call-number';
 import { Network } from '@ionic-native/network';
-
+import {
+ GoogleMaps
+} from '@ionic-native/google-maps';
 // self services
 import { AngularFireService } from '../services/af.service';
 import { GmapService } from '../services/gmap.service';
@@ -50,6 +53,7 @@ firebase.initializeApp(firebaseConfig);
     ListPage,
     SoldItemsPage,
     // MapPage,
+    MapNativePage,
     SettingPage
   ],
   imports: [
@@ -66,7 +70,8 @@ firebase.initializeApp(firebaseConfig);
     ListPage,
     SoldItemsPage,
     // MapPage,
-    SettingPage
+    SettingPage,
+    MapNativePage
   ],
   providers: [
     StatusBar,
@@ -81,7 +86,8 @@ firebase.initializeApp(firebaseConfig);
     DbService,
     AppService,
     AuthService,
-    CameraService
+    CameraService,
+    GoogleMaps
   ]
 })
 export class AppModule {}

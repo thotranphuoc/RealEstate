@@ -1,0 +1,33 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Feedback Manager</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<ion-card *ngFor="let fb of feedbacks" (click)="go2ItemDetail(fb.itemID)">
+  {{fb.itemID}}
+  <ion-item *ngFor="let feedback of fb.feedback">
+    <!--{{feedback.userID}}-->
+    <div>
+      <button *ngIf="!feedback.feedbackOfItem.SOLDOUT" color="primary" ion-button clear item-right><ion-icon name="ios-cart-outline"></ion-icon></button>
+      <button *ngIf="feedback.feedbackOfItem.SOLDOUT" color="danger" ion-button clear item-right><ion-icon name="ios-cart-outline"></ion-icon></button>
+      <button *ngIf="!feedback.feedbackOfItem.WRONGPIC" color="primary" ion-button clear item-right><ion-icon name="ios-camera-outline"></ion-icon></button>
+      <button *ngIf="feedback.feedbackOfItem.WRONGPIC" color="danger" ion-button clear item-right><ion-icon name="ios-camera-outline"></ion-icon></button>
+      <button *ngIf="!feedback.feedbackOfItem.WRONGPHONE" color="primary" ion-button clear item-right><ion-icon name="ios-call-outline"></ion-icon></button>
+      <button *ngIf="feedback.feedbackOfItem.WRONGPHONE" color="danger" ion-button clear item-right><ion-icon name="ios-call-outline"></ion-icon></button>
+      <button *ngIf="!feedback.feedbackOfItem.WRONGLOCATION" color="primary" ion-button clear item-right><ion-icon name="ios-compass-outline"></ion-icon></button>
+      <button *ngIf="feedback.feedbackOfItem.WRONGLOCATION" color="danger" ion-button clear item-right><ion-icon name="ios-compass-outline"></ion-icon></button>
+      <button *ngIf="!feedback.feedbackOfItem.WRONGPRICE" color="primary" ion-button clear item-right><ion-icon name="logo-usd"></ion-icon></button>
+      <button *ngIf="feedback.feedbackOfItem.WRONGPRICE" color="danger" ion-button clear item-right><ion-icon name="logo-usd"></ion-icon></button>
+    </div>
+    <div>
+      <p>{{feedback.feedbackOfItem.COMMENTS}}</p>
+    </div>
+  </ion-item>
+</ion-card>
+</ion-content>

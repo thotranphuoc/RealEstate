@@ -57,31 +57,39 @@ export class ShowItemDetailPage {
     console.log('ionViewDidLoad ShowItemDetailPage');
   }
 
-  getFeedbackOfItemFromUsers() {
-    this.dbService.getItemsFromFBReturnPromise('FeedbackOfItemFromUsers/' + this.key)
-      .then((snapShot) => {
-        snapShot.forEach(_childSnap => {
-          let key = _childSnap.key;
-          let data = _childSnap.val();
-          let item = {
-            key: key,
-            data: data
-          }
-          console.log(item);
-          this.feedbacks.push(item);
-          return false;
-        });
-        console.log('feedbacks: ', this.feedbacks);
-
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
-    this.afService.getList('FeedbackOfItemFromUsers/' + this.key).subscribe(list => {
-      console.log(list);
+  getFeedbackOfItemFromUsers(){
+    this.afService.getList('FeedbackOfItemFromUsers/'+this.key)
+    .subscribe((feedbacks)=>{
+      this.feedbacks = feedbacks;
+      console.log(this.feedbacks);
     })
   }
+
+  // getFeedbackOfItemFromUsers() {
+  //   this.dbService.getItemsFromFBReturnPromise('FeedbackOfItemFromUsers/' + this.key)
+  //     .then((snapShot) => {
+  //       snapShot.forEach(_childSnap => {
+  //         let key = _childSnap.key;
+  //         let data = _childSnap.val();
+  //         let item = {
+  //           key: key,
+  //           data: data
+  //         }
+  //         console.log(item);
+  //         this.feedbacks.push(item);
+  //         return false;
+  //       });
+  //       console.log('feedbacks: ', this.feedbacks);
+
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     })
+
+  //   this.afService.getList('FeedbackOfItemFromUsers/' + this.key).subscribe(list => {
+  //     console.log(list);
+  //   })
+  // }
 
   getNumberLoveOfItemFromUsers() {
     this.dbService.getLengthOfDB('FavoriteOfItemFromUsers/' + this.key)
@@ -157,7 +165,7 @@ export class ShowItemDetailPage {
   }
 
   viewFeedbackInDetail(feedback: iFeedback) {
-    this.navCtrl.push('FeedbackDetailPage', feedback);
+    this.navCtrl.push('FeedbackPage', {feedback: feedback, action: 'view-feedback'});
   }
 
   showInMap(soldItem) {

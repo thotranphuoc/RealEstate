@@ -90,6 +90,7 @@ export class AddItemPage {
         })
         .unsubscribe();
     } else {
+      // if action is add-new
       this.soldItem = this.dbService.getSoldItem();
     }
     this.tabChoice = 'info';
@@ -272,6 +273,7 @@ export class AddItemPage {
   initMap(mapElement) {
     if (this.dbService.isUserChosenPositionSet) {
       console.log('user location set');
+      console.log(this.soldItem.POSITION)
       this.showMap(this.soldItem.POSITION, mapElement);
     } else {
       console.log('user location not set yet');
