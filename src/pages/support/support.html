@@ -8,10 +8,65 @@
 
 
 <ion-content>
-  <!--<button ion-button block clear  (click)="selectProblemType('sellingItem')">I have problem with my selling Items</button>-->
-  <div padding (click)="selectProblemType('sellingItem')">I have problem with my selling Items</div>
-  <ion-card *ngIf="problemType=='sellingItem'">
-    <div>
+
+  <div *ngIf="action=='new-support'">
+    <div padding (click)="selectProblemType('sellingItem')">I have problem with my selling Items</div>
+    <ion-card *ngIf="problemType=='sellingItem'">
+      <div>
+        <ion-card-content>
+          <div>
+            <p>Title:</p>
+            <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+          </div>
+          <div>
+            <p>Description:</p>
+            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            </ion-textarea>
+          </div>
+        </ion-card-content>
+        <button ion-button clear (click)="sendSupport('sellingItem')">SEND</button>
+      </div>
+    </ion-card>
+    <div padding (click)="selectProblemType('account')">I have problem with my selling Items</div>
+    <ion-card *ngIf="problemType=='account'">
+      <div>
+        <ion-card-content>
+          <div>
+            <p>Title:</p>
+            <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+          </div>
+          <div>
+            <p>Description:</p>
+            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            </ion-textarea>
+          </div>
+        </ion-card-content>
+        <button ion-button clear (click)="sendSupport('account')">SEND</button>
+      </div>
+    </ion-card>
+    <div padding (click)="selectProblemType('other')">I have problem with my selling Items</div>
+    <ion-card *ngIf="problemType=='other'">
+      <div>
+        <ion-card-content>
+          <div>
+            <p>Title:</p>
+            <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+          </div>
+          <div>
+            <p>Description:</p>
+            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            </ion-textarea>
+          </div>
+        </ion-card-content>
+        <button ion-button clear (click)="sendSupport('other')">SEND</button>
+      </div>
+    </ion-card>
+  </div>
+  <div *ngIf="action=='view-support'">
+    <ion-card>
+      <ion-card-header>
+        SUPPORT REQUEST FROM USER:
+      </ion-card-header>
       <ion-card-content>
         <div>
           <p>Title:</p>
@@ -22,44 +77,24 @@
           <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
           </ion-textarea>
         </div>
-      </ion-card-content>
-      <button ion-button clear (click)="sendSupport('sellingItem')">SEND</button>
-    </div>
-  </ion-card>
-  <div padding (click)="selectProblemType('account')">I have problem with my selling Items</div>
-  <ion-card *ngIf="problemType=='account'">
-    <div>
-      <ion-card-content>
         <div>
-          <p>Title:</p>
-          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
-        </div>
-        <div>
-          <p>Description:</p>
-          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
-          </ion-textarea>
+          <p>Date: {{problem.date}}</p>
+          <p>User: {{problem.userID}}</p>
+          <p>State: <button ion-button small outline>{{problem.state}}</button></p>
         </div>
       </ion-card-content>
-      <button ion-button clear (click)="sendSupport('account')">SEND</button>
+    </ion-card>
+    <div padding *ngIf="action == 'view-support'">
+      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'OPENING')">OPENING</button>
+      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'SOLVING')">SOLVING</button>
+      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'SOLVED')">SOLVED</button>
+      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'CLOSED')">CLOSED</button>
+      <!--<button ion-button outline small (click)="setState(support.$key, 'CANCEL')">CANCEL</button>
+      <button ion-button outline small (click)="setState(support.$key, 'DELETE')">DELETE</button>-->
+      <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, 'CANCEL')">CANCEL</button>
+      <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, 'DELETE')">DELETE</button>
     </div>
-  </ion-card>
-  <div padding (click)="selectProblemType('other')">I have problem with my selling Items</div>
-  <ion-card *ngIf="problemType=='other'">
-    <div>
-      <ion-card-content>
-        <div>
-          <p>Title:</p>
-          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
-        </div>
-        <div>
-          <p>Description:</p>
-          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
-          </ion-textarea>
-        </div>
-      </ion-card-content>
-      <button ion-button clear (click)="sendSupport('other')">SEND</button>
-    </div>
-  </ion-card>
-  
+  </div>
+
 
 </ion-content>

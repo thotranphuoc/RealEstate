@@ -6,3 +6,12 @@ export interface iSupport {
     date: string,
     state: string
 }
+
+/*
+STATE:
+- SENDING
+- SOLVING
+- SOLVED
+- CLOSE
+
+ */

@@ -1,0 +1,25 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Support</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content >
+  <ion-list>
+    <ion-item *ngFor="let support of supports; let i = index" (click)="go2SupportDetail(support)">
+      <button  color="primary" ion-button outline item-left>{{i}}</button>
+      <h3>{{support.title}}</h3>
+      <p>{{support.content}}</p>
+      <!--<button color="danger" ion-button outline item-right (click)="onDeleteSellingItem()"><ion-icon name="ios-checkmark" large></ion-icon></button>
+      <button  color="secondary" ion-button outline item-right (click)="toggleEye()"><ion-icon name="ios-clock-outline" large></ion-icon></button>
+      <button  color="primary" ion-button outline item-right (click)="toggleEye()"><ion-icon name="ios-done-all" large></ion-icon></button>-->
+
+      <button  color="primary" ion-button outline item-right>{{support.state}}</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

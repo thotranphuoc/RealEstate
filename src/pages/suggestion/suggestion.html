@@ -55,12 +55,13 @@
     <!--<button ion-button block (click)="sendSuggestion()">SEND</button>-->
   </ion-card>
   <div padding *ngIf="action == 'view-suggestion'">
-    <button ion-button outline small (click)="setState(suggestion.$key, 'SENDING')">SENDING</button>
-    <button ion-button outline small (click)="setState(suggestion.$key, 'ACK')">ACK</button>
-    <button ion-button outline small (click)="setState(suggestion.$key, 'UNDER_REVIEW')">UNDER_REVIEW</button>
-    <button ion-button outline small (click)="setState(suggestion.$key, 'UNDER_DEV')">UNDER_DEV</button>
-    <button ion-button outline small (click)="setState(suggestion.$key, 'GO LIVE')">GO LIVE</button>
-    <button ion-button outline small (click)="setState(suggestion.$key, 'CLOSE')">CLOSE</button>
-    <button ion-button outline small color="danger" (click)="setState(suggestion.$key, 'CANCEL')">CANCEL</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'SENDING')">SENDING</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'ACK')">ACK</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'UNDER_REVIEW')">UNDER_REVIEW</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'UNDER_DEV')">UNDER_DEV</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'GO LIVE')">GO LIVE</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, 'CLOSE')">CLOSE</button>
+    <button ion-button outline small color="danger" (click)="setState(suggestion.userID, suggestion.$key, 'CANCEL')">CANCEL</button>
+    <button ion-button outline small color="danger" (click)="setState(suggestion.userID, suggestion.$key, 'DELETE')">DELETE</button>
   </div>
 </ion-content>

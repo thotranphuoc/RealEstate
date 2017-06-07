@@ -96,5 +96,9 @@ export class SettingPage {
     this.navCtrl.push('SuggestionManagerPage')
   }
 
+  go2SupportManager(){
+    this.navCtrl.push('SupportManagerPage');
+  }
+
 
 }

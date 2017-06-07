@@ -13,11 +13,27 @@ import { AngularFireService } from '../../services/af.service';
 export class SupportPage {
   problemType: string;
   problem: iSupport = { type: null, title: null, content: null, userID: null, date: null, state: null };
+  action: string = 'new-support';
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private appService: AppService,
     private afService: AngularFireService) {
+    // action: add-new or update-item
+    let Act = this.navParams.get('action');
+    if (typeof (Act) != 'undefined') {
+      this.action = Act;
+    }
+
+    if (this.action == 'new-support') {
+      // new-support
+      console.log('new-support');
+    } else {
+      // view-support
+      console.log(this.action, 'view-support');
+      this.problem = this.navParams.get('data');
+      console.log(this.problem);
+    }
   }
 
   ionViewDidLoad() {
@@ -38,7 +54,7 @@ export class SupportPage {
     this.problem.type = type;
     this.problem.date = this.appService.getCurrentDate();
     this.problem.userID = this.afService.getAuth().auth.currentUser.uid;
-    this.problem.state = 'SENDING';
+    this.problem.state = 'OPENING';
     console.log(this.problem);
 
     this.afService.addItem2List('SupportReq', this.problem)
@@ -51,6 +67,21 @@ export class SupportPage {
             this.navCtrl.setRoot('MapPage');
           })
       })
+  }
+
+  setState(userID, key, state) {
+    if (state == 'DELETE') {
+      this.afService.deleteItemFromList('SupportReq', key);
+      this.afService.deleteItemFromList('SupportReqFromUser/' + userID, key);
+      console.log('delete done!');
+      this.navCtrl.pop();
+    } else {
+      this.afService.updateObjectData('SupportReq/' + key, { state: state })
+        .then(() => {
+          console.log('update done!');
+          this.navCtrl.pop();
+        })
+    }
   }
 
 }

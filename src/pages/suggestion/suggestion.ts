@@ -29,10 +29,10 @@ export class SuggestionPage {
       this.action = Act;
     }
 
-    if(this.action == 'new-suggestion'){
+    if (this.action == 'new-suggestion') {
       // new-suggestion
       console.log('new-suggestion');
-    }else{
+    } else {
       // view-suggestion
       console.log('view-suggestion');
       this.suggestion = this.navParams.get('data');
@@ -53,19 +53,30 @@ export class SuggestionPage {
     this.suggestion.userID = this.afService.getAuth().auth.currentUser.uid;
     this.suggestion.state = 'SENDING';
 
-    this.afService.addItem2List('Suggestions', this.suggestion).then((res)=>{
+    this.afService.addItem2List('Suggestions', this.suggestion).then((res) => {
       console.log(res);
-      this.afService.updateItemInList('SuggestionsFromUser/' + this.suggestion.userID, res.key, {date: this.suggestion.date});
+      this.afService.updateItemInList('SuggestionsFromUser/' + this.suggestion.userID, res.key, { date: this.suggestion.date })
+      .then(()=>{
+        this.appService.toastMsg('Thanks for your suggestion. We will consider to apply yours', 10000);
+        this.navCtrl.setRoot('MapPage');
+      })
     })
-    
+
   }
 
-  setState(key, state){
-    this.afService.updateObjectData('Suggestions/'+key, {state: state})
-    .then(()=>{
-      console.log('update done!');
+  setState(userID, key, state) {
+    if (state == 'DELETE') {
+      this.afService.deleteItemFromList('Suggestions', key);
+      this.afService.deleteItemFromList('SuggestionsFromUser/' + userID, key);
+      console.log('delete done!');
       this.navCtrl.pop();
-    })
+    } else {
+      this.afService.updateObjectData('Suggestions/' + key, { state: state })
+        .then(() => {
+          console.log('update done!');
+          this.navCtrl.pop();
+        })
+    }
   }
 
 }
