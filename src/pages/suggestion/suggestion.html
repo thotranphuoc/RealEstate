@@ -1,0 +1,66 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Suggest Feature</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card *ngIf="action == 'new-suggestion'">
+    <ion-card-header>
+      SUGGESTION FEATURE:
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <h3>Title (*)</h3>
+        <p>Please provide the title for this suggestion</p>
+        <ion-input type="text" [(ngModel)]="suggestion.title"></ion-input>
+      </div>
+
+      <div>
+        <p></p>
+        <h3>Description (*)</h3>
+        <p>Please provide the detail of your suggestion:</p>
+        <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="suggestion.content">
+        </ion-textarea>
+      </div>
+    </ion-card-content>
+    <button ion-button block (click)="sendSuggestion()">SEND</button>
+  </ion-card>
+
+  <ion-card *ngIf="action == 'view-suggestion'">
+    <ion-card-header>
+      SUGGESTION VIEW:
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <h3>Title</h3>
+        <ion-input type="text" [(ngModel)]="suggestion.title"></ion-input>
+      </div>
+
+      <div>
+        <p></p>
+        <h3>Description</h3>
+        <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="suggestion.content">
+        </ion-textarea>
+      </div>
+      <div>
+        <p>Date: {{suggestion.date}}</p>
+        <p>User: {{suggestion.userID}}</p>
+        <p>State: <button ion-button small outline>{{suggestion.state}}</button></p>
+      </div>
+    </ion-card-content>
+    <!--<button ion-button block (click)="sendSuggestion()">SEND</button>-->
+  </ion-card>
+  <div padding *ngIf="action == 'view-suggestion'">
+    <button ion-button outline small (click)="setState(suggestion.$key, 'SENDING')">SENDING</button>
+    <button ion-button outline small (click)="setState(suggestion.$key, 'ACK')">ACK</button>
+    <button ion-button outline small (click)="setState(suggestion.$key, 'UNDER_REVIEW')">UNDER_REVIEW</button>
+    <button ion-button outline small (click)="setState(suggestion.$key, 'UNDER_DEV')">UNDER_DEV</button>
+    <button ion-button outline small (click)="setState(suggestion.$key, 'GO LIVE')">GO LIVE</button>
+    <button ion-button outline small (click)="setState(suggestion.$key, 'CLOSE')">CLOSE</button>
+    <button ion-button outline small color="danger" (click)="setState(suggestion.$key, 'CANCEL')">CANCEL</button>
+  </div>
+</ion-content>

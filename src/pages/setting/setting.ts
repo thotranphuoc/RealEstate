@@ -67,6 +67,10 @@ export class SettingPage {
     this.navCtrl.push('FavoriteViewPage', this.afAuth.auth.currentUser.uid);
   }
 
+  go2SuggestionPage(){
+    this.navCtrl.push('SuggestionPage');
+  }
+
   // ionViewWillEnter() {
   //   this.mySettings = this.dbService.getSetting();
   //   // console.log('ionViewWillEnter', this.mySettings);
@@ -82,6 +86,10 @@ export class SettingPage {
 
   go2FeedbackManagement(){
     this.navCtrl.push('FeedbackManagementPage');
+  }
+
+  go2SuggestionManager(){
+    this.navCtrl.push('SuggestionManagerPage')
   }
 
 

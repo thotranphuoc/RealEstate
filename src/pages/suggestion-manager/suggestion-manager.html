@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Suggestion</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let suggestion of suggestions; let i = index" (click)="go2SuggestionDetail(suggestion)">
+      <button  color="primary" ion-button outline item-left>{{i}}</button>
+      <h3>{{suggestion.title}}</h3>
+      <p>{{suggestion.content}}</p>
+      <!--<button color="danger" ion-button outline item-right (click)="onDeleteSellingItem()"><ion-icon name="ios-checkmark" large></ion-icon></button>
+      <button  color="secondary" ion-button outline item-right (click)="toggleEye()"><ion-icon name="ios-clock-outline" large></ion-icon></button>
+      <button  color="primary" ion-button outline item-right (click)="toggleEye()"><ion-icon name="ios-done-all" large></ion-icon></button>-->
+
+      <button  color="primary" ion-button outline item-right>{{suggestion.state}}</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

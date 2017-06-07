@@ -143,7 +143,7 @@
       <ion-label>Contact support</ion-label>
       <!--<ion-note item-right>Click for help</ion-note>-->
     </ion-item>
-    <ion-item>
+    <ion-item (click)="go2SuggestionPage()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Suggest feature</ion-label>
       <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
@@ -169,6 +169,11 @@
     <ion-item (click)="go2FeedbackManagement()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Feedback Management</ion-label>
+      <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
+    </ion-item>
+    <ion-item (click)="go2SuggestionManager()">
+      <ion-icon name='ios-bulb-outline' item-left></ion-icon>
+      <ion-label>Suggestion Manager</ion-label>
       <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
     </ion-item>
   </ion-list>
