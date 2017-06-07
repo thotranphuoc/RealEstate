@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Support</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <!--<button ion-button block clear  (click)="selectProblemType('sellingItem')">I have problem with my selling Items</button>-->
+  <div padding (click)="selectProblemType('sellingItem')">I have problem with my selling Items</div>
+  <ion-card *ngIf="problemType=='sellingItem'">
+    <div>
+      <ion-card-content>
+        <div>
+          <p>Title:</p>
+          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+        </div>
+        <div>
+          <p>Description:</p>
+          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+          </ion-textarea>
+        </div>
+      </ion-card-content>
+      <button ion-button clear (click)="sendSupport('sellingItem')">SEND</button>
+    </div>
+  </ion-card>
+  <div padding (click)="selectProblemType('account')">I have problem with my selling Items</div>
+  <ion-card *ngIf="problemType=='account'">
+    <div>
+      <ion-card-content>
+        <div>
+          <p>Title:</p>
+          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+        </div>
+        <div>
+          <p>Description:</p>
+          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+          </ion-textarea>
+        </div>
+      </ion-card-content>
+      <button ion-button clear (click)="sendSupport('account')">SEND</button>
+    </div>
+  </ion-card>
+  <div padding (click)="selectProblemType('other')">I have problem with my selling Items</div>
+  <ion-card *ngIf="problemType=='other'">
+    <div>
+      <ion-card-content>
+        <div>
+          <p>Title:</p>
+          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+        </div>
+        <div>
+          <p>Description:</p>
+          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+          </ion-textarea>
+        </div>
+      </ion-card-content>
+      <button ion-button clear (click)="sendSupport('other')">SEND</button>
+    </div>
+  </ion-card>
+  
+
+</ion-content>

@@ -51,7 +51,7 @@ export class SuggestionPage {
     console.log(this.suggestion);
     this.suggestion.date = this.appService.getCurrentDate();
     this.suggestion.userID = this.afService.getAuth().auth.currentUser.uid;
-    this.suggestion.state = 'SEND';
+    this.suggestion.state = 'SENDING';
 
     this.afService.addItem2List('Suggestions', this.suggestion).then((res)=>{
       console.log(res);

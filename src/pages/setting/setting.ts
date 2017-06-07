@@ -71,6 +71,10 @@ export class SettingPage {
     this.navCtrl.push('SuggestionPage');
   }
 
+  go2SupportPage(){
+    this.navCtrl.push('SupportPage');
+  }
+
   // ionViewWillEnter() {
   //   this.mySettings = this.dbService.getSetting();
   //   // console.log('ionViewWillEnter', this.mySettings);
