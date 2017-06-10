@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Your Messages</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let ticket of tickets; let i = index" (click)="go2Support(ticket.data, ticket.key)">
+      <button  color="primary" ion-button outline item-left>{{i}}</button>
+      <div><ion-icon *ngIf="ticket.data.type=='SUGGESTION'" name="ios-bulb-outline"></ion-icon><ion-icon *ngIf="ticket.data.type!=='SUGGESTION'" name="ios-construct-outline"></ion-icon></div>
+      <h3>{{ticket.data.title}}</h3>
+      <p>{{ticket.data.content}}</p>
+      <button  color="primary" ion-button outline item-right>{{ticket.data.state}}</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

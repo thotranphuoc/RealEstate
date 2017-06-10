@@ -1,14 +1,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Support</ion-title>
+    <ion-title>Detail</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-
+  <!--==== NEW SUPPORT =====-->
   <div *ngIf="action=='new-support'">
     <div padding (click)="selectProblemType('sellingItem')">I have problem with my selling Items</div>
     <ion-card *ngIf="problemType=='sellingItem'">
@@ -20,14 +20,14 @@
           </div>
           <div>
             <p>Description:</p>
-            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="problem.content">
             </ion-textarea>
           </div>
         </ion-card-content>
         <button ion-button clear (click)="sendSupport('sellingItem')">SEND</button>
       </div>
     </ion-card>
-    <div padding (click)="selectProblemType('account')">I have problem with my selling Items</div>
+    <div padding (click)="selectProblemType('account')">I have problem with my account</div>
     <ion-card *ngIf="problemType=='account'">
       <div>
         <ion-card-content>
@@ -37,14 +37,14 @@
           </div>
           <div>
             <p>Description:</p>
-            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="problem.content">
             </ion-textarea>
           </div>
         </ion-card-content>
         <button ion-button clear (click)="sendSupport('account')">SEND</button>
       </div>
     </ion-card>
-    <div padding (click)="selectProblemType('other')">I have problem with my selling Items</div>
+    <div padding (click)="selectProblemType('other')">I have problem with other issues</div>
     <ion-card *ngIf="problemType=='other'">
       <div>
         <ion-card-content>
@@ -54,7 +54,7 @@
           </div>
           <div>
             <p>Description:</p>
-            <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+            <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="problem.content">
             </ion-textarea>
           </div>
         </ion-card-content>
@@ -62,7 +62,8 @@
       </div>
     </ion-card>
   </div>
-  <div *ngIf="action=='view-support'">
+  <!--=== ADMIN VIEW SUPPORT===x-->
+  <div *ngIf="action=='admin-view-support'">
     <ion-card>
       <ion-card-header>
         SUPPORT REQUEST FROM USER:
@@ -74,27 +75,176 @@
         </div>
         <div>
           <p>Description:</p>
-          <ion-textarea rows="10" type="text" id="textarea" [(ngModel)]="problem.content">
+          <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="problem.content">
           </ion-textarea>
         </div>
         <div>
           <p>Date: {{problem.date}}</p>
           <p>User: {{problem.userID}}</p>
-          <p>State: <button ion-button small outline>{{problem.state}}</button></p>
+          <p>Ticket ID: {{problem.$key}}</p>
+          <p>Previous State: {{problem.pre_state}}</p>
+          <p>Current State: {{problem.state}}</p>
         </div>
       </ion-card-content>
     </ion-card>
-    <div padding *ngIf="action == 'view-support'">
-      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'OPENING')">OPENING</button>
-      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'SOLVING')">SOLVING</button>
-      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'SOLVED')">SOLVED</button>
-      <button ion-button outline small (click)="setState(problem.userID, problem.$key, 'CLOSED')">CLOSED</button>
-      <!--<button ion-button outline small (click)="setState(support.$key, 'CANCEL')">CANCEL</button>
-      <button ion-button outline small (click)="setState(support.$key, 'DELETE')">DELETE</button>-->
-      <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, 'CANCEL')">CANCEL</button>
-      <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, 'DELETE')">DELETE</button>
+    <ion-card *ngFor="let msg of ticketMessages">
+      <h4>{{msg.date}}</h4>
+      <p>{{msg.state}}: {{msg.content}}</p>
+    </ion-card>
+    <div padding *ngIf="action == 'admin-view-support'">
+      <div *ngIf="!messageCheck">
+        <ion-icon id="messageUnCheck" color="grey" name="ios-radio-button-off" (click)="doMessageCheck()"> Message: </ion-icon>
+      </div>
+      <div *ngIf="messageCheck">
+        <ion-icon id="messageCheck" color="danger" name="ios-radio-button-on" (click)="doMessageCheck()"> Message: </ion-icon>
+        <ion-textarea rows="3" type="text" id="textarea" [(ngModel)]="newMessage"></ion-textarea>
+      </div>
+      <div>
+        <button ion-button outline small (click)="setState(problem.userID, problem.$key, problem.state, 'OPENING')">OPENING</button>
+        <button ion-button outline small (click)="setState(problem.userID, problem.$key, problem.state, 'SOLVING')">SOLVING</button>
+        <button ion-button outline small (click)="setState(problem.userID, problem.$key, problem.state, 'SOLVED')">SOLVED</button>
+        <button ion-button outline small (click)="setState(problem.userID, problem.$key, problem.state, 'CLOSED')">CLOSED</button>
+        <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, problem.state, 'CANCEL')">CANCEL</button>
+        <button ion-button outline small color="danger" (click)="setState(problem.userID, problem.$key, problem.state, 'DELETE')">DELETE</button>
+      </div>
     </div>
   </div>
+  <!--==== USER VIEW SUPPORT === -->
+  <div *ngIf="action=='user-view-support'">
+    <ion-card>
+      <ion-card-header>
+        YOUR SUPPORT REQUEST:
+      </ion-card-header>
+      <ion-card-content>
+        <div>
+          <p>Title:</p>
+          <ion-input type="text" [(ngModel)]="problem.title"></ion-input>
+        </div>
+        <div>
+          <p>Description:</p>
+          <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="problem.content">
+          </ion-textarea>
+        </div>
+        <div>
+          <p>Date: {{problem.date}}</p>
+          <p>Previous State: {{problem.pre_state}}</p>
+          <p>Current State: {{problem.state}} </p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="let msg of ticketMessages">
+      <h4>{{msg.date}}</h4>
+      <p>{{msg.state}}: {{msg.content}}</p>
 
+    </ion-card>
+  </div>
+
+  <!--=======NEW SUGGESTION ==========-->
+  <div *ngIf="action == 'new-suggest'">
+    <ion-card>
+      <ion-card-header>
+        SUGGESTION FEATURE:
+      </ion-card-header>
+      <ion-card-content>
+        <div>
+          <h3>Title (*)</h3>
+          <p>Please provide the title for this suggestion</p>
+          <ion-input type="text" [(ngModel)]="suggestion.title"></ion-input>
+        </div>
+
+        <div>
+          <p></p>
+          <h3>Description (*)</h3>
+          <p>Please provide the detail of your suggestion:</p>
+          <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="suggestion.content">
+          </ion-textarea>
+        </div>
+      </ion-card-content>
+      <button ion-button block (click)="sendSuggestion()">SEND</button>
+    </ion-card>
+  </div>
+  <!--===== ADMIN VIEW SUGGESTION=====-->
+  <div *ngIf="action == 'admin-view-suggest'">
+    <ion-card>
+      <ion-card-header>
+        SUGGESTION VIEW:
+      </ion-card-header>
+      <ion-card-content>
+        <div>
+          <h3>Title</h3>
+          <ion-input type="text" [(ngModel)]="suggestion.title"></ion-input>
+        </div>
+
+        <div>
+          <p></p>
+          <h3>Description</h3>
+          <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="suggestion.content">
+          </ion-textarea>
+        </div>
+        <div>
+          <p>Date: {{suggestion.date}}</p>
+          <p>User: {{suggestion.userID}}</p>
+          <p>Ticket ID: {{suggestion.$key}}</p>
+          <p>Previous State: {{suggestion.pre_state}}</p>
+          <p>Current State: {{suggestion.state}}</p>
+        </div>
+      </ion-card-content>
+      <!--<button ion-button block (click)="sendSuggestion()">SEND</button>-->
+    </ion-card>
+    <ion-card *ngFor="let msg of ticketMessages">
+      <h4>{{msg.date}}</h4>
+      <p>{{msg.state}}: {{msg.content}}</p>
+    </ion-card>
+
+  </div>
+
+  <div padding *ngIf="action == 'admin-view-suggest'">
+    <div *ngIf="!messageCheck">
+      <ion-icon id="messageUnCheck" color="grey" name="ios-radio-button-off" (click)="doMessageCheck()"> Message: </ion-icon>
+    </div>
+    <div *ngIf="messageCheck">
+      <ion-icon id="messageCheck" color="danger" name="ios-radio-button-on" (click)="doMessageCheck()"> Message: </ion-icon>
+      <ion-textarea rows="3" type="text" id="textarea" [(ngModel)]="newMessage"></ion-textarea>
+    </div>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'OPENING')">OPENING</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'ACK')">ACK</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'UNDER_REVIEW')">UNDER_REVIEW</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'UNDER_DEV')">UNDER_DEV</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'GO LIVE')">GO LIVE</button>
+    <button ion-button outline small (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'CLOSE')">CLOSE</button>
+    <button ion-button outline small color="danger" (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'CANCEL')">CANCEL</button>
+    <button ion-button outline small color="danger" (click)="setState(suggestion.userID, suggestion.$key, suggestion.state, 'DELETE')">DELETE</button>
+  </div>
+  <!--==== USER VIEW SUGGESTION ====-->
+  <div *ngIf="action == 'user-view-suggest'">
+    <ion-card>
+      <ion-card-header>
+        YOUR SUGGESTION VIEW:
+      </ion-card-header>
+      <ion-card-content>
+        <div>
+          <h3>Title</h3>
+          <ion-input type="text" [(ngModel)]="suggestion.title"></ion-input>
+        </div>
+
+        <div>
+          <p></p>
+          <h3>Description</h3>
+          <ion-textarea rows="5" type="text" id="textarea" [(ngModel)]="suggestion.content">
+          </ion-textarea>
+        </div>
+        <div>
+          <p>Date: {{suggestion.date}}</p>
+          <p>Previous State: {{suggestion.pre_state}}</p>
+          <p>Current State: {{suggestion.state}}</p>
+        </div>
+      </ion-card-content>
+      <!--<button ion-button block (click)="sendSuggestion()">SEND</button>-->
+    </ion-card>
+    <ion-card *ngFor="let msg of ticketMessages">
+      <h4>{{msg.date}}</h4>
+      <p>{{msg.state}}: {{msg.content}}</p>
+    </ion-card>
+  </div>
 
 </ion-content>

@@ -10,8 +10,9 @@
 
 <ion-content >
   <ion-list>
-    <ion-item *ngFor="let support of supports; let i = index" (click)="go2SupportDetail(support)">
+    <ion-item *ngFor="let support of supports; let i = index" (click)="go2Support(support)">
       <button  color="primary" ion-button outline item-left>{{i}}</button>
+      <div><ion-icon *ngIf="support.type=='SUGGESTION'" name="ios-bulb-outline"></ion-icon><ion-icon *ngIf="support.type!=='SUGGESTION'" name="ios-construct-outline"></ion-icon></div>
       <h3>{{support.title}}</h3>
       <p>{{support.content}}</p>
       <!--<button color="danger" ion-button outline item-right (click)="onDeleteSellingItem()"><ion-icon name="ios-checkmark" large></ion-icon></button>

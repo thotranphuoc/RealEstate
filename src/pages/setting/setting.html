@@ -141,12 +141,14 @@
     <ion-item (click)="go2SupportPage()">
       <ion-icon name='flash' item-left></ion-icon>
       <ion-label>Contact support</ion-label>
-      <!--<ion-note item-right>Click for help</ion-note>-->
     </ion-item>
     <ion-item (click)="go2SuggestionPage()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Suggest feature</ion-label>
-      <!--<ion-note item-right>Feedbacks are welcome</ion-note>-->
+    </ion-item>
+    <ion-item (click)="go2MsgBoxPage()">
+      <ion-icon name='ios-mail-outline' item-left></ion-icon>
+      <ion-label>Message box</ion-label>
     </ion-item>
   </ion-list>
 
@@ -168,10 +170,11 @@
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Feedback Management</ion-label>
     </ion-item>
-    <ion-item (click)="go2SuggestionManager()">
+    
+    <!--<ion-item (click)="go2SuggestionManager()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>
       <ion-label>Suggestion Manager</ion-label>
-    </ion-item>
+    </ion-item>-->
 
     <ion-item (click)="go2SupportManager()">
       <ion-icon name='ios-bulb-outline' item-left></ion-icon>

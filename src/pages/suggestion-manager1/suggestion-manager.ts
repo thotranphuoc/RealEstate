@@ -43,7 +43,7 @@ export class SuggestionManagerPage {
 
   go2SuggestionDetail(suggestion){
     console.log(suggestion);
-    this.navCtrl.push('SuggestionPage', {action: 'view-suggestion', data: suggestion});
+    this.navCtrl.push('SupportPage', {action: 'admin-view-suggest', data: suggestion});
   }
   
 

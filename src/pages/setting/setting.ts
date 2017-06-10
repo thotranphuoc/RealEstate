@@ -68,11 +68,16 @@ export class SettingPage {
   }
 
   go2SuggestionPage(){
-    this.navCtrl.push('SuggestionPage');
+    // this.navCtrl.push('SuggestionPage');
+    this.navCtrl.push('SupportPage', { action: 'new-suggest'});
   }
 
   go2SupportPage(){
     this.navCtrl.push('SupportPage');
+  }
+
+  go2MsgBoxPage(){
+    this.navCtrl.push('MsgboxPage');
   }
 
   // ionViewWillEnter() {
@@ -92,9 +97,9 @@ export class SettingPage {
     this.navCtrl.push('FeedbackManagementPage');
   }
 
-  go2SuggestionManager(){
-    this.navCtrl.push('SuggestionManagerPage')
-  }
+  // go2SuggestionManager(){
+  //   this.navCtrl.push('SuggestionManagerPage')
+  // }
 
   go2SupportManager(){
     this.navCtrl.push('SupportManagerPage');

@@ -17,8 +17,8 @@ export class SupportManagerPage {
     private appService: AppService,
     private afService: AngularFireService ) {
 
-      this.afService.getList('SupportReq').subscribe((supports)=>{
-        this.supports = supports
+      this.afService.getList('Ticket').subscribe((tickets)=>{
+        this.supports = tickets
         console.log(this.supports);
       })
   }
@@ -27,9 +27,9 @@ export class SupportManagerPage {
     console.log('ionViewDidLoad SupportManagerPage');
   }
 
-  go2SupportDetail(support){
+  go2Support(support){
     console.log(support);
-    this.navCtrl.push('SupportPage', {action: 'view-support', data: support});
+    this.navCtrl.push('SupportPage', {action: 'admin-view', data: support, key: support.$key});
   }
 
 }

@@ -13,11 +13,11 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let item of items; let i = index">
-      <ion-item>
+    <ion-item *ngFor="let item of items; let i = index">
+      <!--<ion-item>-->
         <button *ngIf="isMultiSelect && !item.isSelected" ion-button outline item-left (click)="doSelect(item, i)"></button>
         <button *ngIf="isMultiSelect && item.isSelected" ion-button color=danger item-left (click)="doSelect(item, i)"></button>
-        <ion-avatar item-left>
+        <ion-avatar item-left (click)="go2ItemDetail(item)">
           <div *ngIf="item.PHOTOS !=null">
             <img src="{{item.PHOTOS[0]}}" />
           </div>
@@ -32,9 +32,9 @@
         <button color="danger" ion-button outline item-right (click)="onDeleteSellingItem(item.UID, item.$key)"><ion-icon name="trash" large></ion-icon></button>
         <button *ngIf="item.VISIBLE" color="secondary" ion-button outline item-right (click)="toggleEye(item, item.$key)"><ion-icon name="eye" large></ion-icon></button>
         <button *ngIf="!item.VISIBLE" color="primary" ion-button outline item-right (click)="toggleEye(item, item.$key)"><ion-icon name="eye-off" large></ion-icon></button>
-      </ion-item>
+      <!--</ion-item>-->
 
-    </ion-item-sliding>
+    </ion-item>
   </ion-list>
 
 </ion-content>

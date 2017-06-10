@@ -13,7 +13,7 @@ declare var google: any;
 export class DbService {
     // SoldItemList: {key: string, data: iSoldItem}[] = [];  // load from DB
     soldItems: { key: string, data: iSoldItem }[] = []; // items got from firebase 
-    markers: any[] =[];
+    markers: any[] = [];
     // soldItem: iSoldItem = null; // item to upload to firebase
     detectedUserPosition: iPosition = { lat: 0, lng: 0 };
     userCurrentPosition: iPosition = { lat: 0, lng: 0 }; // user's detected position
@@ -243,11 +243,11 @@ export class DbService {
         return this.soldItems;
     }
 
-    setMarkers(markers){
+    setMarkers(markers) {
         this.markers = markers;
     }
-    
-    getMarkers(){
+
+    getMarkers() {
         return this.markers;
     }
 
@@ -341,7 +341,7 @@ export class DbService {
 
     uploadBase64Image2FB(imageData: string, URL: string) {
         let imageName: string = 'IMG_' + new Date().getTime() + '.jpg';
-        let storageRef = firebase.storage().ref(URL+'/' + imageName);
+        let storageRef = firebase.storage().ref(URL + '/' + imageName);
         return storageRef.putString(imageData, 'data_url', { contentType: 'image/png' })
         // .then((_snapshot)=>{
         //     alert('photo uploaded' + _snapshot);
@@ -504,10 +504,86 @@ export class DbService {
         })
     }
 
+    // VERIFIED
+    getListReturnPromise_ArrayWithKey_DataObject(dBName) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dBName);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let key = _childSnap.key;
+                    let data = _childSnap.val();
+                    let item = {
+                        key: key,
+                        data: data
+                    }
+                    // console.log(key, data)
+                    // console.log(item)
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+
+            })
+                // .then(() => {
+                //     resolve(items)
+                // })
+                // .catch((err) => {
+                //     reject(err);
+                // })
+        })
+    }
+
+    // VERIFIED
+    getListReturnPromise_ArrayDataObject(dBName) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dBName);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let item = _childSnap.val();
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+            })
+                // .then(() => {
+                //     resolve(items)
+                // })
+                // .catch((err) => {
+                //     reject(err);
+                // })
+        })
+    }
+
+    // VERIFIED
+    getListReturnPromise_ArrayKeyObject(dBName) {
+        return new Promise((resolve, reject) => {
+            let items = [];
+            let db = firebase.database().ref(dBName);
+            db.once('value', (_snapShot) => {
+                _snapShot.forEach(_childSnap => {
+                    let item = _childSnap.key;
+                    items.push(item);
+                    return false;
+                })
+                resolve(items);
+            })
+                // .then(() => {
+                //     resolve(items)
+                // })
+                // .catch((err) => {
+                //     reject(err);
+                // })
+        })
+    }
+
     getItemsFromFBReturnPromise(dbNameURL: string): firebase.Promise<any> {
         let db = firebase.database().ref(dbNameURL);
         return db.once('value')
     }
+
+
 
     getLocationsFromFirebase(): iSoldItem[] {
         let items = [];
@@ -539,14 +615,14 @@ export class DbService {
 
     }
 
-    deleteFileFromFireStorageWithURL(url: string){
+    deleteFileFromFireStorageWithURL(url: string) {
         let storageRef = firebase.storage().ref(url);
         return storageRef.delete()
     }
 
     // Create a reference from an HTTPS URL
     // such as: storage.refFromURL('https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
-    deleteFileFromFireStorageWithHttpsURL(httpsURL: string){
+    deleteFileFromFireStorageWithHttpsURL(httpsURL: string) {
         let storage = firebase.storage().refFromURL(httpsURL);
         return storage.delete();
     }

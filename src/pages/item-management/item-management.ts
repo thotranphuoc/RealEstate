@@ -121,5 +121,12 @@ export class ItemManagementPage {
     this.doMulti();
    
   }
+  go2ItemDetail(item){
+    delete item.isSelected;
+    delete item.new_KIND;
+    delete item.new_PRICE;
+    console.log(item);
+    this.navCtrl.push('ShowItemDetailPage', {key: item.$key, data: item });
+  }
 
 }
