@@ -3,13 +3,12 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { SoldItemsPage } from '../pages/sold-items/sold-items';
+// import { HomePage } from '../pages/home/home';
+// import { ListPage } from '../pages/list/list';
+// import { SoldItemsPage } from '../pages/sold-items/sold-items';
 // import { MapPage } from '../pages/map/map';
-import { SettingPage } from '../pages/setting/setting';
-import { MapNativePage } from '../pages/map-native/map-native';
- 
+// import { SettingPage } from '../pages/setting/setting';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -49,12 +48,12 @@ firebase.initializeApp(firebaseConfig);
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ListPage,
-    SoldItemsPage,
+    // HomePage,
+    // ListPage,
+    // SoldItemsPage,
     // MapPage,
-    MapNativePage,
-    SettingPage
+
+    // SettingPage
   ],
   imports: [
     BrowserModule,
@@ -66,12 +65,11 @@ firebase.initializeApp(firebaseConfig);
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ListPage,
-    SoldItemsPage,
+    // HomePage,
+    // ListPage,
+    // SoldItemsPage,
     // MapPage,
-    SettingPage,
-    MapNativePage
+    // SettingPage
   ],
   providers: [
     StatusBar,

@@ -4,12 +4,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { SoldItemsPage } from '../pages/sold-items/sold-items';
-import { MapPage } from '../pages/map/map';
-import { MapNativePage } from '../pages/map-native/map-native';
-import { SettingPage } from '../pages/setting/setting';
+// import { HomePage } from '../pages/home/home';
+// import { ListPage } from '../pages/list/list';
+// import { SoldItemsPage } from '../pages/sold-items/sold-items';
+// import { MapPage } from '../pages/map/map';
+// import { SettingPage } from '../pages/setting/setting';
 
 import { AppService } from '../services/app.service';
 
@@ -19,9 +18,9 @@ import { AppService } from '../services/app.service';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: string = "HomePage";
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: string}>;
 
   constructor(
     public platform: Platform, 
@@ -40,12 +39,11 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
-      { title: 'Sold Items', component: SoldItemsPage },
-      { title: 'Maps', component: MapPage },
-      { title: 'Native Maps', component: MapNativePage },
-      { title: 'Setting', component: SettingPage }
+      { title: 'Home', component: "HomePage" },
+      // { title: 'List', component: "ListPage" },
+      // { title: 'Sold Items', component: "SoldItemsPage" },
+      // { title: 'Maps', component: "MapPage" },
+      { title: 'Setting', component: "SettingPage" }
     ];
 
   }

@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController } from 'ionic-angular';
+import { NavController,LoadingController } from 'ionic-angular';
 
 import { AngularFireService } from '../../services/af.service';
+
 import { Observable } from 'rxjs/Observable';
-@IonicPage()
+
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html',
+  templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage1 {
   user: Observable<firebase.User>;
   loading: any;
   constructor(
@@ -22,10 +23,10 @@ export class HomePage {
       spinner: 'crescent'
     });
     this.startLoading();
-    setTimeout(() => {
+    setTimeout(()=>{
       this.navCtrl.setRoot('MapPage');
       this.hideLoading();
-    }, 1000);
+    },1000);
   }
 
   private startLoading() {
