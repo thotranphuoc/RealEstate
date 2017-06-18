@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { GmapService } from '../../services/gmap.service';
@@ -28,11 +28,18 @@ export class MapPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private platform: Platform,
     private loadingCtrl: LoadingController,
     private geolocation: Geolocation,
     private gmapService: GmapService,
     private dbService: DbService,
     private afDB: AngularFireDatabase) {
+    this.platform.ready().then(() => {
+      // setTimeout(() => {
+      //   this.mapEl = document.getElementById('map');
+      //   this.initMap(this.mapEl)
+      // }, 1000)
+    })
 
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
@@ -47,8 +54,6 @@ export class MapPage {
       this.mapEl = document.getElementById('map');
       this.initMap(this.mapEl)
     }, 1000)
-
-
   }
 
   ionViewWillEnter() {
@@ -72,7 +77,8 @@ export class MapPage {
   }
 
   initMap(mapElement) {
-    this.gmapService.getCurrentPosition()
+    // this.gmapService.getCurrentPosition()
+    this.geolocation.getCurrentPosition()
       .then((position) => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         let pos: iPosition = { lat: position.coords.latitude, lng: position.coords.longitude }
@@ -80,12 +86,14 @@ export class MapPage {
         this.showMap(pos, mapElement)
       })
       .catch((err) => {
-        console.log(err);
-        alert('No gps signal');
-        this.gmapService.getUserCurrentPosition().then((position:iPosition) => {
-          console.log(position);
-          this.showMap(position, mapElement)
-        })
+        this.gmapService.getUserCurrentPosition()
+          .then((position: iPosition) => {
+            console.log(position);
+            this.showMap(position, mapElement)
+          }, err => {
+            console.log(err);
+            alert('No gps signal');
+          })
 
       })
 
