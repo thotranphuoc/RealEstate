@@ -339,6 +339,78 @@ export class DbService {
         })
     }
 
+    convertFile2ImageData(file: File) {
+        let reader = new FileReader();
+        return new Promise((resolve, reject) => {
+            reader.onload = () => {
+                resolve(reader.result);
+            }
+            reader.readAsDataURL(file);
+        })
+    }
+
+    uploadFile2FB(path: string, file: File) {
+        let storageRef = firebase.storage().ref();
+        let progress: number;
+        let name = new Date().getTime();
+        let uploadTask: firebase.storage.UploadTask = storageRef.child(path + '/' + name).put(file);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+            progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(progress, '%');
+        },
+            (err) => {
+                // upload failed
+                console.log(err);
+            },
+            () => {
+                // upload success
+                let url = uploadTask.snapshot.downloadURL;
+                console.log('Dl URL:', url);
+
+            }
+        )
+    }
+
+    // VERIFIED: upload any kinds of file such as image, video, pdf...
+    uploadFile2FBReturnPromiseWithURL(path: string, file: File, dbFileName: string) {
+        return new Promise((resolve, reject) => {
+            let storageRef = firebase.storage().ref();
+            let name = new Date().getTime();
+            let uploadTask: firebase.storage.UploadTask = storageRef.child(path + '/' + dbFileName).put(file);
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
+                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log(progress, '%');
+            },
+                (err) => {
+                    // upload failed
+                    console.log(err);
+                    reject(err)
+                },
+                () => {
+                    // upload success
+                    let url = uploadTask.snapshot.downloadURL;
+                    console.log('Dl URL:', url);
+                    resolve(url)
+                })
+        })
+    }
+    // VERIFIED: upload any kinds of file such as image, video, pdf.... Many files at ONE click
+    uploadFiles2FBReturnPromiseWithArrayOfURL(path: string, files: File[], dbFileNames: string){
+        let promises = [];
+        let length = files.length;
+        files.forEach((file, index)=>{
+            promises[index] = new Promise((resolve, reject)=>{
+                let name = dbFileNames+'_'+index;
+                this.uploadFile2FBReturnPromiseWithURL(path, files[index],name)
+                .then(url=>{
+                    resolve(url);
+                })
+            })
+        })
+        return Promise.all(promises);
+    }
+
     uploadBase64Image2FB(imageData: string, URL: string) {
         let imageName: string = 'IMG_' + new Date().getTime() + '.jpg';
         let storageRef = firebase.storage().ref(URL + '/' + imageName);
@@ -525,12 +597,12 @@ export class DbService {
                 resolve(items);
 
             })
-                // .then(() => {
-                //     resolve(items)
-                // })
-                // .catch((err) => {
-                //     reject(err);
-                // })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
         })
     }
 
@@ -547,12 +619,12 @@ export class DbService {
                 })
                 resolve(items);
             })
-                // .then(() => {
-                //     resolve(items)
-                // })
-                // .catch((err) => {
-                //     reject(err);
-                // })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
         })
     }
 
@@ -569,12 +641,12 @@ export class DbService {
                 })
                 resolve(items);
             })
-                // .then(() => {
-                //     resolve(items)
-                // })
-                // .catch((err) => {
-                //     reject(err);
-                // })
+            // .then(() => {
+            //     resolve(items)
+            // })
+            // .catch((err) => {
+            //     reject(err);
+            // })
         })
     }
 
