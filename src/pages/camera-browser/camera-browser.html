@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -9,94 +8,33 @@
 
 
 <ion-content padding>
-  <!--<img [src]="" alt="">
-  
-  <form action="">
-
-    <input type="submit" value="Submit">
-    <button (click)="choosePhotoToUpload()">Photo</button>
-  </form>-->
-
-  <!--<input type="file" (change)="changeListener($event"/>
-  <img id="image" src="" alt="">-->
-
-  <!--<div>
-    <input type="file" multiple (change)="fileChange(input)" #input/>
-  </div>-->
-
-  <div>  
-      <input type="file" multiple (change)="fileChange(input)" #input />
-    </div>  
-    <div *ngFor="let file_src of file_srcs; let i = index">  
-      <img [attr.src]='file_src' alt=""/>
-      
-      <p>{{ debug_size_before[i] }} bytes <b>Before</b> </p>
-      <p>{{ debug_size_after[i] }} bytes <b>After</b></p>
-    </div>
-
-    
-    <div>
-      <input type="file" (change)="detectFiles($event)">
-      <button ion-button (click)="uploadSingle()">Upload Single</button>
-    </div>
-    <div>
-      <input type="file" (change)="detectFiles($event)" multiple>
-      <button ion-button (click)="uploadMultiple()">Upload Multiple</button>
-    </div>
-    <div *ngFor="let imageData of imageDatas">
-      <img src="{{imageData}}" alt="No image">
-    </div>
-    
-</ion-content>
 
 <!--
-
-function onGetUserMediaButtonClick() {
-  navigator.mediaDevices.getUserMedia({video: true})
-  .then(mediaStream => {
-    document.querySelector('video').srcObject = mediaStream;
-
-    const track = mediaStream.getVideoTracks()[0];
-    imageCapture = new ImageCapture(track);
-  })
-  .catch(error => ChromeSamples.log(error));
-}
-
-function onGrabFrameButtonClick() {
-  imageCapture.grabFrame()
-  .then(imageBitmap => {
-    const canvas = document.querySelector('#grabFrameCanvas');
-    drawCanvas(canvas, imageBitmap);
-  })
-  .catch(error => ChromeSamples.log(error));
-}
-
-function onTakePhotoButtonClick() {
-  imageCapture.takePhoto()
-  .then(blob => createImageBitmap(blob))
-  .then(imageBitmap => {
-    const canvas = document.querySelector('#takePhotoCanvas');
-    drawCanvas(canvas, imageBitmap);
-  })
-  .catch(error => ChromeSamples.log(error));
-}
-
-/* Utils */
-
-function drawCanvas(canvas, img) {
-  canvas.width = getComputedStyle(canvas).width.split('px')[0];
-  canvas.height = getComputedStyle(canvas).height.split('px')[0];
-  let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
-  let x = (canvas.width - img.width * ratio) / 2;
-  let y = (canvas.height - img.height * ratio) / 2;
-  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-  canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-      x, y, img.width * ratio, img.height * ratio);
-}
-
-document.querySelector('video').addEventListener('play', function() {
-  document.querySelector('#grabFrameButton').disabled = false;
-  document.querySelector('#takePhotoButton').disabled = false;
-});
-
--->
+  <div>
+    <input type="file" (change)="detectFiles($event)">
+    <button ion-button (click)="uploadSingle()">Upload Single</button>
+  </div>
+  <hr>-->
+  <div>
+    <label class="fileContainer">
+      <button ion-button icon-start round color="secondary" [disabled]="numberOfImages>4">
+        <ion-icon name='ios-camera-outline'></ion-icon>
+        <p padding-left>Photo</p>
+        <input type="file" (change)="detectFiles($event)" multiple>
+      </button>
+    </label>
+    <button round ion-button (click)="uploadMultiple()" [disabled]="!numberOfImages>0"> <ion-icon name="ios-cloud-upload-outline"></ion-icon>Upload</button>
+  </div>
+  <hr>
+  <p>{{numberOfImages}} - photos selected</p>
+  <hr>
+  <div *ngFor="let imageData of imageDatas; let i=index" (click)="removeImage(i)">
+    <!--Image before resizing:-->
+    <img src="{{imageData}}" alt="No image">
+  </div>
+  <!--<div *ngFor="let resizedImageData of resizedImageDatas">
+    Image after resizing:
+    <img src="{{resizedImageData}}" alt="No image">
+  </div>
+  {{resultMsg}}-->
+</ion-content>

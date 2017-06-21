@@ -339,6 +339,7 @@ export class DbService {
         })
     }
 
+    // VERIFIED: browse photo/ capture photo, then convert to imageData to ready to display
     convertFile2ImageData(file: File) {
         let reader = new FileReader();
         return new Promise((resolve, reject) => {
@@ -346,6 +347,21 @@ export class DbService {
                 resolve(reader.result);
             }
             reader.readAsDataURL(file);
+        })
+    }
+
+    convertFile2ImageElement(file: File) {
+        return new Promise((resolve, reject) => {
+            this.convertFile2ImageData(file)
+                .then((dataUrl: string) => {
+                    let img = document.createElement('img');
+                    img.src = dataUrl
+                    console.log(img)
+                    resolve(img);
+                })
+                .catch((err) => {
+                    reject(err);
+                })
         })
     }
 
@@ -376,7 +392,6 @@ export class DbService {
     uploadFile2FBReturnPromiseWithURL(path: string, file: File, dbFileName: string) {
         return new Promise((resolve, reject) => {
             let storageRef = firebase.storage().ref();
-            let name = new Date().getTime();
             let uploadTask: firebase.storage.UploadTask = storageRef.child(path + '/' + dbFileName).put(file);
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot) => {
                 let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -390,25 +405,93 @@ export class DbService {
                 () => {
                     // upload success
                     let url = uploadTask.snapshot.downloadURL;
-                    console.log('Dl URL:', url);
+                    // console.log('Dl URL:', url);
                     resolve(url)
                 })
         })
     }
+
     // VERIFIED: upload any kinds of file such as image, video, pdf.... Many files at ONE click
-    uploadFiles2FBReturnPromiseWithArrayOfURL(path: string, files: File[], dbFileNames: string){
+    uploadFiles2FBReturnPromiseWithArrayOfURL(path: string, files: File[], dbFileName: string) {
         let promises = [];
-        let length = files.length;
-        files.forEach((file, index)=>{
-            promises[index] = new Promise((resolve, reject)=>{
-                let name = dbFileNames+'_'+index;
-                this.uploadFile2FBReturnPromiseWithURL(path, files[index],name)
-                .then(url=>{
-                    resolve(url);
-                })
+        // let length = files.length;
+        files.forEach((file, index) => {
+            promises[index] = new Promise((resolve, reject) => {
+                let name = dbFileName + '_' + index.toString();
+                this.uploadFile2FBReturnPromiseWithURL(path, file, name)
+                    .then(url => {
+                        resolve(url);
+                    })
             })
         })
         return Promise.all(promises);
+    }
+
+    uploadBase64Image2FBReturnPromiseWithURL(path: string, imageData: string, name: string) {
+        return new Promise((resolve, reject) => {
+            let storageRef = firebase.storage().ref(path + '/' + name);
+            storageRef.putString(imageData, 'data_url', { contentType: 'image/png' })
+                .then((res) => {
+                    console.log(res);
+                    resolve(res.downloadURL);
+                })
+        })
+    }
+
+    uploadBase64Images2FBReturnPromiseWithArrayOfURL(path: string, imageDatas: string[], dbFileName: string) {
+        let promises = [];
+        imageDatas.forEach((imageData, index)=>{
+            promises[index] = new Promise((resolve, reject)=>{
+                let name = dbFileName + '_' + index.toString();
+                this.uploadBase64Image2FBReturnPromiseWithURL(path, imageData, name)
+                .then(url=>{
+                    resolve(url)
+                })
+            })
+        });
+        return Promise.all(promises);
+    }
+
+    resizeImageFromImageElement(img: HTMLImageElement, MAX_WIDTH: number, MAX_HEIGHT: number, callback) {
+        var width, height;
+        console.log(img);
+        img.onload = () => {
+            console.log('img loaded');
+            // get the current image's width and height
+            width = img.width;
+            height = img.height;
+
+            // Set the WxH to fit the Max values (but maintain proportions)
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+
+            // create a canvas object
+            var canvas = document.createElement("canvas");
+
+            // set the canvas with new calculated dimensions
+            canvas.width = width;
+            canvas.height = height;
+
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // get this encoded as a jpeg
+            // IMPORTANT: 'jpeg' NOT 'jpg'
+            var imageDataURL = canvas.toDataURL('image/jpeg');
+
+            // callback with the results
+            callback(imageDataURL, img.src.length, imageDataURL.length)
+
+        }
     }
 
     uploadBase64Image2FB(imageData: string, URL: string) {
@@ -473,7 +556,7 @@ export class DbService {
         })
     }
 
-    // UPLOAD many images to firebase storage at the same time, then return an array of downloadURL
+    // VERIFIED: UPLOAD many images to firebase storage at the same time, then return an array of downloadURL
     uploadBase64Images2FirebaseReturnPromise(imagesData: string[], URL: string) {
         let promises = [];
 
@@ -496,7 +579,7 @@ export class DbService {
         return Promise.all(promises);
     }
 
-    // UPLOAD 1 image to firebase storage. then return a promise
+    // VERIFIED: UPLOAD 1 image to firebase storage. then return a promise
     uploadBase64Image2FirebaseReturnPromise(url: string, imageData: string): firebase.storage.UploadTask {
         // let imageName: string = 'IMG_' + new Date().getTime() + '.jpg';
         let storageRef = firebase.storage().ref(url);
@@ -507,24 +590,9 @@ export class DbService {
         // .catch(err=>{'uploaded fail: '+ err});
     }
 
-    // uploadBase64Images2FB(imageDatas: string[]): string[] {
-    //     let dlURLs = [];
-    //     imageDatas.forEach(imageData => {
-    //         this.uploadBase64Image2FB(imageData)
-    //             .then(_snapshot => {
-    //                 alert(_snapshot.downloadURL);
-    //                 dlURLs.push(_snapshot.downloadURL);
 
-    //             })
-    //     });
-    //     return dlURLs;
-    // }
 
-    // UPLOAD FILE TO STORAGE
 
-    uploadFileToFB(file: string) {
-
-    }
 
     // DATA TO UPLOAD
 
