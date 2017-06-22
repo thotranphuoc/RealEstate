@@ -1,6 +1,6 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Real Estate",
+  "short_name": "Real Estate",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
@@ -11,3 +11,17 @@
   "background_color": "#4e8ef7",
   "theme_color": "#4e8ef7"
 }
+
+// {
+//   "name": "Ionic",
+//   "short_name": "Ionic",
+//   "start_url": "index.html",
+//   "display": "standalone",
+//   "icons": [{
+//     "src": "assets/imgs/logo.png",
+//     "sizes": "512x512",
+//     "type": "image/png"
+//   }],
+//   "background_color": "#4e8ef7",
+//   "theme_color": "#4e8ef7"
+// }

@@ -92,7 +92,7 @@
     <!--CAMERA PHOTOS-->
     <div *ngSwitchCase="'photo'">
       <!--NEW IMAGE SHOW-->
-      <div>
+      <div *ngIf="isCordova">
         <div *ngIf="showedImage?.isVisible">
           <img [src]="showedImage.imageURL" alt="" (click)="click2DeleteImage(showedImage)">
         </div>
@@ -118,6 +118,26 @@
         </ion-grid>
       </div>
 
+      <!--BROWSER CAMERA-->
+      <div *ngIf="!isCordova">
+        <div>
+          <label class="fileContainer">
+            <button ion-button icon-start round color="secondary" [disabled]="numberOfImages>4">
+              <ion-icon name='ios-camera-outline'></ion-icon>
+              <p padding-left>Photo</p>
+              <input type="file" (change)="detectFiles($event)" multiple>
+            </button>
+          </label>
+          <button round ion-button (click)="uploadMultiple()" [disabled]="!numberOfImages>0"> <ion-icon name="ios-cloud-upload-outline"></ion-icon>Upload</button>
+        </div>
+        <hr>
+        <p>{{numberOfImages}} - photos selected</p>
+        <hr>
+        <div *ngFor="let imageData of imageDatas; let i=index" (click)="removeImage(i)">
+          <!--Image before resizing:-->
+          <img src="{{imageData}}" alt="No image">
+        </div>
+      </div>
     </div>
 
     <!--LOCATION MAP-->
