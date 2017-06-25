@@ -22,6 +22,7 @@
       </ion-item>
     </form>
     <button ion-button block (click)="onSignIn(myForm)" [disabled]="!myForm.valid">Sign In</button>
+    <p (click)="go2SignUp()">Don't have account? Register here</p>
   </div>
   <div *ngIf="action==='sign-up'">
     <form #myForm1="ngForm">

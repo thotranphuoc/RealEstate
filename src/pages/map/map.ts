@@ -190,6 +190,10 @@ export class MapPage {
     console.log('go2List');
     this.navCtrl.push('ItemsPage');
   }
+
+  addNewItem(){
+    this.navCtrl.push('AddNewItemPage');
+  }
 }
 
 

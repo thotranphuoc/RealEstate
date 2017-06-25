@@ -305,8 +305,6 @@ export class AddItemPage {
           this.soldItem.POSITION = pos;
         })
     }
-
-
   }
 
   showMap(position: iPosition, mapElement) {
@@ -375,6 +373,7 @@ export class AddItemPage {
         this.hasPosted = true;
         this.soldItem.UID = this.afService.getAuth().auth.currentUser.uid;
         this.soldItem.POSTDATE = this.appService.getCurrentDataAndTime();
+
         if (this.isUpdated) {
           // update for existing item:
           this.afService.setObjectData('soldItems/' + this.itemID, this.soldItem)

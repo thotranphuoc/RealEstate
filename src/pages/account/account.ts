@@ -72,6 +72,10 @@ export class AccountPage {
     })
   }
 
+  go2SignUp(){
+    this.action = 'sign-up';
+  }
+
 
 
 }

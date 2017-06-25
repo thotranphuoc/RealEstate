@@ -1,0 +1,328 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add NEW</ion-title>
+  </ion-navbar>
+  <div >
+    <ion-segment [(ngModel)]="tabChoice" name="tabChoice" id="segmentheader">
+      <ion-segment-button value="info" (ionSelect)="selectInfo()">INFO</ion-segment-button>
+      <ion-segment-button value="photo" (ionSelect)="selectPhoto()">PHOTO</ion-segment-button>
+      <ion-segment-button value="location" (ionSelect)="selectLocation()">LOCATION</ion-segment-button>
+      <ion-segment-button value="review" (ionSelect)="selectReview()">REVIEW</ion-segment-button>
+    </ion-segment>
+  </div>
+
+</ion-header>
+
+
+<ion-content>
+
+<div *ngIf="tabChoice=='info'">
+  <form #myForm="ngForm" autocomplete="off" novalidate id="myForm">
+        <ion-item>
+          <ion-label stacked>Họ tên:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.NAME" name="NAME" type="text" id="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Số điện thoại:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.PHONE" name="PHONE" type="text" placeholder=""></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Loại BĐS:</ion-label>
+          <ion-select required [(ngModel)]="soldItem.KIND" name="KIND" value="setHouse">
+            <ion-option value="setApartment" selected="true">Chung cư / Apartment</ion-option>
+            <ion-option value="setHouse">Nhà riêng lẻ</ion-option>
+            <ion-option value="setLand">Đất vườn</ion-option>
+            <ion-option value="setOther">Khác</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Giá:
+            <p>{{convertedPrice}} VND</p>
+          </ion-label>
+          <ion-input required [(ngModel)]="soldItem.PRICE" name="PRICE" type="number" (keyup)="onKeyUp()" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Diện tích đất (m2):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.GROUNDSQUARES" name="GROUNDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Diện tích SD (m2):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.USEDSQUARES" name="USEDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Địa chỉ:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.ADDRESS" name="ADDRESS" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần trường</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasSCHOOL" name="hasSCHOOL"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasSCHOOL">
+          <ion-label stacked> Cách trường (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasSCHOOLFAR" name="hasSCHOOLFAR" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần chợ, siêu thị</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasMART" name="hasMART"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasMART">
+          <ion-label stacked> Cách chợ, siêu thị (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasMARTFAR" type="number" placeholder="" name="hasMARTFAR"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần bệnh viện</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasHOSPITAL" name="hasHOSPITAL"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasHOSPITAL">
+          <ion-label stacked> Cách bệnh viện (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasHOSPITALFAR" type="number" name="hasHOSPITALFAR"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần trung tâm</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasCENTER" name="hasCENTER"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasCENTER">
+          <ion-label stacked> Cách trung tâm (m): </ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasCENTERFAR" type="number" name="hasCENTERFAR"></ion-input>
+        </ion-item>
+      </form>
+</div>
+<div *ngIf="tabChoice=='photo'">
+  <div *ngIf="!isCordova">
+        <div style="text-align: center">
+          <label class="fileContainer">
+            <img src="../../assets/imgs/camera.png" alt="" id="camera">
+            <input type="file" (change)="detectFiles($event)" multiple>
+          </label>
+        </div>
+        <hr>
+        <p>{{numberOfImages}} - photos selected</p>
+        <hr>
+        <div *ngFor="let resizedImageData of resizedImageDatas; let i=index" (click)="removeImage(i)" id="resizedImage">
+          <!--Image before resizing:-->
+          <img src="{{resizedImageData}}" alt="No image">
+        </div>
+      </div>
+</div>
+<div *ngIf="tabChoice=='location'">
+  <div #mapNewItem id="mapNewItem"></div>
+</div>
+<div *ngIf="tabChoice=='review'">
+  <ion-card>
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{soldItem.AVATAR_URL}}">
+          </ion-avatar>
+          <h2>{{soldItem.NAME}}</h2>
+          <p>{{soldItem.PHONE}}</p>
+        </ion-item>
+        <ion-item>
+          <h4>GIÁ:</h4>
+          <ion-icon name="ios-cash-outline" item-left small></ion-icon>
+          <p>{{convertedPrice}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ios-resize-outline" item-left small></ion-icon>
+          <h4>DTSD:</h4>
+          <p>DT sàn: {{soldItem.GROUNDSQUARES}} m2</p>
+          <p>DT sử dụng: {{soldItem.USEDSQUARES}} m2</p>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="ios-locate-outline" item-left small></ion-icon>
+          <h4>TIỆN ÍCH:</h4>
+
+          <p *ngIf="soldItem.FACILITIES.hasSCHOOL">Trường học ......{{soldItem.FACILITIES.hasSCHOOLFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasHOSPITAL">Bệnh viện .........{{soldItem.FACILITIES.hasHOSPITALFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasMART">Siêu thị .............{{soldItem.FACILITIES.hasMARTFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasCENTER">Trung tâm .........{{soldItem.FACILITIES.hasCENTERFAR}} m</p>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ios-home-outline" item-left small></ion-icon>
+          <h4>Address: </h4>
+          <p>{{soldItem.ADDRESS}}</p>
+        </ion-item>
+      </ion-card>
+      <ion-card>
+        <div #mapreview id="mapreview"></div>
+      </ion-card>
+      <ion-card>
+        <div>
+          <ion-slides pager>
+            <ion-slide *ngFor="let image of resizedImageDatas">
+              <img style="width: 100%" src="{{image}}">
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </ion-card>
+
+      <div>
+        <button ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
+      </div>
+</div>
+  
+
+  <div [ngSwitch]='tabChoice' id="content" *ngIf="false">
+    <div *ngSwitchCase="'info'">
+      <form #myForm="ngForm" autocomplete="off" novalidate id="myForm">
+        <ion-item>
+          <ion-label stacked>Họ tên:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.NAME" name="NAME" type="text" id="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Số điện thoại:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.PHONE" name="PHONE" type="text" placeholder=""></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Loại BĐS:</ion-label>
+          <ion-select required [(ngModel)]="soldItem.KIND" name="KIND" value="setHouse">
+            <ion-option value="setApartment" selected="true">Chung cư / Apartment</ion-option>
+            <ion-option value="setHouse">Nhà riêng lẻ</ion-option>
+            <ion-option value="setLand">Đất vườn</ion-option>
+            <ion-option value="setOther">Khác</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Giá:
+            <p>{{convertedPrice}} VND</p>
+          </ion-label>
+          <ion-input required [(ngModel)]="soldItem.PRICE" name="PRICE" type="number" (keyup)="onKeyUp()" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Diện tích đất (m2):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.GROUNDSQUARES" name="GROUNDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Diện tích SD (m2):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.USEDSQUARES" name="USEDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Địa chỉ:</ion-label>
+          <ion-input required [(ngModel)]="soldItem.ADDRESS" name="ADDRESS" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần trường</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasSCHOOL" name="hasSCHOOL"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasSCHOOL">
+          <ion-label stacked> Cách trường (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasSCHOOLFAR" name="hasSCHOOLFAR" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần chợ, siêu thị</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasMART" name="hasMART"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasMART">
+          <ion-label stacked> Cách chợ, siêu thị (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasMARTFAR" type="number" placeholder="" name="hasMARTFAR"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần bệnh viện</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasHOSPITAL" name="hasHOSPITAL"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasHOSPITAL">
+          <ion-label stacked> Cách bệnh viện (m):</ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasHOSPITALFAR" type="number" name="hasHOSPITALFAR"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label> Gần trung tâm</ion-label>
+          <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasCENTER" name="hasCENTER"></ion-toggle>
+        </ion-item>
+        <ion-item *ngIf="soldItem.FACILITIES.hasCENTER">
+          <ion-label stacked> Cách trung tâm (m): </ion-label>
+          <ion-input required [(ngModel)]="soldItem.FACILITIES.hasCENTERFAR" type="number" name="hasCENTERFAR"></ion-input>
+        </ion-item>
+      </form>
+    </div>
+    <div *ngSwitchCase="'photo'">
+      <!--BROWSER CAMERA-->
+      <div *ngIf="!isCordova">
+        <div style="text-align: center">
+          <label class="fileContainer">
+            <img src="../../assets/imgs/camera.png" alt="" id="camera">
+            <input type="file" (change)="detectFiles($event)" multiple>
+          </label>
+        </div>
+        <hr>
+        <p>{{numberOfImages}} - photos selected</p>
+        <hr>
+        <div *ngFor="let resizedImageData of resizedImageDatas; let i=index" (click)="removeImage(i)" id="resizedImage">
+          <!--Image before resizing:-->
+          <img src="{{resizedImageData}}" alt="No image">
+        </div>
+      </div>
+    </div>
+    <!--LOCATION MAP-->
+    <div *ngSwitchCase="'location'">
+      <div #mapNewItem id="mapNewItem"></div>
+    </div>
+
+    <div *ngSwitchCase="'review'">
+      <ion-card>
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{soldItem.AVATAR_URL}}">
+          </ion-avatar>
+          <h2>{{soldItem.NAME}}</h2>
+          <p>{{soldItem.PHONE}}</p>
+        </ion-item>
+        <ion-item>
+          <h4>GIÁ:</h4>
+          <ion-icon name="ios-cash-outline" item-left small></ion-icon>
+          <p>{{convertedPrice}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ios-resize-outline" item-left small></ion-icon>
+          <h4>DTSD:</h4>
+          <p>DT sàn: {{soldItem.GROUNDSQUARES}} m2</p>
+          <p>DT sử dụng: {{soldItem.USEDSQUARES}} m2</p>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="ios-locate-outline" item-left small></ion-icon>
+          <h4>TIỆN ÍCH:</h4>
+
+          <p *ngIf="soldItem.FACILITIES.hasSCHOOL">Trường học ......{{soldItem.FACILITIES.hasSCHOOLFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasHOSPITAL">Bệnh viện .........{{soldItem.FACILITIES.hasHOSPITALFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasMART">Siêu thị .............{{soldItem.FACILITIES.hasMARTFAR}} m</p>
+
+          <p *ngIf="soldItem.FACILITIES.hasCENTER">Trung tâm .........{{soldItem.FACILITIES.hasCENTERFAR}} m</p>
+
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="ios-home-outline" item-left small></ion-icon>
+          <h4>Address: </h4>
+          <p>{{soldItem.ADDRESS}}</p>
+        </ion-item>
+      </ion-card>
+      <ion-card>
+        <div #mapreview id="mapreview"></div>
+      </ion-card>
+      <ion-card>
+        <div>
+          <ion-slides pager>
+            <ion-slide *ngFor="let image of resizedImageDatas">
+              <img style="width: 100%" src="{{image}}">
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </ion-card>
+
+      <div>
+        <button ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
+      </div>
+      <!--<div *ngIf="isUpdated">
+        <button ion-button block (click)="postItem()" [disabled]="hasPosted">UPDATE</button>
+      </div>-->
+    </div>
+  </div>
+</ion-content>

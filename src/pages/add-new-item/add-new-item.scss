@@ -1,0 +1,73 @@
+page-add-new-item {
+    // .scroll {
+    //     height: 100%
+    //   }
+      #segmentheader {
+        // position: relative;
+        // top: 44px;
+        // right: 150px;
+      }
+
+      #content {
+          position: relative;
+        //   top: 44px;
+        // padding-top: 44px;
+      }
+ 
+      #mapNewItem {
+        width: 100%;
+        height: 500px;
+      }
+
+      #mapreview{
+        height: 200px;
+        width: 100%; 
+        }
+
+    #camera{
+        height: 75px;
+        // width: 75px;
+        // background-color: gray
+        
+    }
+
+    #resizedImage{
+        padding-top: 5px;
+        
+    }
+
+    ion-input .ng-invalid { 
+        border-left: 2px solid red;
+    }
+
+    .fileContainer {
+        overflow: hidden;
+        position: relative;
+        // text-align: center;
+    }
+
+    .fileContainer [type=file] {
+        cursor: inherit;
+        display: block;
+        font-size: 999px;
+        filter: alpha(opacity=0);
+        min-height: 100%;
+        min-width: 100%;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        text-align: right;
+        top: 0;
+    }
+
+    // .fileContainer {
+    //     background: #0fc1ac;
+    //     border-radius: .5em;
+    //     float: left;
+    //     padding: .5em;
+    // }
+
+    // .fileContainer [type=file] {
+    //     cursor: pointer;
+    // }
+}
