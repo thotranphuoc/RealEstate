@@ -767,6 +767,16 @@ export class DbService {
         return storage.delete();
     }
 
+    // FOR IMAGE CAPTURE BY WEBBROWSER
+    resizedImageDatas: any[] =[];
+    getResizedImageDatas(){
+        return this.resizedImageDatas;
+    }
+    setResizedImageDatas(imageDatas: any[]){
+        this.resizedImageDatas = imageDatas;
+    }
+
+
     // getAllItemsOnce(dbName: string): iItem[] {
     //     this.Results = [];
     //     let items = firebase.database().ref(dbName);

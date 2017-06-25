@@ -192,7 +192,7 @@ export class MapPage {
   }
 
   addNewItem(){
-    this.navCtrl.push('AddNewItemPage');
+    this.navCtrl.push('AddItemNewPage');
   }
 }
 

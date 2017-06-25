@@ -90,7 +90,7 @@ export class AddNewItemPage {
     setTimeout(()=>{
       document.getElementById("name").setAttribute('tabIndex', '-1');
     },1000);
-    console.log('focus om name');
+    
   }
 
   selectPhoto() {

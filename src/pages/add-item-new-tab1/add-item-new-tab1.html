@@ -1,0 +1,80 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Information</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #myForm="ngForm" autocomplete="off" novalidate id="myForm">
+    <ion-item>
+      <ion-label stacked>Họ tên:</ion-label>
+      <ion-input required [(ngModel)]="soldItem.NAME" name="NAME" type="text" id="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Số điện thoại:</ion-label>
+      <ion-input required [(ngModel)]="soldItem.PHONE" name="PHONE" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Loại BĐS:</ion-label>
+      <ion-select required [(ngModel)]="soldItem.KIND" name="KIND" value="setHouse">
+        <ion-option value="setApartment" selected="true">Chung cư / Apartment</ion-option>
+        <ion-option value="setHouse">Nhà riêng lẻ</ion-option>
+        <ion-option value="setLand">Đất vườn</ion-option>
+        <ion-option value="setOther">Khác</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Giá:
+        <p>{{convertedPrice}} VND</p>
+      </ion-label>
+      <ion-input required [(ngModel)]="soldItem.PRICE" name="PRICE" type="number" (keyup)="onKeyUp()" pattern="[0-9]+"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Diện tích đất (m2):</ion-label>
+      <ion-input required [(ngModel)]="soldItem.GROUNDSQUARES" name="GROUNDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Diện tích SD (m2):</ion-label>
+      <ion-input required [(ngModel)]="soldItem.USEDSQUARES" name="USEDSQUARES" type="number" pattern="[0-9]+"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Địa chỉ:</ion-label>
+      <ion-input required [(ngModel)]="soldItem.ADDRESS" name="ADDRESS" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Gần trường</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasSCHOOL" name="hasSCHOOL"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="soldItem.FACILITIES.hasSCHOOL">
+      <ion-label stacked> Cách trường (m):</ion-label>
+      <ion-input required [(ngModel)]="soldItem.FACILITIES.hasSCHOOLFAR" name="hasSCHOOLFAR" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Gần chợ, siêu thị</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasMART" name="hasMART"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="soldItem.FACILITIES.hasMART">
+      <ion-label stacked> Cách chợ, siêu thị (m):</ion-label>
+      <ion-input required [(ngModel)]="soldItem.FACILITIES.hasMARTFAR" type="number" placeholder="" name="hasMARTFAR"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Gần bệnh viện</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasHOSPITAL" name="hasHOSPITAL"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="soldItem.FACILITIES.hasHOSPITAL">
+      <ion-label stacked> Cách bệnh viện (m):</ion-label>
+      <ion-input required [(ngModel)]="soldItem.FACILITIES.hasHOSPITALFAR" type="number" name="hasHOSPITALFAR"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Gần trung tâm</ion-label>
+      <ion-toggle checked="false" [(ngModel)]="soldItem.FACILITIES.hasCENTER" name="hasCENTER"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="soldItem.FACILITIES.hasCENTER">
+      <ion-label stacked> Cách trung tâm (m): </ion-label>
+      <ion-input required [(ngModel)]="soldItem.FACILITIES.hasCENTERFAR" type="number" name="hasCENTERFAR"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>
