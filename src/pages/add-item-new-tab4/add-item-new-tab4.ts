@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, App } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { iSoldItem } from '../../interfaces/sold-item.interface';
@@ -36,6 +36,7 @@ export class AddItemNewTab4Page {
     public navParams: NavParams,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
+    private app: App,
     private dbService: DbService,
     private appService: AppService,
     private gmapService: GmapService,
@@ -153,7 +154,7 @@ export class AddItemNewTab4Page {
                   .then(() => {
                     this.hideLoading();
                     this.resetSoldItem();
-                    this.navCtrl.setRoot('MapPage')
+                    this.go2Page('MapPage');
                   })
                   .catch((err) => {
                     console.log(err);
@@ -164,7 +165,7 @@ export class AddItemNewTab4Page {
               .catch((err) => {
                 this.hideLoadingWithMessage('Your item will be posted as soon as network available');
                 console.log(err);
-                this.appService.alertError('Error', err)
+                // this.appService.alertError('Error', err)
                 this.hasPosted = false;
               })
           })
@@ -246,7 +247,7 @@ export class AddItemNewTab4Page {
   private hideLoadingWithMessage(message: string) {
     this.loading.dismiss();
     this.appService.alertMsg('Alert', message);
-    this.navCtrl.setRoot('MapPage');
+    this.go2Page('MapPage')
   }
 
   resetSoldItem() {
@@ -337,6 +338,11 @@ export class AddItemNewTab4Page {
         console.log(res, 'update successfully');
       })
       .catch(err => console.log(err))
+  }
+
+  go2Page(page: string){
+    const root = this.app.getRootNav();
+    root.setRoot(page);
   }
 
 

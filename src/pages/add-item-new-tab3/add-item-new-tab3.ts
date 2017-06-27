@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { DbService } from '../../services/db.service';
@@ -13,30 +13,35 @@ declare var google;
   templateUrl: 'add-item-new-tab3.html',
 })
 export class AddItemNewTab3Page {
-
+  loading: any;
   // LOCATION tab
   mapNewItem: any;
   userMarker: any;
   mapElement: any;
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
+    private loadingCtrl: LoadingController,
     private dbService: DbService,
     private gmapService: GmapService,
-    private geolocation: Geolocation,) {
-      // this.initPage();
+    private geolocation: Geolocation, ) {
+    // this.initPage();
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait....',
+      spinner: 'crescent'
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddItemNewTab3Page');
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.initPage();
   }
 
 
-  initPage(){
+  initPage() {
     setTimeout(() => {
       this.mapElement = document.getElementById('mapNewItem');
       this.initMap(this.mapElement);
@@ -44,6 +49,7 @@ export class AddItemNewTab3Page {
   }
 
   initMap(mapElement) {
+    this.startLoading()
     if (this.dbService.isUserChosenPositionSet) {
       console.log('user location set');
       console.log(this.dbService.soldItem.POSITION)
@@ -74,6 +80,7 @@ export class AddItemNewTab3Page {
 
     this.gmapService.initMap(mapElement, mapOptions)
       .then((map) => {
+        this.hideLoading();
         console.log(map);
         this.mapNewItem = map;
         this.gmapService.addMarkerToMap(this.mapNewItem, position).then((marker) => {
@@ -97,5 +104,24 @@ export class AddItemNewTab3Page {
     // this.soldItem.POSITION = position;
     this.dbService.isUserChosenPositionSet = true;
   }
+
+  // LOADING
+  private startLoading() {
+    this.loading.present();
+    setTimeout(() => {
+      this.hideLoading();
+      // alert('Please turn on internet and location permission. Then open app again')
+    }, 20000)
+  }
+
+  private hideLoading() {
+    this.loading.dismiss();
+  }
+
+  // private hideLoadingWithMessage(message: string) {
+  //   this.loading.dismiss();
+  //   this.appService.alertMsg('Alert', message);
+  //   this.navCtrl.setRoot('MapPage');
+  // }
 
 }

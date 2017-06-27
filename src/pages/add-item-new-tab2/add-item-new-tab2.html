@@ -17,16 +17,18 @@
   <div *ngIf="!isCordova">
         <div style="text-align: center">
           <label class="fileContainer">
+            
             <img src="../../assets/imgs/camera.png" alt="" id="camera">
-            <input type="file" (change)="detectFiles($event)" multiple>
+            <input type="file" (change)="detectFiles($event)" multiple id="inputFile">
           </label>
         </div>
         <hr>
         <p>{{numberOfImages}} - photos selected</p>
+        
         <hr>
         <div *ngFor="let resizedImageData of resizedImageDatas; let i=index" (click)="removeImage(i)" id="resizedImage">
           <!--Image before resizing:-->
-          <img src="{{resizedImageData}}" alt="No image">
+          <img src="{{resizedImageData}}" alt="No image" id="resizedImage">
         </div>
       </div>
 </ion-content>

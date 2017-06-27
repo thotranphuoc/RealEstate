@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, App } from 'ionic-angular';
 
 import { DbService } from '../../services/db.service';
 
@@ -21,6 +21,8 @@ export class AddItemNewTab2Page {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
+    private app: App,
+    private viewCtrl: ViewController,
     private dbService: DbService,) {
 
   }

@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -8,61 +7,61 @@
 </ion-header>
 
 
-<ion-content padding>
-<ion-card>
-        <ion-item>
-          <ion-avatar item-left>
-            <img src="{{soldItem.AVATAR_URL}}">
-          </ion-avatar>
-          <h2>{{soldItem.NAME}}</h2>
-          <p>{{soldItem.PHONE}}</p>
-        </ion-item>
-        <ion-item>
-          <h4>GIÁ:</h4>
-          <ion-icon name="ios-cash-outline" item-left small></ion-icon>
-          <p>{{convertedPrice}}</p>
-        </ion-item>
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{soldItem.AVATAR_URL}}">
+      </ion-avatar>
+      <h2>{{soldItem.NAME}}</h2>
+      <p>{{soldItem.PHONE}}</p>
+    </ion-item>
+    <ion-item>
+      <h4>GIÁ:</h4>
+      <ion-icon name="ios-cash-outline" item-left small></ion-icon>
+      <p>{{convertedPrice}}</p>
+    </ion-item>
 
-        <ion-item>
-          <ion-icon name="ios-resize-outline" item-left small></ion-icon>
-          <h4>DTSD:</h4>
-          <p>DT sàn: {{soldItem.GROUNDSQUARES}} m2</p>
-          <p>DT sử dụng: {{soldItem.USEDSQUARES}} m2</p>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="ios-locate-outline" item-left small></ion-icon>
-          <h4>TIỆN ÍCH:</h4>
+    <ion-item>
+      <ion-icon name="ios-resize-outline" item-left small></ion-icon>
+      <h4>DTSD:</h4>
+      <p>DT sàn: {{soldItem.GROUNDSQUARES}} m2</p>
+      <p>DT sử dụng: {{soldItem.USEDSQUARES}} m2</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-locate-outline" item-left small></ion-icon>
+      <h4>TIỆN ÍCH:</h4>
 
-          <p *ngIf="soldItem.FACILITIES.hasSCHOOL">Trường học ......{{soldItem.FACILITIES.hasSCHOOLFAR}} m</p>
+      <p *ngIf="soldItem.FACILITIES.hasSCHOOL">Trường học ......{{soldItem.FACILITIES.hasSCHOOLFAR}} m</p>
 
-          <p *ngIf="soldItem.FACILITIES.hasHOSPITAL">Bệnh viện .........{{soldItem.FACILITIES.hasHOSPITALFAR}} m</p>
+      <p *ngIf="soldItem.FACILITIES.hasHOSPITAL">Bệnh viện .........{{soldItem.FACILITIES.hasHOSPITALFAR}} m</p>
 
-          <p *ngIf="soldItem.FACILITIES.hasMART">Siêu thị .............{{soldItem.FACILITIES.hasMARTFAR}} m</p>
+      <p *ngIf="soldItem.FACILITIES.hasMART">Siêu thị .............{{soldItem.FACILITIES.hasMARTFAR}} m</p>
 
-          <p *ngIf="soldItem.FACILITIES.hasCENTER">Trung tâm .........{{soldItem.FACILITIES.hasCENTERFAR}} m</p>
+      <p *ngIf="soldItem.FACILITIES.hasCENTER">Trung tâm .........{{soldItem.FACILITIES.hasCENTERFAR}} m</p>
 
-        </ion-item>
+    </ion-item>
 
-        <ion-item>
-          <ion-icon name="ios-home-outline" item-left small></ion-icon>
-          <h4>Address: </h4>
-          <p>{{soldItem.ADDRESS}}</p>
-        </ion-item>
-      </ion-card>
-      <ion-card>
-        <div #mapreview id="mapreview"></div>
-      </ion-card>
-      <ion-card>
-        <div>
-          <ion-slides pager>
-            <ion-slide *ngFor="let image of resizedImageDatas">
-              <img style="width: 100%" src="{{image}}">
-            </ion-slide>
-          </ion-slides>
-        </div>
-      </ion-card>
+    <ion-item>
+      <ion-icon name="ios-home-outline" item-left small></ion-icon>
+      <h4>Address: </h4>
+      <p>{{soldItem.ADDRESS}}</p>
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <div #mapreview id="mapreview"></div>
+  </ion-card>
+  <ion-card>
+    <div>
+      <ion-slides pager>
+        <ion-slide *ngFor="let image of resizedImageDatas">
+          <img style="width: 100%" src="{{image}}">
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </ion-card>
 
-      <div>
-        <button ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
-      </div>
+  <div>
+    <button ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
+  </div>
 </ion-content>

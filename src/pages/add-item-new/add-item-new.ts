@@ -13,7 +13,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'add-item-new.html',
 })
 export class AddItemNewPage {
-  
+  tabsEnabled: boolean = true;
   tab1Root = 'AddItemNewTab1Page';
   tab2Root = 'AddItemNewTab2Page';
   tab3Root = 'AddItemNewTab3Page';
@@ -23,6 +23,11 @@ export class AddItemNewPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddItemNewPage');
+  }
+
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter AddItemNewPage');
+    this.tabsEnabled = true;
   }
 
 }

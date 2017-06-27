@@ -92,7 +92,9 @@ export class MapPage {
             this.showMap(position, mapElement)
           }, err => {
             console.log(err);
-            alert('No gps signal');
+            alert('No gps signal. Your location cannot be detected now.');
+            let pos: iPosition = { lat: 10.778168043677463, lng: 106.69638633728027};
+            this.showMap(pos,mapElement);
           })
 
       })
