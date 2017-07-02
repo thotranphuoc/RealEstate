@@ -50,6 +50,6 @@
   <button ion-button block (click)="onUpdateProfile(myForm)" [disabled]="!btnEnable">Update</button>
 
   <!--for photo by browser-->
-  <input type="file" (change)="takePictureAndResizeByBrowser($event)" id="inputFilea" hidden>
+  <input type="file" (change)="takePictureAndResizeByBrowser($event)" id="inputFilea" hidden accept="image/*">
 
 </ion-content>
