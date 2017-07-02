@@ -25,7 +25,7 @@ import { DbService } from '../services/db.service';
 import { AppService } from '../services/app.service';
 import { AuthService } from '../services/auth.service';
 import { CameraService } from '../services/camera.service';
-
+import { LocalService } from '../services/local.service';
 
 // set up for angularfire2
 import { AngularFireModule } from 'angularfire2';
@@ -85,7 +85,8 @@ firebase.initializeApp(firebaseConfig);
     AppService,
     AuthService,
     CameraService,
-    GoogleMaps
+    GoogleMaps,
+    LocalService
   ]
 })
 export class AppModule {}

@@ -3,9 +3,11 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { DbService } from '../../services/db.service';
+import { LocalService } from '../../services/local.service';
 import { GmapService } from '../../services/gmap.service';
-import { iPosition } from '../../interfaces/position.interface';
 
+import { iPosition } from '../../interfaces/position.interface';
+import { iSoldItem } from '../../interfaces/sold-item.interface';
 declare var google;
 @IonicPage()
 @Component({
@@ -14,22 +16,34 @@ declare var google;
 })
 export class AddItemNewTab3Page {
   loading: any;
+  action: string = 'add-new';
+  position: iPosition = null;
+  soldItem: iSoldItem = null;
   // LOCATION tab
   mapNewItem: any;
   userMarker: any;
   mapElement: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private dbService: DbService,
+    private localService: LocalService,
     private gmapService: GmapService,
     private geolocation: Geolocation, ) {
-    // this.initPage();
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait....',
-      spinner: 'crescent'
-    });
+      this.action = this.localService.getItemAction();
+      console.log(this.action);
+      if(this.action==='item-update'){
+        this.soldItem = this.dbService.getSoldItem();
+        this.position = this.soldItem.POSITION;
+        this.localService.setIsUserChosenPositionSet(true);
+      }
+      // this.initPage();
+      this.loading = this.loadingCtrl.create({
+        content: 'Please wait....',
+        spinner: 'crescent'
+      });
   }
 
   ionViewDidLoad() {
@@ -50,7 +64,7 @@ export class AddItemNewTab3Page {
 
   initMap(mapElement) {
     this.startLoading()
-    if (this.dbService.isUserChosenPositionSet) {
+    if (this.localService.getIsUserChosenPositionSet()) {
       console.log('user location set');
       console.log(this.dbService.soldItem.POSITION)
       this.showMap(this.dbService.soldItem.POSITION, mapElement);
@@ -88,13 +102,13 @@ export class AddItemNewTab3Page {
         })
         google.maps.event.addListener(this.mapNewItem, 'click', (event) => {
           this.userMarker.setMap(null);
-          let position = { lat: event.latLng.lat(), lng: event.latLng.lng() }
-          console.log(position);
+          let positionClick = { lat: event.latLng.lat(), lng: event.latLng.lng() }
+          console.log(positionClick);
           this.userMarker = new google.maps.Marker({
-            position: position,
+            position: positionClick,
             map: this.mapNewItem
           })
-          this.setUserChoosenPosition(position);
+          this.setUserChoosenPosition(positionClick);
         })
       });
   }

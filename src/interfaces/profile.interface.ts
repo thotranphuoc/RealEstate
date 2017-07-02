@@ -5,6 +5,7 @@ export interface iProfile {
   BIRTHDAY: string,
   TEL: string,
   ADDRESS: string,
-  STATE: string
+  STATE: string,
+  VERIFIED: boolean
   // FAVORITES: any[]
 }

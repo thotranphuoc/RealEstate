@@ -117,10 +117,11 @@ export class YourSellItemPage {
     actionSheet.present();
   }
 
-  onUpdateSellingItem(key, id) {
+  onUpdateSellingItem(key, index) {
     console.log('update: ', key);
 
-    this.navCtrl.push('AddItemPage', { action: 'update-item', soldItem_ID: key });
+    // this.navCtrl.push('AddItemPage', { action: 'update-item', soldItem_ID: key });
+    this.navCtrl.push('AddItemNewPage', {action: 'item-update', soldItem: this.soldItems[index]})
   }
 
   showDetail(item, key) {

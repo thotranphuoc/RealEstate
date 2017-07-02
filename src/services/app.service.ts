@@ -318,6 +318,30 @@ export class AppService {
         this.afService.deleteItemFromList('FeedbackOfItemFromUsers', itemId);
     }
 
+    // Find commons elements from 2 arrays
+    commonOf2Arrays(arr1: any[], arr2: any[]){
+        let commons: any[] = [];
+        arr1.forEach(item=>{
+            let index = arr2.indexOf(item)
+            if(index>-1){
+                commons.push(item)
+            }
+        })
+        return commons;
+    }
+
+    // Find elements that array1 has while array2 does not;
+    diffArray1FromArray2(arr1: any[], arr2: any[]){
+        let diff: any[] = [];
+        arr1.forEach(item=>{
+            let index = arr2.indexOf(item);
+            if(index<0){
+                diff.push(item);
+            }
+        })
+        return diff;
+    }
+
     
 
     

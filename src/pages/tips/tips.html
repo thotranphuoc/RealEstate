@@ -1,0 +1,21 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tips</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content id="content">
+  <ion-list>
+    <ion-item *ngFor="let tip of tips; let i = index" text-wrap>
+      <p (click)="go2Page(i)">{{i}} - {{tip.title}}</p>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

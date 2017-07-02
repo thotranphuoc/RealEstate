@@ -1,7 +1,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Review and Up</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Review</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -54,14 +57,15 @@
   <ion-card>
     <div>
       <ion-slides pager>
-        <ion-slide *ngFor="let image of resizedImageDatas">
-          <img style="width: 100%" src="{{image}}">
+        <ion-slide *ngFor="let image of images_final">
+          <img style="width: 100%" src="{{image.imageURL}}">
         </ion-slide>
       </ion-slides>
     </div>
   </ion-card>
 
   <div>
-    <button ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
+    <button *ngIf="action==='add-new'" ion-button block (click)="postItem()" [disabled]="hasPosted">ADD NEW</button>
+    <button *ngIf="action==='item-update'" color="secondary" ion-button block (click)="postItem()" [disabled]="hasPosted">UPDATE</button>
   </div>
 </ion-content>

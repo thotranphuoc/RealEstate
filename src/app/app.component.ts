@@ -44,7 +44,7 @@ export class MyApp {
       // { title: 'Sold Items', component: "SoldItemsPage" },
       // { title: 'Maps', component: "MapPage" },
       { title: 'Setting', component: "SettingPage" },
-      // { title: 'Camera via Browser', component: "CameraBrowserPage" }
+      { title: 'Tips', component: "TipsPage" }
     ];
 
   }

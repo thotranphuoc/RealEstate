@@ -5,7 +5,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { iSoldItem } from '../../interfaces/sold-item.interface';
 import { iPosition } from '../../interfaces/position.interface';
 import { iProfile } from '../../interfaces/profile.interface';
+import { iImage } from '../../interfaces/image.interface';
 import { DbService } from '../../services/db.service';
+import { LocalService } from '../../services/local.service';
 import { GmapService } from '../../services/gmap.service';
 import { AppService } from '../../services/app.service';
 import { AngularFireService } from '../../services/af.service';
@@ -20,16 +22,29 @@ export class AddItemNewTab4Page {
   soldItem: iSoldItem;
   profile: iProfile;
   loading: any;
-
-  resizedImageDatas;
+  action: string = 'add-new';
+  existingSoldItemID: string = null;
+  // orgExistingImageUrls: string[] = [];
+  // existingImageUrls: string[] = [];
+  // resizedImageDatas;
+  // images: string[] = [];
   convertedPrice: string;
   mapreview: any;
   userMarker: any;
   mapElement: any;
 
+  // PHOTO 
+
+
   // REVIEW & POST
   isInfoFullFilled: boolean = true;
   hasPosted: boolean = false;
+
+  images: iImage[] = [];
+  images_final: iImage[] = [];
+  newImages = [];
+  oldImages = [];
+  deleteOldImages = [];
 
   constructor(
     public navCtrl: NavController,
@@ -38,11 +53,15 @@ export class AddItemNewTab4Page {
     private loadingCtrl: LoadingController,
     private app: App,
     private dbService: DbService,
+    private localService: LocalService,
     private appService: AppService,
     private gmapService: GmapService,
     private afService: AngularFireService,
     private geolocation: Geolocation) {
+    this.action = this.localService.getItemAction();
     this.soldItem = this.dbService.getSoldItem();
+
+    console.log(this.images);
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
@@ -55,8 +74,22 @@ export class AddItemNewTab4Page {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter')
+    this.images = [];
+    this.images_final = [];
+    this.images = this.localService.getImages();
+    this.images.forEach(image => {
+      if (image.isVisible) {
+        this.images_final.push(image);
+      }
+    })
+    this.prepareImages2Upload();
     this.soldItem = this.dbService.getSoldItem();
-    this.resizedImageDatas = this.dbService.getResizedImageDatas();
+    // this.resizedImageDatas = this.dbService.getResizedImageDatas();
+    // this.resizedImageDatas = this.localService.getResizedImages();
+    this.existingSoldItemID = this.localService.getExistingSoldItemID();
+    // this.existingImageUrls = this.localService.getExistingImageUrls();
+    // this.orgExistingImageUrls = this.localService.getOrgExistingImageUrls();
+    // this.images = this.soldItem.PHOTOS.concat(this.resizedImageDatas);
     if (this.soldItem.PRICE) {
       this.convertedPrice = this.appService.convertToCurrency(this.soldItem.PRICE.toString(), ',');
     }
@@ -71,7 +104,7 @@ export class AddItemNewTab4Page {
   }
 
   initMap(mapElement) {
-    if (this.dbService.isUserChosenPositionSet) {
+    if (this.localService.getIsUserChosenPositionSet()) {
       console.log('user location set');
       console.log(this.dbService.soldItem.POSITION)
       this.showMap(this.dbService.soldItem.POSITION, mapElement);
@@ -121,15 +154,12 @@ export class AddItemNewTab4Page {
 
   setUserChoosenPosition(position: iPosition) {
     this.dbService.soldItem.POSITION = position;
-    // this.soldItem.POSITION = position;
-    this.dbService.isUserChosenPositionSet = true;
+    this.localService.setIsUserChosenPositionSet(true);
   }
 
   // POST ITEM
   postItem() {
-
     this.hasPosted = true;
-    var itemKey: string = '';
     console.log(this.soldItem);
     this.checkInfoFullFilled();
     if (this.isInfoFullFilled) {
@@ -137,38 +167,74 @@ export class AddItemNewTab4Page {
         this.startLoading()
         this.soldItem.UID = this.afService.getAuth().auth.currentUser.uid;
         this.soldItem.POSTDATE = this.appService.getCurrentDataAndTime();
-        // this.updateUserInfo2SoldItem(); // make sure info update
-        this.appService.postSoldItemReturnPromiseWithKey(this.soldItem, 'soldItems')
-          .then((key: string) => {
-            console.log('new item key', key);
-            let soldItem_Key = key;
+        // ADD NEW
+        if (this.action === 'add-new') {
+          this.appService.postSoldItemReturnPromiseWithKey(this.soldItem, 'soldItems')
+            .then((key: string) => {
+              console.log('new item key', key);
+              let soldItem_Key = key;
 
-            // update UserSoldItems table;
-            this.updateUserSoldItem(this.afService.getAuth().auth.currentUser.uid, soldItem_Key);
+              // update UserSoldItems table;
+              this.updateUserSoldItem(this.afService.getAuth().auth.currentUser.uid, soldItem_Key);
 
-            // upload imageDatas to folder /images/soldItem_key/
-            let name = new Date().getTime().toString();
-            this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('images/' + soldItem_Key, this.resizedImageDatas, name)
-              .then((urls) => {
-                this.afService.updateObjectData('soldItems/' + soldItem_Key, { PHOTOS: urls })
-                  .then(() => {
-                    this.hideLoading();
-                    this.resetSoldItem();
-                    this.go2Page('MapPage');
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    this.appService.alertError('Error', err.toString())
-                    this.hasPosted = false;
-                  })
-              })
-              .catch((err) => {
-                this.hideLoadingWithMessage('Your item will be posted as soon as network available');
-                console.log(err);
-                // this.appService.alertError('Error', err)
-                this.hasPosted = false;
-              })
+              // upload imageDatas to folder /images/soldItem_key/
+              let name = new Date().getTime().toString();
+              this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('images/' + soldItem_Key, this.newImages, name)
+                .then((urls) => {
+                  this.afService.updateObjectData('soldItems/' + soldItem_Key, { PHOTOS: urls })
+                    .then(() => {
+                      this.hideLoading();
+                      this.resetSoldItem();
+                      this.go2Page('MapPage');
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      this.appService.alertError('Error', err.toString())
+                      this.hasPosted = false;
+                    })
+                })
+                .catch((err) => {
+                  this.hideLoadingWithMessage('Your item will be posted as soon as network available');
+                  console.log(err);
+                  // this.appService.alertError('Error', err)
+                  this.hasPosted = false;
+                })
+            })
+        } else {
+          // UPDATE EXISTING 
+          // upload new images to images/soldItemID
+          let name = new Date().getTime().toString();
+          this.dbService.uploadBase64Images2FBReturnPromiseWithArrayOfURL('images/' + this.existingSoldItemID, this.newImages, name)
+            .then((urls) => {
+              let finalURL = urls.concat(this.oldImages);
+              this.soldItem.PHOTOS = finalURL;
+              console.log(this.soldItem);
+              let soldIt: any = this.soldItem;
+              delete soldIt.new_PRICE;
+              delete soldIt.new_KIND;
+              this.afService.updateItemInList('soldItems', this.existingSoldItemID, soldIt)
+                .then(() => {
+                  this.hideLoading();
+                  this.resetSoldItem();
+                  this.go2Page('MapPage');
+                }, err => { console.log('Error', err) })
+             
+              // // update final item.PHOTOS url
+              // this.afService.updateObjectData('soldItems/' + this.existingSoldItemID, { PHOTOS: finalURL })
+              //   .then(() => {
+              //     this.hideLoading();
+              //     this.resetSoldItem();
+              //     this.go2Page('MapPage');
+              //   }, err => { console.log('Error', err) })
+            }, err => { console.log('Error', err) })
+          // delete existing image urls from storage
+          this.deleteOldImages.forEach(image => {
+            this.dbService.deleteFileFromFireStorageWithHttpsURL(image.imageURL)
+              .then(() => { console.log('old images deleted') })
+              .catch((err) => { console.log('Error', err) })
           })
+        }
+
       } else {
         // not logged in
         this.hasPosted = false;
@@ -321,13 +387,6 @@ export class AddItemNewTab4Page {
     }).present();
   }
 
-  // updateUserInfo2SoldItem() {
-  //   this.soldItem.NAME = this.profile.NAME;
-  //   this.soldItem.PHONE = this.profile.TEL;
-  //   this.soldItem.AVATAR_URL = this.profile.AVATAR_URL;
-  //   this.dbService.setSoldITem(this.soldItem);
-  // }
-
   updateUserSoldItem(userID, itemID) {
     let item = {
       key: itemID,
@@ -340,11 +399,37 @@ export class AddItemNewTab4Page {
       .catch(err => console.log(err))
   }
 
-  go2Page(page: string){
+  go2Page(page: string) {
     const root = this.app.getRootNav();
     root.setRoot(page);
+  }
+
+  prepareImages2Upload() {
+    this.newImages = [];
+    this.oldImages = [];
+    this.deleteOldImages = [];
+    this.images.forEach(image => {
+      if (image.isNewCapturedImage && image.isVisible) {
+        this.newImages.push(image.imageURL);
+      } else if (!image.isNewCapturedImage && !image.isVisible) {
+        this.deleteOldImages.push(image);
+      } else if (!image.isNewCapturedImage && image.isVisible) {
+        this.oldImages.push(image.imageURL);
+      } else {
+        // new but not invisible : capture but cancel afterward
+        // do nothing
+      }
+    })
   }
 
 
 
 }
+
+
+// export interface iImage {
+//   isNewCapturedImage: boolean,
+//   toBeDeleted: boolean,
+//   isVisible: boolean,
+//   imageURL: string
+// }
