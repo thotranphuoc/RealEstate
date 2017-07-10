@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController } from 'ionic-angular';
 
 import { AngularFireService } from '../../services/af.service';
+import { DbService } from '../../services/db.service';
 import { Observable } from 'rxjs/Observable';
 @IonicPage()
 @Component({
@@ -15,12 +16,14 @@ export class HomePage {
     public navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private afService: AngularFireService,
+    private dbService: DbService
   ) {
     this.user = this.afService.user;
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
     });
+    
     this.startLoading();
     setTimeout(() => {
       this.navCtrl.setRoot('MapPage');

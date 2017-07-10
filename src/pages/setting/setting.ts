@@ -6,6 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { iSetting } from '../../interfaces/setting.interface';
 import { DbService } from '../../services/db.service';
 import { AuthService } from '../../services/auth.service';
+import { LocalService } from '../../services/local.service';
 // import { AngularFireService } from '../../services/af.service';
 
 @IonicPage()
@@ -18,13 +19,16 @@ export class SettingPage {
   mySettings: iSetting;
   isSigned;
   isAdmin: boolean = false;
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private localService: LocalService,
     private dbService: DbService,
     private authService: AuthService,
     private afAuth: AngularFireAuth
   ) {
+    
     this.mySettings = this.dbService.getSetting();
     console.log('constructor inside')
     this.isSigned = this.afAuth.auth.currentUser;
@@ -49,7 +53,8 @@ export class SettingPage {
   onSignOut() {
     this.afAuth.auth.signOut()
       .then(() => {
-        console.log('user logged out!')
+        console.log('user logged out!');
+        this.localService.isProfileLoaded = false;
       })
     this.navCtrl.setRoot('MapPage');
   }

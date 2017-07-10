@@ -119,7 +119,7 @@ export class AddItemPage {
         console.log(profile.$key);
         this.soldItem.NAME = profile.NAME;
         this.soldItem.PHONE = profile.TEL;
-        this.soldItem.AVATAR_URL = profile.AVATAR_URL;
+        // this.soldItem.AVATAR_URL = profile.AVATAR_URL;
         this.dbService.setSoldITem(this.soldItem);
 
       })
@@ -697,7 +697,7 @@ export class AddItemPage {
   resetSoldItem() {
     let default_soldItem: iSoldItem = {
       UID: null,
-      AVATAR_URL: null,
+      // AVATAR_URL: null,
       NAME: null,
       PHONE: null,
       KIND: 'setHouse', // pho, chungcu, dat

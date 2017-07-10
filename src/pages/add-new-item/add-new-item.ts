@@ -350,7 +350,6 @@ export class AddNewItemPage {
   resetSoldItem() {
     let default_soldItem: iSoldItem = {
       UID: null,
-      AVATAR_URL: null,
       NAME: null,
       PHONE: null,
       KIND: 'setHouse', // pho, chungcu, dat
@@ -443,7 +442,6 @@ export class AddNewItemPage {
   updateUserInfo2SoldItem(){
     this.soldItem.NAME = this.profile.NAME;
         this.soldItem.PHONE = this.profile.TEL;
-        this.soldItem.AVATAR_URL = this.profile.AVATAR_URL;
         this.dbService.setSoldITem(this.soldItem);
   }
 

@@ -17,7 +17,7 @@ export class ProfilePage {
   isCordova: boolean = false;
   currentUser: any;
   profile: iProfile = {
-    AVATAR_URL: '',
+    AVATAR_URL: 'https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4',
     NAME: '',
     EMAIL: '',
     BIRTHDAY: '',

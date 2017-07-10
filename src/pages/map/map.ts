@@ -57,7 +57,6 @@ export class MapPage {
   }
 
   ionViewWillEnter() {
-
     console.log('ionViewWillEnter');
     this.items = this.afDB.list('/soldItems');
     this.items.subscribe((items) => {

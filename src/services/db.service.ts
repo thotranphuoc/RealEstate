@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { GmapService } from './gmap.service';
+
+// import { GmapService } from './gmap.service';
+
 
 import { iSoldItem } from '../interfaces/sold-item.interface';
 import { iFeedback } from '../interfaces/feedback.interface';
@@ -40,7 +42,6 @@ export class DbService {
 
     soldItem: iSoldItem = {
         UID: null,
-        AVATAR_URL: null,
         NAME: null,
         PHONE: null,
         KIND: 'setHouse', // pho, chungcu, dat
@@ -64,7 +65,16 @@ export class DbService {
         POSTDATE: '2017/04/30'
     };
 
-    // soldItem = this.defaultSoldItem;
+    // soldItem = this.defaultSoldItem;// DATA TO UPLOAD
+
+    getSoldItem(): iSoldItem {
+        return this.soldItem;
+    }
+
+    setSoldITem(soldItem: iSoldItem): void {
+        this.soldItem = soldItem;
+        console.log(this.soldItem);
+    }
 
     setting: iSetting = {
         setHouse: true,
@@ -105,13 +115,11 @@ export class DbService {
 
 
     // OFF TAM THOI
-    // constructor(
-    //     // private gmapService: GmapService
-    //     ) {
-    //     this.ItemList = this.getAllItemsOnce('items');
-    //     // this.onDBChanged('items');
-    //     this.onItemsChanged('items');
-    // }
+    constructor(
+        // private gmapService: GmapService,
+    ) {
+
+    }
 
     // insertOneNewItem(item, dbName) {
     //     let db = firebase.database().ref(dbName);
@@ -675,19 +683,20 @@ export class DbService {
     }
 
 
-
-
-
-    // DATA TO UPLOAD
-
-    getSoldItem(): iSoldItem {
-        return this.soldItem;
+    // VERIFIED: get downloadable url of a file from firebase/ url location;
+    getDownloadURLFromURLPathLocation(URLPathLocation: string) {
+        let pathRef = firebase.storage().ref(URLPathLocation);
+        return pathRef.getDownloadURL()
+        // .then((dlURL)=>{
+        //     console.log(dlURL)
+        // }, err=>console.log('err'))
     }
 
-    setSoldITem(soldItem: iSoldItem): void {
-        this.soldItem = soldItem;
-        console.log(this.soldItem);
-    }
+
+
+
+
+
 
     // GET ITEMS FROM FIREBASE
     getItemsFromFirebaseReturnObjectArray(dBName): any[] {
@@ -861,22 +870,6 @@ export class DbService {
     }
 
 
-    // getAllItemsOnce(dbName: string): iItem[] {
-    //     this.Results = [];
-    //     let items = firebase.database().ref(dbName);
-    //     items.once('value', (snapshot) => {
-    //         snapshot.forEach((childSnap) => {
-    //             let item = {
-    //                 key: childSnap.key,
-    //                 body: childSnap.val().body,
-    //                 name: childSnap.val().name
-    //             }
-    //             this.Results.push(item);
-    //             return false
-    //         })
-    //     })
-    //     return this.Results;
-    // }
 
 
 }

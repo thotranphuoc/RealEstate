@@ -6,7 +6,7 @@ export class InitClass {
     public getDefaultSoldItem() {
         return this.SOLDITEM = {
             UID: null,
-            AVATAR_URL: null,
+            // AVATAR_URL: null,
             NAME: null,
             PHONE: null,
             KIND: null, // pho, chungcu, dat

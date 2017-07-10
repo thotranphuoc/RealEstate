@@ -22,6 +22,7 @@ import { iFavorite } from '../../interfaces/favorite.interface';
 export class ShowItemDetailPage {
   objKey: { key: string, data: iSoldItem } = null;
   obj: iSoldItem = null;
+  userAvatar: string = null;
   data: any;
   key: string;
   photos: string[];
@@ -40,12 +41,14 @@ export class ShowItemDetailPage {
     private afAuth: AngularFireAuth,
     private callNumber: CallNumber
   ) {
+    
     this.objKey = this.navParams.data;
     this.key = this.objKey.key
     this.obj = this.objKey.data;
     this.obj['new_PRICE'] = this.appService.convertToCurrency(this.obj.PRICE.toString(), ',');
     this.obj['new_KIND'] = this.appService.convertCodeToDetail(this.obj.KIND);
     this.photos = this.obj.PHOTOS;
+    
 
     // FEEDBACK of item from USERS
     this.getFeedbackOfItemFromUsers();
@@ -63,6 +66,15 @@ export class ShowItemDetailPage {
       this.feedbacks = feedbacks;
       console.log(this.feedbacks);
     })
+  }
+
+  ionViewWillEnter(){
+    this.dbService.getDownloadURLFromURLPathLocation('Avatar/'+this.obj.UID)
+    .then((url)=>{
+      console.log(url);
+      this.userAvatar = url;
+    })
+    .catch(err=>console.log(err))
   }
 
   // getFeedbackOfItemFromUsers() {

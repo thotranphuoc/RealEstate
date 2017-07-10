@@ -38,6 +38,7 @@ export class AccountPage {
       })
       .catch((err) => {
         console.log('Error when loggin');
+        this.appService.alertError('Error',err.message)
       })
   }
 

@@ -169,6 +169,7 @@ export class AddItemNewTab4Page {
         this.soldItem.POSTDATE = this.appService.getCurrentDataAndTime();
         // ADD NEW
         if (this.action === 'add-new') {
+          console.log(this.soldItem);
           this.appService.postSoldItemReturnPromiseWithKey(this.soldItem, 'soldItems')
             .then((key: string) => {
               console.log('new item key', key);
@@ -319,7 +320,6 @@ export class AddItemNewTab4Page {
   resetSoldItem() {
     let default_soldItem: iSoldItem = {
       UID: null,
-      AVATAR_URL: null,
       NAME: null,
       PHONE: null,
       KIND: 'setHouse', // pho, chungcu, dat

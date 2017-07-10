@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>DETAILED</ion-title>
+    <ion-title>DETAIL</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -12,7 +12,7 @@
 
     <ion-item>
       <ion-avatar item-left>
-        <img src="{{obj.AVATAR_URL}}">
+        <img src="{{userAvatar}}">
       </ion-avatar>
       <h2>{{obj.NAME}}</h2>
       <button ion-button clear (click)="makeCall(obj.PHONE)">{{obj.PHONE}}</button>

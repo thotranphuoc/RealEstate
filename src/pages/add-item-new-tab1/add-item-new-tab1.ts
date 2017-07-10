@@ -21,12 +21,12 @@ export class AddItemNewTab1Page {
   // INFO tab
   convertedPrice: string;
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     private loadingCtrl: LoadingController,
     private afService: AngularFireService,
     private appService: AppService,
-    private dbService: DbService,) {
+    private dbService: DbService, ) {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait....',
       spinner: 'crescent'
@@ -47,24 +47,34 @@ export class AddItemNewTab1Page {
     // }
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     console.log('ionViewWillEnter ');
     if (this.afService.getAuth().auth.currentUser) {
       this.afService.getObject('UsersProfile/' + this.afService.getAuth().auth.currentUser.uid).subscribe((profile) => {
-        this.profile = profile;
-        console.log(this.profile);
+        // console.log(profile);
+        // console.log(profile.$value);
         // console.log(profile.$key);
-        this.updateUserInfo2SoldItem()
-
+        if(profile.EMAIL){
+          console.log('existing profile: ',profile)
+          this.profile = profile;
+          this.updateUserInfo2SoldItem();
+        }else{
+          console.log('profile not exist')
+        }
       })
     }
   }
 
-  updateUserInfo2SoldItem(){
-    this.soldItem.NAME = this.profile.NAME;
+  updateUserInfo2SoldItem() {
+    if (this.profile) {
+      if (this.profile.NAME !== 'undefined') {
+        this.soldItem.NAME = this.profile.NAME;
+      }
+      if (this.profile.TEL !== 'undefined') {
         this.soldItem.PHONE = this.profile.TEL;
-        this.soldItem.AVATAR_URL = this.profile.AVATAR_URL;
-        this.dbService.setSoldITem(this.soldItem);
+      }
+      this.dbService.setSoldITem(this.soldItem);
+    }
   }
 
   onKeyUp() {

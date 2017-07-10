@@ -271,7 +271,7 @@ export class AppService {
         this.afService.getObject('UsersProfile/'+ userID)
         .subscribe((user)=>{
             console.log(user.AVATAR_URL);
-            if(user.AVATAR_URL !=='' && user.AVATAR_URL !=null){
+            if(user.AVATAR_URL !=='' && user.AVATAR_URL !=null && user.AVATAR_URL!=='https://firebasestorage.googleapis.com/v0/b/auth-38cb7.appspot.com/o/App_images%2Favatar.png?alt=media&token=27b34944-943d-49f8-a204-419980813db4'){
                 this.deletePhoto(user.AVATAR_URL);
             }
             
